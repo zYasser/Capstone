@@ -12,7 +12,7 @@ class User(Base):
     user_id = Column(Integer, primary_key=True, autoincrement=True)
     first_name = Column(String, nullable=False)
     last_name = Column(String, nullable=False)
-    phone = Column(String(20))
+    phone = Column(String(20), unique=True)
     email = Column(String, nullable=False, unique=True)
     nationality = Column(String)
     password=Column(String , nullable=False , )
