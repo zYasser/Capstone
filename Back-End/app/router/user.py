@@ -15,7 +15,7 @@ from app.schema.user import UserCreate, UserBase
 from sqlalchemy.exc import IntegrityError
 from ..entity import models
 
-router = APIRouter(prefix="/api/user")
+router = APIRouter(prefix="/api/user", tags=["user"])
 
 
 def autenticate_user(user: models.User, password) -> bool:
@@ -38,12 +38,12 @@ def create_user(user: UserCreate, db: Session = Depends(get_db)):
         raise HTTPException(status_code=400, detail="Email Already Exist")
 
 
-# @router.get("/{user_id}", response_model=UserBase)
-# def get_user_by_id(user_id: int, db: Session = Depends(get_db)):
-#     user = db.query(models.User).filter(models.User.user_id == user_id).first()
-#     if not user:
-#         raise HTTPException(status_code=404, detail=f"user with id: {id} doesn't exit")
-#     return user
+@router.get("/" ,response_model=UserBase)
+def get_user_by_id(id: int, db: Session = Depends(get_db)):
+    user = db.query(models.User).filter(models.User.user_id == id).first()
+    if not user:
+        raise HTTPException(status_code=404, detail=f"user with id: {id} doesn't exit")
+    return user
 
 
 @router.get("", response_model=List[UserBase])

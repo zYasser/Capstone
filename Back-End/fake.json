@@ -1,16 +1,30 @@
 {
-    "user":{
-        "first_name": "John",
-        "last_name": "Doe",
-        "phone": "123-456-7890",
-        "email": "johndoe@example.com",
-        "nationality": "American",
-        "password" : "JAK83kc",
-        "country": "USA",
-        "street": "123 Main St",
-        "city": "Anytown",
-        "state": "CA",
-        "postal_code": "12345"
-      
+  "user": [
+    {
+      "first_name": "John",
+      "last_name": "Doe",
+      "phone": "123-456-7890",
+      "email": "johndoe@example.com",
+      "nationality": "American",
+      "password": "JAK83kc",
+      "country": "USA",
+      "street": "123 Main St",
+      "city": "Anytown",
+      "state": "CA",
+      "postal_code": "12345"
     }
+  ],
+  "Ticket": [
+    {
+      "id": 123,
+      "created_at": "2024-02-11T12:00:00Z",
+      "updated_at": "2024-02-11T12:30:00Z",
+      "email": "example@example.com",
+      "phone": "+1234567890",
+      "name": "John Doe",
+      "status": true,
+      "topic": "General Inquiry",
+      "body": "This is a mock message body."
+    }
+  ]
 }
