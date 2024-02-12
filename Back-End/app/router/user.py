@@ -38,7 +38,7 @@ def create_user(user: UserCreate, db: Session = Depends(get_db)):
         raise HTTPException(status_code=400, detail="Email Already Exist")
 
 
-@router.get("/" ,response_model=UserBase)
+@router.get("/", response_model=UserBase)
 def get_user_by_id(id: int, db: Session = Depends(get_db)):
     user = db.query(models.User).filter(models.User.user_id == id).first()
     if not user:

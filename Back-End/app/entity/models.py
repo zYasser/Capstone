@@ -49,15 +49,16 @@ class SupportTicket(Base):
     status = Column(Boolean, default=True)
     topic = Column(String)
     body = Column(String)
-    messages: Mapped[List["SupportTicektMessage"]] = relationship()
+    messages: Mapped[List["SupportTicektMessage"]] = relationship(cascade="all, delete")
 
 
 class SupportTicektMessage(Base):
     __tablename__ = "support_ticket_message"
-
     id = Column(Integer, primary_key=True, autoincrement=True)
     message = Column(String, nullable=False)
     created_at = Column(
         TIMESTAMP(timezone=True), nullable=False, server_default=text("now()")
     )
-    support_ticket_id: Mapped[int] = mapped_column(ForeignKey("support_ticket.id"))
+    support_ticket_id: Mapped[int] = mapped_column(
+        ForeignKey("support_ticket.id", ondelete="CASCADE")
+    )

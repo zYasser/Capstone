@@ -1,10 +1,16 @@
+from datetime import datetime
+import os
+import sys
 from typing import List
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 
 from app.config.database import get_db
-from app.entity.models import SupportTicket
-from app.schema.support_ticket import SupportTicket as ST
+from app.entity.models import SupportTicektMessage, SupportTicket
+from app.schema.support_ticket import (
+    SupportTicket as ST,
+    SupportTicketMessage as TicketMessage,
+)
 
 
 router = APIRouter(prefix="/api/ticket", tags=["ticket"])
@@ -35,3 +41,49 @@ def get_ticket_by_id(id: int, db: Session = Depends(get_db)):
         )
     return ticket
 
+
+@router.delete(
+    "",
+)
+def delete_ticker(id: int, db: Session = Depends(get_db)):
+    ticket = db.query(SupportTicket).filter(SupportTicket.id == id).delete()
+    if ticket == 0:
+        raise HTTPException(
+            status_code=404, detail=f"Ticket with id: {id} doesn't exit"
+        )
+    db.commit()
+
+
+@router.post("/replay", response_model=TicketMessage)
+def replay_to_ticket(message: TicketMessage, db: Session = Depends(get_db)):
+
+    id = message.support_ticket_id
+    try:
+        ticket = db.query(SupportTicket).filter(SupportTicket.id == id).first()
+        if ticket is None:
+            raise HTTPException(
+                status_code=404, detail=f"Ticket with id: {id} doesn't exit"
+            )
+        message.support_ticket_id = id
+        db.query(SupportTicket).where(SupportTicket.id == id).update(
+            {SupportTicket.updated_at: datetime.now()}
+        )
+
+        msg = SupportTicektMessage(**message.model_dump(exclude_none=True))
+        db.add(msg)
+        db.commit()
+        db.refresh(msg)
+        return msg
+    except Exception as e:
+        exc_type, exc_obj, exc_tb = sys.exc_info()
+        fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+        print(exc_type, fname, exc_tb.tb_lineno, e)
+        db.rollback()
+        raise HTTPException(
+            status_code=500, detail=f"Something Went Wrong Try Again later"
+        )
+
+
+@router.post("/messages")
+def get_all_message(id: int, db: Session = Depends(get_db)):
+    pass

@@ -25,6 +25,6 @@ class SupportTicketMessage(SupportTicket):
 
 class SupportTicketMessage(BaseModel):
     id: Optional[int] = None
-    message: Optional[str] = None
-    created_at: Optional[str] = None
-    support_ticket_id: Optional[int]
+    message: str
+    created_at: Optional[datetime] = None
+    support_ticket_id: int
