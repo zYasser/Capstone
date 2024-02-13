@@ -11,7 +11,7 @@ from app.config.database import Base
 
 
 class User(Base):
-    __tablename__ = "user"
+    __tablename__ = "users"
 
     user_id = Column(Integer, primary_key=True, autoincrement=True)
     first_name = Column(String, nullable=False)
@@ -62,3 +62,12 @@ class SupportTicektMessage(Base):
     support_ticket_id: Mapped[int] = mapped_column(
         ForeignKey("support_ticket.id", ondelete="CASCADE")
     )
+
+
+class Devices(Base):
+    __tablename__ = "devices"
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    name = Column(String, nullable=False)
+    power_rating = Column(String, nullable=False)
+    type = Column(String)
+    

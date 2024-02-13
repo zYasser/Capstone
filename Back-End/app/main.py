@@ -1,8 +1,8 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
 from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
-from h11 import Request
 from app.router import support_ticket
+from app.utils.seeding import seed
 
 from app.utils.validation_exception import get_excpetion_data
 

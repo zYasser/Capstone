@@ -1,8 +1,10 @@
 from datetime import datetime
+
 import os
 import sys
 from typing import List
 from fastapi import APIRouter, Depends, HTTPException
+from sqlalchemy import select
 from sqlalchemy.orm import Session
 
 from app.config.database import get_db
@@ -84,6 +86,19 @@ def replay_to_ticket(message: TicketMessage, db: Session = Depends(get_db)):
         )
 
 
-@router.post("/messages")
+@router.get("/messages")
 def get_all_message(id: int, db: Session = Depends(get_db)):
-    pass
+    # db.query(SupportTicket).join(
+    #     SupportTicektMessage, SupportTicket.id == SupportTicektMessage.id, isouter=True
+    # )
+    stmt = (
+        select(SupportTicektMessage)
+        .join(
+            SupportTicket,
+        )
+        .where(
+            id == SupportTicket.id,
+        )
+    )
+    result = db.execute(stmt).scalars().all()
+    return result
