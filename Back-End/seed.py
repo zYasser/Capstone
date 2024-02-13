@@ -6,7 +6,54 @@ WARNING: Running this script multiple times will generate duplicate data and may
 Only execute this script if you want to insert the provided data into the database once.
 
 """
-
+devices = [
+    {
+        "name": "Samsung Galaxy S7",
+        "type": "Android Mobile",
+        "power_rating": 0.3415841178703949,
+    },
+    {
+        "name": "HTC One X10",
+        "type": "Android Mobile",
+        "power_rating": 0.2834275020859412,
+    },
+    {
+        "name": "Samsung Galaxy S6",
+        "type": "Android Mobile",
+        "power_rating": 0.2918007799612409,
+    },
+    {
+        "name": "Nintendo Wii U",
+        "type": "Game Console",
+        "power_rating": 0.7399976358125439,
+    },
+    {
+        "name": "Apple TV 5th Gen 4K",
+        "type": "Set Top Box",
+        "power_rating": 0.08211325244805932,
+    },
+    {
+        "name": "Nintendo 3DS",
+        "type": "Game Console",
+        "power_rating": 0.35458218390762664,
+    },
+    {"name": "Apple iPhone 6", "type": "iPhone", "power_rating": 0.7187501346503031},
+    {
+        "name": "Samsung Galaxy S7",
+        "type": "Android Mobile",
+        "power_rating": 0.011807661445738754,
+    },
+    {
+        "name": "Apple iPhone 8 Plus",
+        "type": "iPhone",
+        "power_rating": 0.8201984430034851,
+    },
+    {
+        "name": "Nintendo Wii U",
+        "type": "Game Console",
+        "power_rating": 0.42023692935087237,
+    },
+]
 users = [
     "insert into users (first_name, last_name, phone, email, nationality, password, country, street, city, state, postal_code) values ('Eleanor', 'Sackett', '278-649-7990', 'esackett0@squarespace.com', 'Azerbaijan', 'cU3''?iD<Gf(', 'Brazil', '263 Gina Lane', 'Hövsan', null, null);",
     "insert into users (first_name, last_name, phone, email, nationality, password, country, street, city, state, postal_code) values ('L;urette', 'Wathell', '457-933-2709', 'lwathell1@pagesperso-orange.fr', 'China', 'kT8~#LR''tQ&v', 'China', '8894 Northview Road', 'Baizhang', null, null);",
