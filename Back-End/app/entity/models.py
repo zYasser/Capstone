@@ -1,5 +1,14 @@
 from typing import List
-from sqlalchemy import Boolean, Column, ForeignKey, Integer, String, BOOLEAN
+from sqlalchemy import (
+    Boolean,
+    Column,
+    Date,
+    Float,
+    ForeignKey,
+    Integer,
+    String,
+    BOOLEAN,
+)
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql.expression import text
 from sqlalchemy.sql.sqltypes import TIMESTAMP
@@ -70,4 +79,44 @@ class Devices(Base):
     name = Column(String, nullable=False)
     power_rating = Column(String, nullable=False)
     type = Column(String)
-    
+
+
+class Inverter(Base):
+    __tablename__ = "inverter"
+
+    inverter_id = Column(Integer, primary_key=True, autoincrement=True)
+    model_name = Column(String(255), nullable=False)
+    capacity = Column(Float, nullable=False)
+    efficiency = Column(Float)
+    type = Column(String(255))
+    manufacturer = Column(String(255))
+    manufacture_date = Column(Date)
+    price = Column(Float, nullable=False)
+
+
+# Define the PVPanel class
+class PVPanel(Base):
+    __tablename__ = "pv_panel"
+
+    panel_id = Column(Integer, primary_key=True, autoincrement=True)
+    model_name = Column(String(255), nullable=False)
+    capacity = Column(Float, nullable=False)
+    efficiency = Column(Float)
+    manufacturer = Column(String(255))
+    manufacture_date = Column(Date)
+    price = Column(Float, nullable=False)
+
+
+# Define the WindPower class
+class WindPower(Base):
+    __tablename__ = "wind_power"
+
+    wind_id = Column(Integer, primary_key=True, autoincrement=True)
+    model_name = Column(String(255), nullable=False)
+    capacity = Column(Float, nullable=False)
+    height = Column(Float)
+    rotor_diameter = Column(Float)
+    efficiency = Column(Float)
+    manufacturer = Column(String(255))
+    manufacture_date = Column(Date)
+    price = Column(Float, nullable=False)
