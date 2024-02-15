@@ -49,3 +49,10 @@ To run this project, you will need to add the following environment variables to
 `SECRET_KEY`
 
 `ALGORITHM`
+
+`SMTP_USERNAME`
+
+`SMTP_PASSWORD`
+
+`SMTP_SERVER`
+
