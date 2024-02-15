@@ -1,4 +1,5 @@
 from typing import List
+import uuid
 from sqlalchemy import (
     Boolean,
     Column,
@@ -8,6 +9,7 @@ from sqlalchemy import (
     Integer,
     String,
     BOOLEAN,
+    UUID,
 )
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql.expression import text
@@ -22,7 +24,7 @@ from app.config.database import Base
 class User(Base):
     __tablename__ = "users"
 
-    user_id = Column(Integer, primary_key=True, autoincrement=True)
+    id = Column(Integer, primary_key=True, autoincrement=True)
     first_name = Column(String, nullable=False)
     last_name = Column(String, nullable=False)
     phone = Column(String(20), unique=True)
@@ -120,3 +122,15 @@ class WindPower(Base):
     manufacturer = Column(String(255))
     manufacture_date = Column(Date)
     price = Column(Float, nullable=False)
+
+
+class Token(Base):
+    __tablename__ = "token"
+    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    user_id: Mapped[int] = mapped_column(ForeignKey("users.id", ondelete="CASCADE"))
+    expire = Column(
+        TIMESTAMP, nullable=False, 
+    )
+    def __str__(self):
+        return f"Token(id={self.id}, user_id={self.user_id}, expire={self.expire})"
+

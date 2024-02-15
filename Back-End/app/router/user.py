@@ -1,7 +1,10 @@
 from datetime import timedelta
+import datetime
+from time import sleep
 from typing import List
 from fastapi import APIRouter, Depends, HTTPException, status, Response
 from fastapi.security import OAuth2PasswordRequestForm
+import sqlalchemy
 from sqlalchemy.orm import Session
 from app.config.oauth2 import (
     ACCESS_TOKEN_EXPIRE_MINUTES,
@@ -9,9 +12,9 @@ from app.config.oauth2 import (
     verify_access_token,
 )
 from app.schema.jwt import TokenData
-from app.utils import hashing
+from app.utils import hashing, send_email
 from app.config.database import get_db
-from app.schema.user import UserCreate, UserBase
+from app.schema.user import UserCreate, UserBase, ChangePassword
 from sqlalchemy.exc import IntegrityError
 from ..entity import models
 
@@ -22,6 +25,48 @@ def autenticate_user(user: models.User, password) -> bool:
     if not user:
         return False
     return hashing.verfiy_password(user.password, password)
+
+
+@router.get("/me", response_model=UserBase)
+def get_current_user(
+    db: Session = Depends(get_db), token_data: TokenData = Depends(verify_access_token)
+):
+    user = db.query(models.User).filter(token_data.email == models.User.email).first()
+    return user
+
+
+@router.post("/forgetpassword")
+async def forgetpassowrd(email: str, db: Session = Depends(get_db)):
+
+    query = sqlalchemy.select(models.User.id).where(models.User.email == email)
+    result = db.execute(query).fetchone()
+    if result is not None:
+        token = models.Token(
+            user_id=result[0],
+            expire=datetime.datetime.now() + timedelta(minutes=15),
+        )
+
+        db.add(token)
+        db.commit()
+        db.refresh(token)
+        send_email.send(email, token.id)
+        return token
+
+
+@router.post("/token")
+def token(token: ChangePassword, db: Session = Depends(get_db)):
+    print(token.token)
+    tok = db.query(models.Token).filter(models.Token.id == token.token).first()
+    print(tok)
+    if tok is None or tok.expire < datetime.datetime.now():
+        raise HTTPException(status_code=400, detail="Token is Expired")
+
+    password = hashing.hash(token.password)
+    query = sqlalchemy.text("UPDATE USERS SET password=:password WHERE ID = :user_id")
+    result = db.execute(query, {"password": password, "user_id": tok.user_id})
+    if result.rowcount == 0:
+        raise HTTPException(status_code=400, detail="User doesn't exist")
+    db.commit()
 
 
 @router.post("/register", response_model=UserBase, status_code=201)
@@ -47,7 +92,7 @@ def get_user_by_id(id: int, db: Session = Depends(get_db)):
 
 
 @router.get("", response_model=List[UserBase])
-async def get_all_user(db: Session = Depends(get_db)):
+def get_all_user(db: Session = Depends(get_db)):
     users = db.query(models.User).all()
     return users
 
@@ -85,11 +130,3 @@ def login(
     }
 
     return res
-
-
-@router.get("/me", response_model=UserBase)
-def get_current_user(
-    db: Session = Depends(get_db), token_data: TokenData = Depends(verify_access_token)
-):
-    user = db.query(models.User).filter(token_data.email == models.User.email).first()
-    return user
