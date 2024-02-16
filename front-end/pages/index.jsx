@@ -1,5 +1,9 @@
 import Head from "next/head";
+import Login from "../components/Login";
+import Signup from "../components/SignUp";
 import Link from "next/link";
+
+import ForgetPassword from "../components/ForgetPassword";
 
 export default function Home() {
   return (
@@ -13,12 +17,7 @@ export default function Home() {
         />
       </Head>
 
-      <h1
-        className="text-3xl py-8 
-      "
-      >
-        Home Page
-      </h1>
+      <h1 className="text-3xl py-8">Home Page</h1>
       <Link href="/signup" className="block underline">
         Create Account{" "}
       </Link>

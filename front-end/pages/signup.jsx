@@ -10,6 +10,8 @@ const SignUp = () => {
     dob: "",
     location: "",
   });
+  const [emailError, setEmailError] = useState("");
+  const [phoneError, setPhoneError] = useState("");
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -17,11 +19,28 @@ const SignUp = () => {
       ...formData,
       [name]: value,
     });
+    // Reset validation errors when input changes
+    if (name === "email") setEmailError("");
+    if (name === "phone") setPhoneError("");
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    // Email validation
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailPattern.test(formData.email)) {
+      setEmailError("Please enter a valid email address");
+      return;
+    }
+    // Phone number validation
+    const phonePattern = /^\d{11}$/; // Change this regex pattern according to your phone number format
+
+    if (!phonePattern.test(formData.phone)) {
+      setPhoneError("Please enter a valid phone number");
+      return;
+    }
     console.log(formData);
+    // Add your signup logic here
   };
 
   return (
@@ -91,11 +110,14 @@ const SignUp = () => {
                   type="email"
                   autoComplete="email"
                   required
-                  className="mb-4 appearance-none rounded-none relative block w-80  px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                  className={`mb-4 appearance-none rounded-none relative block w-80  px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm ${emailError && "border-red-500"}`}
                   placeholder="Email address"
                   value={formData.email}
                   onChange={handleInputChange}
                 />
+                {emailError && (
+                  <p className="text-red-500 text-sm mb-2">{emailError}</p>
+                )}
               </div>
               <div>
                 <label htmlFor="phone" className="sr-only">
@@ -107,11 +129,14 @@ const SignUp = () => {
                   type="tel"
                   autoComplete="tel"
                   required
-                  className="mb-4 appearance-none rounded-none relative block w-80  px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                  className={`mb-4 appearance-none rounded-none relative block w-80  px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm ${phoneError && "border-red-500"}`}
                   placeholder="Phone number"
                   value={formData.phone}
                   onChange={handleInputChange}
                 />
+                {phoneError && (
+                  <p className="text-red-500 text-sm mb-2">{phoneError}</p>
+                )}
               </div>
               <div>
                 <label htmlFor="dob" className="sr-only">
