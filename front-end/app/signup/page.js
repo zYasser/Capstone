@@ -1,15 +1,37 @@
+"use client";
 import React, { useState } from "react";
 import Head from "next/head";
+import DynamicAlert from "@/component/DynamicAlert";
+import isValidEmail from "../util/isValidEmail";
+import isVaildTurkishNumber from "../util/isVaildTurkishNumber";
+import { useRouter } from "next/navigation";
+
+const signUp = async (formData) => {
+  return await fetch("http://localhost:8000/api/user/register", {
+    credentials: "include",
+    method: "POST",
+    mode: "cors",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(formData),
+  });
+};
 
 const SignUp = () => {
+  const router = useRouter();
+
   const [formData, setFormData] = useState({
-    firstName: "",
-    lastName: "",
+    first_name: "",
+    last_name: "",
     email: "",
     phone: "",
-    dob: "",
-    location: "",
+    date_of_birth: "",
+    country: "",
+    password: "",
   });
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -19,9 +41,41 @@ const SignUp = () => {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(formData);
+    setLoading(true);
+    console.log(JSON.stringify(formData));
+    if (!isValidEmail(formData.email)) {
+      setError("Enter valid email");
+      setLoading(false);
+
+      return;
+    }
+    if (!isVaildTurkishNumber(formData.phone)) {
+      setError("Enter valid Turksih phone");
+      setLoading(false);
+      return;
+    }
+    try {
+      // Convert formData to an object
+      const formDataObject = Object.fromEntries(
+        Object.entries(formData).map(([key, value]) => [key, value])
+      );
+
+      const result = await signUp(formDataObject);
+      const body = await result.json();
+      if (result.status != 201) {
+        setError(body["detail"]);
+        return;
+      }
+      console.log("askldkas");
+      router.push("/login");
+    } catch (err) {
+      setError("Something went wrong, Try again later");
+    } finally {
+      setLoading(false);
+    }
+    setError("");
   };
 
   return (
@@ -43,41 +97,41 @@ const SignUp = () => {
           backgroundPosition: "center",
         }}
       >
-        <div className="bg-black px-40 py-40 rounded-3xl max-w-md flex flex-col items-center">
-          <h2 className="mt-6 text-center text-3xl font-extrabold text-white">
+        <div className="bg-slate-100 px-40 py-40 rounded-3xl max-w-md flex flex-col items-center">
+          <h2 className="mt-6 text-center text-3xl font-extrabold text-black">
             Sign up
           </h2>
           <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
             <div className="rounded-md shadow-sm -space-y-px">
               <div>
-                <label htmlFor="firstName" className="sr-only">
+                <label htmlFor="first_name" className="sr-only">
                   First Name
                 </label>
                 <input
-                  id="firstName"
-                  name="firstName"
+                  id="first_name"
+                  name="first_name"
                   type="text"
                   autoComplete="given-name"
                   required
                   className="mb-4 appearance-none rounded-none relative block w-80  px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
                   placeholder="First Name"
-                  value={formData.firstName}
+                  value={formData.first_name}
                   onChange={handleInputChange}
                 />
               </div>
               <div>
-                <label htmlFor="lastName" className="sr-only">
+                <label htmlFor="last_name" className="sr-only">
                   Last Name
                 </label>
                 <input
-                  id="lastName"
-                  name="lastName"
+                  id="last_name"
+                  name="last_name"
                   type="text"
                   autoComplete="family-name"
                   required
                   className="mb-4 appearance-none rounded-none relative block w-80  px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
                   placeholder="Last Name"
-                  value={formData.lastName}
+                  value={formData.last_name}
                   onChange={handleInputChange}
                 />
               </div>
@@ -98,48 +152,68 @@ const SignUp = () => {
                 />
               </div>
               <div>
+                <label htmlFor="password" className="sr-only">
+                  Password
+                </label>
+                <input
+                  id="password"
+                  name="password"
+                  type="password"
+                  autoComplete="new-password"
+                  required
+                  className="mb-4 appearance-none rounded-none relative block w-80  px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                  placeholder="Password"
+                  value={formData.password}
+                  onChange={handleInputChange}
+                />
+              </div>
+
+              <div className="flex items-baseline">
                 <label htmlFor="phone" className="sr-only">
                   Phone number
                 </label>
+                <div class="m-2">
+                  <span className="text-black text-sm bottom-auto">+90</span>
+                </div>
                 <input
                   id="phone"
                   name="phone"
                   type="tel"
                   autoComplete="tel"
                   required
-                  className="mb-4 appearance-none rounded-none relative block w-80  px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                  className="mb-4 appearance-none rounded-none relative block w-full  px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
                   placeholder="Phone number"
                   value={formData.phone}
                   onChange={handleInputChange}
                 />
               </div>
               <div>
-                <label htmlFor="dob" className="sr-only">
+                <label htmlFor="date_of_birth" className="sr-only">
                   Date of Birth
                 </label>
                 <input
-                  id="dob"
-                  name="dob"
+                  id="date_of_birth"
+                  name="date_of_birth"
                   type="date"
                   required
                   className="mb-4 appearance-none rounded-none relative block w-80  px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
                   placeholder="Date of Birth"
-                  value={formData.dob}
+                  value={formData.date_of_birth}
                   onChange={handleInputChange}
                 />
               </div>
               <div>
-                <label htmlFor="location" className="sr-only">
+                <label htmlFor="country" className="sr-only">
                   Where do you live
                 </label>
                 <input
-                  id="location"
-                  name="location"
+                  id="country"
+                  name="country"
                   type="text"
                   required
                   className="mb-4 appearance-none rounded-none relative block w-80  px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
                   placeholder="Where do you live"
-                  value={formData.location}
+                  value={formData.country}
                   onChange={handleInputChange}
                 />
               </div>
@@ -150,9 +224,18 @@ const SignUp = () => {
                 type="submit"
                 className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-green-700 hover:bg-green-700  focus:outline-none focus:ring-2 focus:ring-offset-2 focus:bg-green-700 "
               >
-                Sign up
+                {loading && (
+                  <div
+                    className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-current border-r-green-300 align-[-0.125em] motion-reduce:animate-[spin_1.5s_linear_infinite]"
+                    role="status"
+                  >
+                    <span className="!absolute !-m-px !h-px !w-px !overflow-hidden !whitespace-nowrap !border-0 !p-0 ![clip:rect(0,0,0,0)]"></span>
+                  </div>
+                )}
+                {loading ? "" : "Sign Up"}
               </button>
             </div>
+            {error ? <DynamicAlert error={error} /> : ""}
           </form>
         </div>
       </div>

@@ -18,14 +18,14 @@ app.include_router(user.router)
 app.include_router(support_ticket.router)
 
 
-@app.exception_handler(RequestValidationError)
-async def validation_exception_handler(request: Request, exc: RequestValidationError):
-    return JSONResponse(
-        status_code=400,
-        content={
-            "detail": get_excpetion_data(exc.errors()),
-        },
-    )
+# @app.exception_handler(RequestValidationError)
+# async def validation_exception_handler(request: Request, exc: RequestValidationError):
+#     return JSONResponse(
+#         status_code=400,
+#         content={
+#             "detail": get_excpetion_data(exc.errors()),
+#         },
+#     )
 
 
 # origins allowed

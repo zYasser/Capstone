@@ -9,7 +9,7 @@ class UserBase(BaseModel):
     last_name: str
     phone: str = None
     email: EmailStr
-    nationality: str = None
+    nationality: Optional[str] = None
     country: str = None
     street: Optional[str] = None
     city: Optional[str] = None
