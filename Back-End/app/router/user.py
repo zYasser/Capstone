@@ -117,7 +117,7 @@ def login(
     access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
 
     access_token = create_access_token(
-        data={"email": user.email, "id": user.user_id},
+        data={"email": user.email, "id": user.id},
         expires_delta=access_token_expires,
     )
     response.set_cookie(
