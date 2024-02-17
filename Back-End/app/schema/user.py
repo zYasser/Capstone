@@ -1,3 +1,4 @@
+from datetime import datetime
 from typing import Optional
 from pydantic import BaseModel, EmailStr
 
@@ -14,6 +15,7 @@ class UserBase(BaseModel):
     city: Optional[str] = None
     state: Optional[str] = None
     postal_code: Optional[str] = None
+    date_of_birth: Optional[datetime] = None
 
 
 class UserCreate(UserBase):

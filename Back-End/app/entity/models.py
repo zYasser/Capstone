@@ -4,6 +4,7 @@ from sqlalchemy import (
     Boolean,
     Column,
     Date,
+    DateTime,
     Float,
     ForeignKey,
     Integer,
@@ -39,6 +40,7 @@ class User(Base):
     city = Column(String)
     state = Column(String)
     postal_code = Column(String(20))
+    date_of_birth=Column(DateTime , nullable=False)
 
 
 class SupportTicket(Base):
