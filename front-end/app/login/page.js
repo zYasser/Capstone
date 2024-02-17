@@ -2,13 +2,18 @@
 import React, { useState } from "react";
 import Head from "next/head";
 import Link from "next/link";
-import axios from "axios";
+import FormData from "form-data";
+import isValidEmail from "../util/regex";
+import { useRouter } from "next/navigation";
 
 const Login = () => {
   const [formData, setFormData] = useState({
     username: "",
     password: "",
   });
+  const router = useRouter();
+
+  const [error, setErrorMessage] = useState("");
 
   const [loading, setLoading] = useState(false); // State to track loading state
 
@@ -21,19 +26,26 @@ const Login = () => {
   };
 
   const handleSubmit = async (e) => {
+    setErrorMessage(false);
     // Use async function for asynchronous operation
     e.preventDefault();
     setLoading(true); // Set loading to true when the request starts
 
     const { username, password } = formData;
-
+    if (isValidEmail(username) == null) {
+      setErrorMessage("Enter a correct email");
+      setLoading(false); // Set loading to true when the request starts
+      return;
+    }
     try {
       // Simulate login request (replace with your actual login logic)
-      await login(username, password);
-      console.log(formData);
-      // If login is successful, reset form and loading state
+      const result = await login(username, password);
       setFormData({ username: "", password: "" });
       setLoading(false);
+      if (result.status != 200) {
+        setErrorMessage("Your Email And Password Doesn't Match");
+      }
+      router.push("/");
     } catch (error) {
       console.error("Login failed:", error);
       setLoading(false); // Set loading to false in case of error
@@ -42,12 +54,16 @@ const Login = () => {
 
   // Simulated login function (replace with actual login logic)
   const login = async (username, password) => {
-    try {
-      const respone = await axios.post(
-        "http://localhost:8000/api/user/login",
-        b
-      );
-    } catch (error) {}
+    const data = new FormData();
+    data.append("username", username);
+    data.append("password", password);
+
+    return await fetch("http://localhost:8000/api/user/login", {
+      credentials: "include",
+      method: "POST",
+      mode: "cors",
+      body: data,
+    });
   };
 
   return (
@@ -123,6 +139,18 @@ const Login = () => {
                 Create account
               </Link>
             </div>
+            {error ? (
+              <div role="alert">
+                <div class="bg-red-500 text-white font-bold rounded-t px-4 py-2">
+                  Error
+                </div>
+                <div class="border border-t-0 border-red-400 rounded-b bg-red-100 px-4 py-3 text-red-700">
+                  <p>{error}</p>
+                </div>
+              </div>
+            ) : (
+              ""
+            )}
           </form>
         </div>
       </div>
