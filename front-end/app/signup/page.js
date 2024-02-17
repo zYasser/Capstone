@@ -1,5 +1,7 @@
+"use client";
 import React, { useState } from "react";
 import Head from "next/head";
+
 
 const SignUp = () => {
   const [formData, setFormData] = useState({
