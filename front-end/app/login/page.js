@@ -3,8 +3,9 @@ import React, { useState } from "react";
 import Head from "next/head";
 import Link from "next/link";
 import FormData from "form-data";
-import isValidEmail from "../util/regex";
+import isValidEmail from "../util/isVaildTurkishNumber";
 import { useRouter } from "next/navigation";
+import DynamicAlert from "@/component/DynamicAlert";
 
 const Login = () => {
   const [formData, setFormData] = useState({
@@ -46,12 +47,14 @@ const Login = () => {
       setFormData({ username: "", password: "" });
       setLoading(false);
       if (result.status != 200) {
-        setErrorMessage("Your Email And Password Doesn't Match");
+        setErrorMessage("Your email and password doesn't match");
+        return;
       }
       router.push("/");
     } catch (error) {
       console.error("Login failed:", error);
       setLoading(false); // Set loading to false in case of error
+      setErrorMessage("Something went wrong, Please try again later ");
     }
   };
 
@@ -96,11 +99,11 @@ const Login = () => {
 
           <form onSubmit={handleSubmit} className="flex flex-col items-center">
             <input
-              type="text"
+              type="email"
               name="username"
               value={formData.username}
               onChange={handleChange}
-              placeholder="Username"
+              placeholder="email"
               className="w-80 px-4 py-2 mb-4 border border-gray-300 rounded-3xl focus:outline-none focus:border-blue-500 text-black"
               required
             />
@@ -134,7 +137,7 @@ const Login = () => {
               )}
               {loading ? "" : "Login"}
             </button>
-            <div className="flex justify-center items-center text-sm text-black font-white text-right w-80 mt-2">
+            <div className="flex justify-center items-center text-sm text-black font-white text-right w-80 mt-2 pb-3">
               <h2 className="mr-1">Don't have an account?</h2>
               <Link
                 href="/signup"
@@ -143,18 +146,7 @@ const Login = () => {
                 Create account
               </Link>
             </div>
-            {error ? (
-              <div role="alert">
-                <div class="bg-red-500 text-white font-bold rounded-t px-4 py-2">
-                  Error
-                </div>
-                <div class="border border-t-0 border-red-400 rounded-b bg-red-100 px-4 py-3 text-red-700">
-                  <p>{error}</p>
-                </div>
-              </div>
-            ) : (
-              ""
-            )}
+            {error ? <DynamicAlert error={error} /> : ""}
           </form>
         </div>
       </div>

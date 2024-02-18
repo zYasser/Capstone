@@ -2,6 +2,7 @@ from datetime import timedelta
 import datetime
 from time import sleep
 from typing import List
+from venv import logger
 from fastapi import APIRouter, Depends, HTTPException, status, Response
 from fastapi.security import OAuth2PasswordRequestForm
 import sqlalchemy
@@ -12,7 +13,7 @@ from app.config.oauth2 import (
     verify_access_token,
 )
 from app.schema.jwt import TokenData
-from app.utils import hashing, send_email
+from app.utils import hashing, send_email, unique_constraint_handler
 from app.config.database import get_db
 from app.schema.user import UserCreate, UserBase, ChangePassword
 from sqlalchemy.exc import IntegrityError
@@ -79,8 +80,11 @@ def create_user(user: UserCreate, db: Session = Depends(get_db)):
         db.refresh(new_user)
         return new_user
     except IntegrityError as e:
-
-        raise HTTPException(status_code=400, detail="Email Already Exist")
+        logger.error(f"\033[91m {e._message()}\033[0m")
+        col = unique_constraint_handler.find_column(e._message())[0]
+        if col != "":
+            raise HTTPException(status_code=400, detail=f"{col} Already Exist")
+        raise HTTPException(status_code=400, detail=f"Something went wrong")
 
 
 @router.get("/", response_model=UserBase)
