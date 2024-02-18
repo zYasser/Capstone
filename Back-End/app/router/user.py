@@ -1,6 +1,5 @@
 from datetime import timedelta
 import datetime
-from time import sleep
 from typing import List
 from venv import logger
 from fastapi import APIRouter, Depends, HTTPException, status, Response
@@ -16,7 +15,7 @@ from app.schema.jwt import TokenData
 from app.utils import hashing, send_email, unique_constraint_handler
 from app.config.database import get_db
 from app.schema.user import UserCreate, UserBase, ChangePassword
-from sqlalchemy.exc import IntegrityError
+from sqlalchemy.exc import IntegrityError , DataError
 from ..entity import models
 
 router = APIRouter(prefix="/api/user", tags=["user"])
@@ -57,7 +56,12 @@ async def forgetpassowrd(email: str, db: Session = Depends(get_db)):
 @router.post("/token")
 def token(token: ChangePassword, db: Session = Depends(get_db)):
     print(token.token)
-    tok = db.query(models.Token).filter(models.Token.id == token.token).first()
+    try:
+        tok = db.query(models.Token).filter(models.Token.id == token.token).first()
+    except DataError as e:
+        logger.error(f"\033[91m {e._message()}\033[0m")
+        raise HTTPException(status_code=400, detail="Token is Expired")
+
     print(tok)
     if tok is None or tok.expire < datetime.datetime.now():
         raise HTTPException(status_code=400, detail="Token is Expired")

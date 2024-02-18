@@ -97,7 +97,7 @@ const SignUp = () => {
           backgroundPosition: "center",
         }}
       >
-        <div className="bg-slate-100 px-40 py-40 rounded-3xl max-w-md flex flex-col items-center">
+        <div className="bg-black px-40 py-40 rounded-3xl max-w-md flex flex-col items-center">
           <h2 className="mt-6 text-center text-3xl font-extrabold text-black">
             Sign up
           </h2>
@@ -224,14 +224,7 @@ const SignUp = () => {
                 type="submit"
                 className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-green-700 hover:bg-green-700  focus:outline-none focus:ring-2 focus:ring-offset-2 focus:bg-green-700 "
               >
-                {loading && (
-                  <div
-                    className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-current border-r-green-300 align-[-0.125em] motion-reduce:animate-[spin_1.5s_linear_infinite]"
-                    role="status"
-                  >
-                    <span className="!absolute !-m-px !h-px !w-px !overflow-hidden !whitespace-nowrap !border-0 !p-0 ![clip:rect(0,0,0,0)]"></span>
-                  </div>
-                )}
+                {loading && <Spanner />}
                 {loading ? "" : "Sign Up"}
               </button>
             </div>
