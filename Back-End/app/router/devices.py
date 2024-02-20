@@ -6,7 +6,7 @@ from sqlalchemy.orm import Session
 from app.schema.device import Device, DeviceCreate
 
 
-router = APIRouter(prefix="/api", tags=["ticket"])
+router = APIRouter(prefix="/api", tags=["green"])
 
 
 # CRUD operations
