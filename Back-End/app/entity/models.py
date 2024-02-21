@@ -40,7 +40,7 @@ class User(Base):
     city = Column(String)
     state = Column(String)
     postal_code = Column(String(20))
-    date_of_birth=Column(DateTime , nullable=False)
+    date_of_birth = Column(DateTime, nullable=False)
 
 
 class SupportTicket(Base):
@@ -98,7 +98,6 @@ class Inverter(Base):
     price = Column(Float, nullable=False)
 
 
-# Define the PVPanel class
 class PVPanel(Base):
     __tablename__ = "pv_panel"
 
@@ -111,7 +110,6 @@ class PVPanel(Base):
     price = Column(Float, nullable=False)
 
 
-# Define the WindPower class
 class WindPower(Base):
     __tablename__ = "wind_power"
 
@@ -131,8 +129,6 @@ class Token(Base):
     id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
     user_id: Mapped[int] = mapped_column(ForeignKey("users.id", ondelete="CASCADE"))
     expire = Column(
-        TIMESTAMP, nullable=False, 
+        TIMESTAMP,
+        nullable=False,
     )
-    def __str__(self):
-        return f"Token(id={self.id}, user_id={self.user_id}, expire={self.expire})"
-
