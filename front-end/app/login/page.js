@@ -6,6 +6,7 @@ import FormData from "form-data";
 import isValidEmail from "../util/isVaildTurkishNumber";
 import { useRouter } from "next/navigation";
 import DynamicAlert from "@/component/DynamicAlert";
+import Spanner from "@/component/spanner";
 
 const Login = () => {
   const [formData, setFormData] = useState({
@@ -90,7 +91,7 @@ const Login = () => {
           backgroundPosition: "center",
         }}
       >
-        <div className=" bg-slate-100 px-20 py-40 rounded-3xl max-w-md flex flex-col items-center">
+        <div className=" bg-black px-20 py-40 rounded-3xl max-w-md flex flex-col items-center">
           <img
             className="rounded-full w-60 h-60 mb-8"
             src="https://static.vecteezy.com/system/resources/thumbnails/003/067/839/small/eco-green-leaf-icon-in-light-bulb-free-vector.jpg"
@@ -127,14 +128,7 @@ const Login = () => {
               className="w-40 md:w-2/3 bg-green-400  text-white py-2 px-15 rounded-3xl hover:bg-green-200 focus:outline-none focus:bg-green-700 relative"
               disabled={loading} // Disable button when loading
             >
-              {loading && (
-                <div
-                  className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-current border-r-green-300 align-[-0.125em] motion-reduce:animate-[spin_1.5s_linear_infinite]"
-                  role="status"
-                >
-                  <span className="!absolute !-m-px !h-px !w-px !overflow-hidden !whitespace-nowrap !border-0 !p-0 ![clip:rect(0,0,0,0)]"></span>
-                </div>
-              )}
+              {loading && <Spanner />}
               {loading ? "" : "Login"}
             </button>
             <div className="flex justify-center items-center text-sm text-black font-white text-right w-80 mt-2 pb-3">

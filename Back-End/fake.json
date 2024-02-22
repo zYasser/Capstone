@@ -26,5 +26,16 @@
       "topic": "General Inquiry",
       "body": "This is a mock message body."
     }
+  ],
+  "Inverter": [
+    {
+      "model_name": "SolarEdge SE5000H",
+      "capacity": "5.0",
+      "efficiency": "0.97",
+      "type": "Hybrid",
+      "manufacturer": "SolarEdge",
+      "manufacture_date": "2023-01-15",
+      "price": "2500.0"
+    }
   ]
 }

@@ -7,6 +7,7 @@ import smtplib
 
 
 def send(receiver, token):
+    print(settings)
     # if(settings.SMTP_SERVER is None OR settings.SMTP_USERNAME is None OR settings.SMTP_PASSWORD):
     if (
         settings.SMTP_SERVER == ""
@@ -80,7 +81,7 @@ def send(receiver, token):
         <p>Hi</p>
         <p>Someone (hopefully you!) requested a password reset for your account.</p>
         <p>Ready to get back in? Click the button below to choose a new password.</p>
-        <p><a href="{website_url}/reset-password?token={token}" class="button">Reset Your Password Now</a></p>
+        <p><a href="{website_url}/forget-password/{token}" class="button">Reset Your Password Now</a></p>
         <p>If you didn't request this, no worries! Just ignore this email and your password will stay the same.</p>
         </div>
         <p>Best regards</p>

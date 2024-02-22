@@ -25,6 +25,8 @@ def decode_token(token: str):
 
 
 def create_access_token(data: dict, expires_delta: Optional[timedelta] = None):
+    print(settings)
+
     to_encode = data.copy()
     if expires_delta:
         expire = datetime.utcnow() + expires_delta
