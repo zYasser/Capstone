@@ -3,10 +3,10 @@ import React, { useState } from "react";
 import Head from "next/head";
 import Link from "next/link";
 import FormData from "form-data";
-import isValidEmail from "../util/isVaildTurkishNumber";
+import isValidEmail from "../../util/isVaildTurkishNumber";
 import { useRouter } from "next/navigation";
-import DynamicAlert from "@/component/DynamicAlert";
-import Spanner from "@/component/spanner";
+import DynamicAlert from "@/components/DynamicAlert";
+import Spanner from "@/components/Spanner";
 
 const Login = () => {
   const [formData, setFormData] = useState({
