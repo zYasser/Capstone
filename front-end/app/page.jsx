@@ -16,8 +16,9 @@ export default function Home() {
               <h1 className="text-5xl font-bold mb-4">
                 Welcome to Green Energy Solutions
               </h1>
-              <p className="text-lg">
-                Providing sustainable energy solutions for a better future.
+              <p className="text-lg text-black font-bold ">
+                Empowering a sustainable future through innovative green energy
+                solutions
               </p>
               <button className="mt-8 bg-white text-green-600 py-2 px-6 rounded-full hover:bg-green-100 hover:text-green-700 font-semibold">
                 Learn More
@@ -66,7 +67,7 @@ export default function Home() {
                   />
                   <h3 className="text-xl font-semibold mb-2">Wind Energy</h3>
                   <p>
-                    Utilize the wind to generate clean, renewable energy for
+                    z Utilize the wind to generate clean, renewable energy for
                     your home or business. Our wind turbines capture the kinetic
                     energy of the wind and convert it into electricity,
                     providing a sustainable energy source for your needs.
