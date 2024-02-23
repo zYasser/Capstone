@@ -98,7 +98,7 @@ const SignUp = () => {
           backgroundPosition: "center",
         }}
       >
-        <div className="bg-black px-40 py-40 rounded-3xl max-w-md flex flex-col items-center">
+        <div className="bg-slate-50 px-40 py-40 rounded-3xl max-w-md flex flex-col items-center">
           <h2 className="mt-6 text-center text-3xl font-extrabold text-black">
             Sign up
           </h2>

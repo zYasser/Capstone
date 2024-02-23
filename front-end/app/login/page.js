@@ -88,13 +88,7 @@ const Login = () => {
           backgroundPosition: "center",
         }}
       >
-        <div className=" bg-black px-20 py-40 rounded-3xl max-w-md flex flex-col items-center">
-          <img
-            className="rounded-full w-60 h-60 mb-8"
-            src="https://static.vecteezy.com/system/resources/thumbnails/003/067/839/small/eco-green-leaf-icon-in-light-bulb-free-vector.jpg"
-            alt="image description"
-          />
-
+        <div className=" bg-slate-50 px-20 py-40 rounded-3xl max-w-md flex flex-col items-center">
           <form onSubmit={handleSubmit} className="flex flex-col items-center">
             <input
               type="email"

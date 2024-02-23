@@ -31,9 +31,9 @@ function ForgetPassword() {
         backgroundPosition: "center",
       }}
     >
-      <div className="bg-black p-8 rounded-lg shadow-md">
-        <h2 className="text-2xl text-white font-bold mb-4">Forgot Password</h2>
-        <label htmlFor="email" className="block mb-2 text-white">
+      <div className="bg-slate-50 p-8 rounded-lg shadow-md">
+        <h2 className="text-2xl text-black font-bold mb-4">Forgot Password</h2>
+        <label htmlFor="email" className="block mb-2 text-black">
           Enter your email:
         </label>
         <input
@@ -50,7 +50,9 @@ function ForgetPassword() {
         >
           Send Reset Password
         </button>
-        {message && <p className="text-white mt-4">{message}</p>}
+        {message && (
+          <p className="text-green mt-4 text-lime-600 font-bold">{message}</p>
+        )}
       </div>
     </div>
   );

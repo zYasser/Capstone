@@ -4,6 +4,7 @@ import CustomerSupportSection from "@/components/CustomerSupport";
 import Footer from "@/components/Footer";
 import NavBar from "@/components/NavBar";
 import greenPlantImage from "../public/green-energy.jpg";
+import Card from "@/components/Card";
 
 export default function Home() {
   return (
@@ -33,6 +34,26 @@ export default function Home() {
             </div>
           </div>
         </header>
+
+        <section class="bg-green-100 py-16">
+          <div class="container my-10 bg-white shadow-lg mx-auto py-20 px-3 rounded-xl">
+            <h2 class="text-3xl font-bold mb-8 text-center">About Us</h2>
+            <p class="text-lg text-center font-serif font-bold ">
+              At Green Energy Solutions, our aim is to provide cleaner energy
+              while creating solutions that help our customers save money. We're
+              dedicated to offering unmatched sustainable energy solutions for
+              individuals and businesses. Our mission is to lead a global shift
+              towards environmental responsibility by leveraging renewable
+              resources like solar, wind, and hydro power. Through innovation
+              and efficiency, we're shaping a cleaner, greener future. Join us
+              in powering a brighter, cleaner world, where sustainability is
+              both eco-friendly and economically savvy.
+            </p>
+          </div>
+          <div className="m-5">
+            <Card />
+          </div>
+        </section>
         <section className="py-16">
           <div className="container mx-auto">
             <h2 className="text-3xl font-bold mb-8 text-center">
