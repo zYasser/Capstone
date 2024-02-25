@@ -11,7 +11,7 @@ router = APIRouter(prefix="/api", tags=["green"])
 
 # CRUD operations
 @router.post("/devices/", response_model=Device)
-def create_device(device: DeviceCreate, db: Session = Depends(get_db)):
+async def create_device(device: DeviceCreate, db: Session = Depends(get_db)):
     db_device = Devices(**device.dict())
     db.add(db_device)
     db.commit()
@@ -20,7 +20,7 @@ def create_device(device: DeviceCreate, db: Session = Depends(get_db)):
 
 
 @router.get("/devices/{device_id}", response_model=Device)
-def read_device(device_id: int, db: Session = Depends(get_db)):
+async def read_device(device_id: int, db: Session = Depends(get_db)):
     db_device = db.query(Devices).filter(Devices.id == device_id).first()
     if db_device is None:
         raise HTTPException(status_code=404, detail="Device not found")
@@ -28,7 +28,9 @@ def read_device(device_id: int, db: Session = Depends(get_db)):
 
 
 @router.put("/devices/{device_id}", response_model=Device)
-def update_device(device_id: int, device: DeviceCreate, db: Session = Depends(get_db)):
+async def update_device(
+    device_id: int, device: DeviceCreate, db: Session = Depends(get_db)
+):
     db_device = db.query(Devices).filter(Devices.id == device_id).first()
     if db_device is None:
         raise HTTPException(status_code=404, detail="Device not found")
@@ -40,7 +42,7 @@ def update_device(device_id: int, device: DeviceCreate, db: Session = Depends(ge
 
 
 @router.delete("/devices/{device_id}", response_model=Device)
-def delete_device(device_id: int, db: Session = Depends(get_db)):
+async def delete_device(device_id: int, db: Session = Depends(get_db)):
     db_device = db.query(Devices).filter(Devices.id == device_id).first()
     if db_device is None:
         raise HTTPException(status_code=404, detail="Device not found")

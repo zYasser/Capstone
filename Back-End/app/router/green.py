@@ -86,6 +86,7 @@ async def update_inverter_by_id(
         .filter(Inverter.inverter_id == inverter_id)
         .update(new_inverter.model_dump(exclude_none=True))
     )
+
     db.commit()
     if updated_count == 0:
         logger.error(f"Failed to update inverter with ID {inverter_id}")
