@@ -1,7 +1,7 @@
 "use client";
 import React, { useState } from "react";
 import { useParams, useRouter } from "next/navigation";
-import Spanner from "@/component/spanner";
+import Spanner from "@/components/Spanner";
 
 const resetpassword = async (data) => {
   return await fetch("http://localhost:8000/api/user/token", {

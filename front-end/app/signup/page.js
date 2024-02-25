@@ -1,10 +1,11 @@
 "use client";
 import React, { useState } from "react";
 import Head from "next/head";
-import DynamicAlert from "@/component/DynamicAlert";
-import isValidEmail from "../util/isValidEmail";
-import isVaildTurkishNumber from "../util/isVaildTurkishNumber";
+import DynamicAlert from "@/components/DynamicAlert";
+import isValidEmail from "../../util/isValidEmail";
+import isVaildTurkishNumber from "../../util/isVaildTurkishNumber";
 import { useRouter } from "next/navigation";
+import Spanner from "@/components/Spanner";
 
 const signUp = async (formData) => {
   return await fetch("http://localhost:8000/api/user/register", {
@@ -97,7 +98,7 @@ const SignUp = () => {
           backgroundPosition: "center",
         }}
       >
-        <div className="bg-black px-40 py-40 rounded-3xl max-w-md flex flex-col items-center">
+        <div className="bg-slate-50 px-40 py-40 rounded-3xl max-w-md flex flex-col items-center">
           <h2 className="mt-6 text-center text-3xl font-extrabold text-black">
             Sign up
           </h2>
