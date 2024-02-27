@@ -12,9 +12,9 @@ export default function Home() {
       <NavBar />
       <div className="transition-opacity">
         <header className="bg-gradient-to-r from-green-500 to-green-400 text-white py-24 px-4 ">
-          <div className="container mx-auto flex flex-col lg:flex-row items-center justify-between">
-            <div className="lg:w-1/2 mb-8 lg:mb-0">
-              <h1 className="text-5xl font-bold mb-4">
+          <div className="container mx-auto flex flex-col lg:flex-row items-center justify-between animate-fade-up animate-duration-1000 animate-fill-backwards">
+            <div className="lg:w-1/2 mb-8 lg:mb-0 ">
+              <h1 className="text-5xl font-bold mb-4 ">
                 Welcome to Green Energy Solutions
               </h1>
               <p className="text-lg text-black font-bold ">
@@ -35,7 +35,7 @@ export default function Home() {
           </div>
         </header>
 
-        <section class="bg-green-100 py-16">
+        <section class="bg-green-100 py-16 animate-fade-right animate-once animate-duration-500 animate-ease-linear">
           <div class="container my-10 bg-white shadow-lg mx-auto py-20 px-3 rounded-xl">
             <h2 class="text-3xl font-bold mb-8 text-center">About Us</h2>
             <p class="text-lg text-center font-serif font-bold ">

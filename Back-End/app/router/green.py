@@ -90,8 +90,12 @@ async def update_inverter_by_id(
     db.commit()
     if updated_count == 0:
         logger.error(f"Failed to update inverter with ID {inverter_id}")
-    else:
-        logger.info(f"Inverter with ID {inverter_id} updated successfully")
+        raise HTTPException(
+            status_code=404, detail=f"Inverter with {inverter_id} id doesn't exist"
+        )
+
+
+    logger.info(f"Inverter with ID {inverter_id} updated successfully")
     db.refresh(inverter)
     return inverter
 
