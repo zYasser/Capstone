@@ -29,14 +29,14 @@ router = APIRouter(prefix="/api/user", tags=["user"])
 logger = logging.getLogger(__name__)
 
 
-def autenticate_user(user: models.User, password) -> bool:
+async def autenticate_user(user: models.User, password) -> bool:
     if not user:
         return False
     return hashing.verfiy_password(user.password, password)
 
 
 @router.get("/me", response_model=UserBase)
-def get_current_user(
+async def get_current_user(
     db: Session = Depends(get_db), token_data: TokenData = Depends(verify_access_token)
 ):
     user = db.query(models.User).filter(token_data.email == models.User.email).first()
@@ -45,6 +45,31 @@ def get_current_user(
     )
 
     return user
+
+
+@router.patch("/changepassword/{id}")
+async def reset_password(
+    password: str,
+    db: Session = Depends(get_db),
+    token_data: TokenData = Depends(verify_access_token),
+):
+    logger.info(f"User With Email :{token_data.email} is changing the password")
+    password = hashing.hash(password=password)
+    result = (
+        db.query(models.User)
+        .filter(models.User.email == token_data.email)
+        .update({models.User.password: password})
+    )
+    if result == 0:
+        logger.error(
+            f"Failed to update {token_data.email} Password , account doesn't exist"
+        )
+        HTTPException(
+            status_code=404,
+            detail="There's no active account this email : {token_data}",
+        )
+    logger.info(f"Email {token_data.email} updated the password successfully")
+    db.commit()
 
 
 @router.post("/forgetpassword")
@@ -67,7 +92,7 @@ async def forgetpassowrd(email: str, db: Session = Depends(get_db)):
 
 
 @router.post("/token")
-def token(token: ChangePassword, db: Session = Depends(get_db)):
+async def token(token: ChangePassword, db: Session = Depends(get_db)):
     print(token.token)
     try:
         tok = db.query(models.Token).filter(models.Token.id == token.token).first()
@@ -91,7 +116,7 @@ def token(token: ChangePassword, db: Session = Depends(get_db)):
 
 
 @router.post("/register", response_model=UserBase, status_code=201)
-def create_user(user: UserCreate, db: Session = Depends(get_db)):
+async def create_user(user: UserCreate, db: Session = Depends(get_db)):
     user.password = hashing.hash(user.password)
     new_user = models.User(**user.dict())
     try:
@@ -111,7 +136,7 @@ def create_user(user: UserCreate, db: Session = Depends(get_db)):
 
 
 @router.get("/", response_model=UserBase)
-def get_user_by_id(id: int, db: Session = Depends(get_db)):
+async def get_user_by_id(id: int, db: Session = Depends(get_db)):
     user = db.query(models.User).filter(models.User.user_id == id).first()
     if not user:
         logger.error(f"User With id :{id} Doesn't exist")
@@ -123,13 +148,13 @@ def get_user_by_id(id: int, db: Session = Depends(get_db)):
 
 
 @router.get("", response_model=List[UserBase])
-def get_all_user(db: Session = Depends(get_db)):
+async def get_all_user(db: Session = Depends(get_db)):
     users = db.query(models.User).all()
     return users
 
 
 @router.post("/login")
-def login(
+async def login(
     response: Response,
     form_data: OAuth2PasswordRequestForm = Depends(),
     db: Session = Depends(get_db),
@@ -141,7 +166,7 @@ def login(
         logger.error(f"Failed to login , {form_data.username} email doesn't exist")
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
-            detail={"User Doesn't exist"},
+            detail="User Doesn't exist",
             headers={"WWW-Authenticate": "Bearer"},
         )
     if not autenticate_user(user, form_data.password):

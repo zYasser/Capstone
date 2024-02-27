@@ -19,13 +19,13 @@ router = APIRouter(prefix="/api/ticket", tags=["ticket"])
 
 
 @router.get("/all", response_model=List[ST])
-def get_all_ticket(db: Session = Depends(get_db)):
+async def get_all_ticket(db: Session = Depends(get_db)):
     result = db.query(SupportTicket).all()
     return result
 
 
 @router.post("", status_code=201, response_model=ST)
-def create_support_ticket(support_ticket: ST, db: Session = Depends(get_db)):
+async def create_support_ticket(support_ticket: ST, db: Session = Depends(get_db)):
     ticket = SupportTicket(**support_ticket.model_dump(exclude_none=True))
 
     db.add(ticket)
@@ -35,7 +35,7 @@ def create_support_ticket(support_ticket: ST, db: Session = Depends(get_db)):
 
 
 @router.get("", response_model=ST)
-def get_ticket_by_id(id: int, db: Session = Depends(get_db)):
+async def get_ticket_by_id(id: int, db: Session = Depends(get_db)):
     ticket = db.query(SupportTicket).filter(SupportTicket.id == id).first()
     if not ticket:
         raise HTTPException(
@@ -47,7 +47,7 @@ def get_ticket_by_id(id: int, db: Session = Depends(get_db)):
 @router.delete(
     "",
 )
-def delete_ticker(id: int, db: Session = Depends(get_db)):
+async def delete_ticker(id: int, db: Session = Depends(get_db)):
     ticket = db.query(SupportTicket).filter(SupportTicket.id == id).delete()
     if ticket == 0:
         raise HTTPException(
@@ -57,7 +57,7 @@ def delete_ticker(id: int, db: Session = Depends(get_db)):
 
 
 @router.post("/replay", response_model=TicketMessage)
-def replay_to_ticket(message: TicketMessage, db: Session = Depends(get_db)):
+async def replay_to_ticket(message: TicketMessage, db: Session = Depends(get_db)):
 
     id = message.support_ticket_id
     try:
@@ -87,7 +87,7 @@ def replay_to_ticket(message: TicketMessage, db: Session = Depends(get_db)):
 
 
 @router.get("/messages")
-def get_all_message(id: int, db: Session = Depends(get_db)):
+async def get_all_message(id: int, db: Session = Depends(get_db)):
     # db.query(SupportTicket).join(
     #     SupportTicektMessage, SupportTicket.id == SupportTicektMessage.id, isouter=True
     # )
