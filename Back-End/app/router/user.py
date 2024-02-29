@@ -16,7 +16,7 @@ from app.config.oauth2 import (
 from app.schema.jwt import TokenData
 from app.utils import hashing, send_email, unique_constraint_handler
 from app.config.database import get_db
-from app.schema.user import UserCreate, UserBase, ChangePassword
+from app.schema.user import UserCreate, UserBase, ChangePassword, UserUpdate
 from sqlalchemy.exc import IntegrityError, DataError
 from ..entity import models
 from app.utils.logger import configure_logging
@@ -70,6 +70,53 @@ async def reset_password(
         )
     logger.info(f"Email {token_data.email} updated the password successfully")
     db.commit()
+
+
+@router.patch(
+    "/update_account", response_model=UserBase, status_code=status.HTTP_200_OK
+)
+async def update_account(
+    user: UserUpdate,
+    db: Session = Depends(get_db),
+    token_data: TokenData = Depends(verify_access_token),
+):
+    _user = db.query(models.User).filter(models.User.email == token_data.email).one()
+    if _user is None:
+        logger.error(
+            f"User With Email {token_data.email} Failed to update Information , User no longer exist"
+        )
+        raise HTTPException(status_code=404, detail=f"User no longer exist")
+
+    try:
+        result = (
+            db.query(models.User)
+            .filter(models.User.email == token_data.email)
+            .update(user.model_dump(exclude_none=True))
+        )
+        if result == 0:
+            logger.error(
+                f"User With Email {token_data.email} Failed to update Information , User no longer exist"
+            )
+            raise HTTPException(status_code=404, detail=f"User no longer exist")
+        logger.info(
+            f"User With Email {token_data.email} successfully updated account information"
+        )
+        db.commit()
+        db.refresh(_user)
+        return _user
+
+    except IntegrityError as e:
+        col = unique_constraint_handler.find_column(e._message())[0]
+        if col != "":
+            logger.error(
+                f"Failed To update user's information: {user}  , {col} Already Exist"
+            )
+            raise HTTPException(status_code=400, detail=f"{col} Already Exist")
+        logger.error(
+            f"Failed To update user's information: {user}  ,Something Went wrong {str(e)}"
+        )
+
+        raise HTTPException(status_code=400, detail=f"Something went wrong")
 
 
 @router.post("/forgetpassword")
