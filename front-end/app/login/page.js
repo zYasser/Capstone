@@ -48,7 +48,7 @@ const Login = () => {
         setErrorMessage("Your email and password doesn't match");
         return;
       }
-      router.push("/");
+      router.push("/dashboard");
     } catch (error) {
       console.error("Login failed:", error);
       setLoading(false); // Set loading to false in case of error
