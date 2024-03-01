@@ -17,6 +17,8 @@ const Login = () => {
 
   const [error, setErrorMessage] = useState("");
 
+  const [message, setMessage] = useState(null);
+
   const [loading, setLoading] = useState(false); // State to track loading state
 
   const handleChange = (e) => {
@@ -32,6 +34,7 @@ const Login = () => {
     // Use async function for asynchronous operation
     e.preventDefault();
     setLoading(true); // Set loading to true when the request starts
+    setMessage(null);
 
     const { username, password } = formData;
     if (isValidEmail(username) == null) {
@@ -108,6 +111,7 @@ const Login = () => {
               className="w-80 px-4 py-2 mb-2 border border-gray-300 rounded-3xl focus:outline-none focus:border-blue-500 text-black"
               required
             />
+            {message && <p className="text-black mt-4">{message}</p>}
             <div className="text-sm font-white text-right w-80 mb-2 text-black ">
               <Link href="/forget-password" className="hover:underline">
                 Forgot password?
