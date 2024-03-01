@@ -17,8 +17,6 @@ const Login = () => {
 
   const [error, setErrorMessage] = useState("");
 
-  const [message, setMessage] = useState(null);
-
   const [loading, setLoading] = useState(false); // State to track loading state
 
   const handleChange = (e) => {
@@ -30,7 +28,6 @@ const Login = () => {
   };
 
   const handleSubmit = async (e) => {
-    setErrorMessage(false);
     // Use async function for asynchronous operation
     e.preventDefault();
     setLoading(true); // Set loading to true when the request starts
