@@ -6,6 +6,6 @@ export default async function getMe() {
     });
     return result.ok ? await result.json() : null;
   } catch (error) {
-    return null;
+    return console.log(error);
   }
 }

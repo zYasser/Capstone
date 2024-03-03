@@ -80,6 +80,9 @@ async def update_account(
     db: Session = Depends(get_db),
     token_data: TokenData = Depends(verify_access_token),
 ):
+    logger.info(
+        f"User With Email {token_data.email} trying to update account information"
+    )
     _user = db.query(models.User).filter(models.User.email == token_data.email).one()
     if _user is None:
         logger.error(
@@ -109,9 +112,11 @@ async def update_account(
         col = unique_constraint_handler.find_column(e._message())[0]
         if col != "":
             logger.error(
-                f"Failed To update user's information: {user}  , {col} Already Exist"
+                f"Failed To update user's information: {user}  , {col.capitalize()} Already Used"
             )
-            raise HTTPException(status_code=400, detail=f"{col} Already Exist")
+            raise HTTPException(
+                status_code=400, detail=f"{col.capitalize()} Already Used"
+            )
         logger.error(
             f"Failed To update user's information: {user}  ,Something Went wrong {str(e)}"
         )
@@ -175,8 +180,12 @@ async def create_user(user: UserCreate, db: Session = Depends(get_db)):
     except IntegrityError as e:
         col = unique_constraint_handler.find_column(e._message())[0]
         if col != "":
-            logger.error(f"Failed To Register User: {user}  , {col} Already Exist")
-            raise HTTPException(status_code=400, detail=f"{col} Already Exist")
+            logger.error(
+                f"Failed To Register User: {user}  , {col.capitalize()} Already Used"
+            )
+            raise HTTPException(
+                status_code=400, detail=f"{col.capitalize()} Already Used"
+            )
         logger.error(f"Failed To Register User: {user}  ,Something Went wrong {str(e)}")
 
         raise HTTPException(status_code=400, detail=f"Something went wrong")

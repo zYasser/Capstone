@@ -5,24 +5,51 @@ import Pulse from "@/components/Pulse";
 import SideBar from "@/components/SideBar";
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import DynamicSucceedAlert from "@/components/DynamicSucceedAlert";
+import DynamicAlert from "@/components/DynamicAlert";
+import updateAccount from "@/api/updateAccount";
+import Spanner from "@/components/Spanner";
+import ChangePasswordForm from "@/components/ChangePasswordForm";
 
 const MyProfile = () => {
   const router = useRouter();
   const [formData, setFormData] = useState({
-    firstName: "",
-    lastName: "",
+    first_name: "",
+    last_name: "",
     email: "",
     phone: "",
     address: "",
   });
+  const [error, setError] = useState("");
+  const [fetch, setFetch] = useState(false);
+  const [vaild, setValid] = useState("");
 
   const [profile, setProfile] = useState(null);
   useEffect(() => {
     const fetchData = async () => {
-      const result = await getMe();
-      if (!result) router.push("/login");
-      console.log(result);
-      setProfile(result);
+      const jsonData = await getMe();
+      if (!jsonData) router.push("/login");
+      const {
+        first_name,
+        last_name,
+        email,
+        phone,
+        street,
+        city,
+        postal_code,
+        district,
+      } = jsonData;
+      setProfile(jsonData);
+      setFormData({
+        first_name: first_name,
+        last_name: last_name,
+        email: email,
+        phone: phone,
+        street: street,
+        city: city,
+        postal_code: postal_code,
+        district: district,
+      });
     };
     fetchData();
   }, []);
@@ -40,8 +67,19 @@ const MyProfile = () => {
   };
 
   // Handle form submit
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
+    setFetch(true);
     e.preventDefault();
+    const { success, error } = await updateAccount(formData);
+    if (success) {
+      setError("");
+      setValid(success);
+    } else if (error) {
+      console.log(error);
+      setError(error);
+      setValid("");
+    }
+    setFetch(false);
     // Access form data from formData state
     console.log(formData);
     // Here you can perform any further actions such as sending the data to the server
@@ -52,7 +90,9 @@ const MyProfile = () => {
       <div className="container mx-auto w-1/2 px-4 py-8 ">
         <SideBar />
         <div className="bg-white  rounded px-8 pt-6 pb-8 mb-4 shadow-2xl">
-          <form action="handleSubmit">
+          {vaild && <DynamicSucceedAlert message={vaild} />}
+          {error && <DynamicAlert error={error} />}
+          <form action="handleSubmit" onSubmit={handleSubmit}>
             <h1 className="text-2xl font-bold mb-4">Account Settings</h1>
             <div className="grid grid-cols-2 gap-4">
               <div className="mb-4">
@@ -67,7 +107,8 @@ const MyProfile = () => {
                   id="first-name"
                   type="text"
                   placeholder="First Name"
-                  value={profile.first_name}
+                  value={formData.first_name}
+                  onChange={handleChange}
                 />
               </div>
               <div className="mb-4">
@@ -82,7 +123,8 @@ const MyProfile = () => {
                   id="last-name"
                   type="text"
                   placeholder="Last Name"
-                  value={profile.last_name}
+                  value={formData.last_name}
+                  onChange={handleChange}
                 />
               </div>
             </div>
@@ -99,7 +141,8 @@ const MyProfile = () => {
                   id="email"
                   type="email"
                   placeholder="Email"
-                  value={profile.email}
+                  value={formData.email}
+                  onChange={handleChange}
                 />
               </div>
               <div className="mb-4">
@@ -114,89 +157,92 @@ const MyProfile = () => {
                   id="phone"
                   type="tel"
                   placeholder="+90 (___) ___-____"
-                  pattern="\+90 \([0-9]{3}\) [0-9]{3}-[0-9]{4}"
-                  value={profile.phone}
+                  value={formData.phone}
+                  onChange={handleChange}
                 />
               </div>
             </div>
-            <div className="mb-4 ">
+            <div className="mb-4">
               <label
                 className="block text-gray-700 text-sm font-bold mb-2"
-                htmlFor="address"
+                htmlFor="street"
               >
-                Address
+                Street
               </label>
-              <textarea
+              <input
                 className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                id="address"
-                rows="3"
-                placeholder="Address"
-                value={`${profile.city} , ${profile.street}`}
-              ></textarea>
+                id="street"
+                type="text"
+                placeholder="Street"
+                name="street"
+                value={formData.street}
+                onChange={handleChange}
+              />
+            </div>
+            <div className="mb-4">
+              <label
+                className="block text-gray-700 text-sm font-bold mb-2"
+                htmlFor="city"
+              >
+                City
+              </label>
+              <input
+                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                id="city"
+                type="text"
+                placeholder="City"
+                name="city"
+                value={formData.city}
+                onChange={handleChange}
+              />
+            </div>
+            <div className="mb-4">
+              <label
+                className="block text-gray-700 text-sm font-bold mb-2"
+                htmlFor="postal-code"
+              >
+                Postal Code
+              </label>
+              <input
+                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                id="postal-code"
+                type="text"
+                placeholder="Postal Code"
+                name="postal_code"
+                value={formData.postal_code}
+                onChange={handleChange}
+              />
+            </div>
+            <div className="mb-4">
+              <label
+                className="block text-gray-700 text-sm font-bold mb-2"
+                htmlFor="district"
+              >
+                District
+              </label>
+              <input
+                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                id="district"
+                type="text"
+                placeholder="District"
+                name="district"
+                value={formData.district}
+                onChange={handleChange}
+              />
+            </div>
+            <div className="mb-4 ">
               <div className="flex items-center justify-between flex-row-reverse my-3">
                 <button
                   className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline "
                   type="submit"
+                  disabled={fetch}
                 >
-                  Change Information
+                  {fetch ? <Spanner /> : "Change Information"}
                 </button>
               </div>
             </div>
           </form>
-
-          <div className="flex items-center justify-between my-10"></div>
-          <div className="mb-4">
-            <h1 className="text-2xl font-bold mb-4">Change Password</h1>
-            <label
-              className="block text-gray-700 text-sm font-bold mb-2"
-              htmlFor="current-password"
-            >
-              Current Password
-            </label>
-            <input
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-              id="current-password"
-              type="password"
-              placeholder="Current Password"
-            />
-          </div>
-          <div className="mb-4">
-            <label
-              className="block text-gray-700 text-sm font-bold mb-2"
-              htmlFor="new-password"
-            >
-              New Password
-            </label>
-            <input
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-              id="new-password"
-              type="password"
-              placeholder="New Password"
-            />
-          </div>
-          <div className="mb-4">
-            <label
-              className="block text-gray-700 text-sm font-bold mb-2"
-              htmlFor="confirm-password"
-            >
-              Confirm New Password
-            </label>
-            <input
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-              id="confirm-password"
-              type="password"
-              placeholder="Confirm New Password"
-            />
-          </div>
-
-          <div className="flex items-center justify-between flex-row-reverse">
-            <button
-              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline "
-              type="button"
-            >
-              Change Password
-            </button>
-          </div>
+          <ChangePasswordForm></ChangePasswordForm>
         </div>
       </div>
     </div>

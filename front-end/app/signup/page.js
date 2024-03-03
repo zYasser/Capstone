@@ -6,6 +6,7 @@ import isValidEmail from "../../util/isValidEmail";
 import isVaildTurkishNumber from "../../util/isVaildTurkishNumber";
 import { useRouter } from "next/navigation";
 import Spanner from "@/components/Spanner";
+import ChangePasswordForm from "@/components/ChangePasswordForm";
 
 const signUp = async (formData) => {
   return await fetch("http://localhost:8000/api/user/register", {

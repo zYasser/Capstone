@@ -118,8 +118,7 @@ const Login = () => {
               className="w-40 md:w-2/3 bg-green-400  text-white py-2 px-15 rounded-3xl hover:bg-green-200 focus:outline-none focus:bg-green-700 relative"
               disabled={loading} // Disable button when loading
             >
-              {loading && <Spanner />}
-              {loading ? "" : "Login"}
+              {loading ? <Spanner /> : "Login"}
             </button>
             <div className="flex justify-center items-center text-sm text-black font-white text-right w-80 mt-2 pb-3">
               <h2 className="mr-1">Don't have an account?</h2>
