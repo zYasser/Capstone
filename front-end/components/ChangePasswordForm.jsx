@@ -1,6 +1,10 @@
+import changeMyPassword from "@/api/changeMyPassword";
 import React, { useState } from "react";
+import DynamicAlert from "./DynamicAlert";
+import Spanner from "./Spanner";
+import DynamicSucceedAlert from "./DynamicSucceedAlert";
 
-const ChangePasswordForm = () => {
+const ChangePasswordForm = ({ id }) => {
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -8,24 +12,35 @@ const ChangePasswordForm = () => {
   const [error, setError] = useState("");
 
   const [vaild, setValid] = useState("");
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (confirmPassword !== newPassword) {
       setError(
         "The password you entered does not match the confirmed password. Please try again."
       );
+      return;
     }
+    setFetch(true);
+    const obj = {
+      old_password: currentPassword,
+      new_password: newPassword,
+    };
+    let { success, error } = await changeMyPassword(id, obj);
+    if (success) {
+      setValid(success);
+      setError("");
+    } else {
+      setError(error);
+      setValid("");
+    }
+    setFetch(false);
+
     // Add your password change logic here
-    console.log("Password change submitted:", {
-      currentPassword,
-      newPassword,
-      confirmPassword,
-    });
   };
 
   return (
     <form onSubmit={handleSubmit}>
-      <div>
+      <div className="pb-5">
         <div className="mb-4">
           <h1 className="text-2xl font-bold mb-4">Change Password</h1>
           <label
@@ -80,11 +95,14 @@ const ChangePasswordForm = () => {
           <button
             className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
             type="submit"
+            disabled={fetch}
           >
-            Change Password
+            {fetch ? <Spanner /> : "Change Password"}
           </button>
         </div>
       </div>
+      {vaild && <DynamicSucceedAlert message={vaild} />}
+      {error && <DynamicAlert error={error} />}
     </form>
   );
 };

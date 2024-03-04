@@ -16,7 +16,7 @@ class UserBase(BaseModel):
     state: Optional[str] = None
     postal_code: Optional[str] = None
     date_of_birth: Optional[datetime] = None
-    district : Optional[str] = None
+    district: Optional[str] = None
 
 
 class UserUpdate(BaseModel):
@@ -31,7 +31,7 @@ class UserUpdate(BaseModel):
     state: Optional[str] = None
     postal_code: Optional[str] = None
     date_of_birth: Optional[datetime] = None
-    district : Optional[str] = None
+    district: Optional[str] = None
 
 
 class UserCreate(UserBase):
@@ -44,3 +44,8 @@ class UserCreate(UserBase):
 class ChangePassword(BaseModel):
     token: str
     password: str = None
+
+
+class UpdatePassword(BaseModel):
+    old_password: str
+    new_password: str

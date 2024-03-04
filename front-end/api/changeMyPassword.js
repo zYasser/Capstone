@@ -1,7 +1,7 @@
-export default async function updateAccount(data) {
+export default async function changeMyPassword(id, body) {
   try {
     const result = await fetch(
-      "http://localhost:8000/api/user/update_account",
+      `http://localhost:8000/api/user/changepassword/${id}`,
       {
         credentials: "include",
         method: "PATCH",
@@ -11,11 +11,9 @@ export default async function updateAccount(data) {
         body: JSON.stringify(data),
       }
     );
-    console.log(result); // Log the result object
-
     if (result.status == "200") {
       return {
-        success: "Your account was successfully updated",
+        success: "Your Password was successfully updated",
         error: null,
       };
     } else {

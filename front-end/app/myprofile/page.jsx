@@ -28,7 +28,10 @@ const MyProfile = () => {
   useEffect(() => {
     const fetchData = async () => {
       const jsonData = await getMe();
-      if (!jsonData) router.push("/login");
+      if (!jsonData) {
+        router.push("/login");
+        return;
+      }
       const {
         first_name,
         last_name,
@@ -242,7 +245,7 @@ const MyProfile = () => {
               </div>
             </div>
           </form>
-          <ChangePasswordForm></ChangePasswordForm>
+          <ChangePasswordForm id={profile.id}></ChangePasswordForm>
         </div>
       </div>
     </div>

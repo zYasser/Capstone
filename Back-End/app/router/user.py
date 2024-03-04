@@ -16,7 +16,13 @@ from app.config.oauth2 import (
 from app.schema.jwt import TokenData
 from app.utils import hashing, send_email, unique_constraint_handler
 from app.config.database import get_db
-from app.schema.user import UserCreate, UserBase, ChangePassword, UserUpdate
+from app.schema.user import (
+    UpdatePassword,
+    UserCreate,
+    UserBase,
+    ChangePassword,
+    UserUpdate,
+)
 from sqlalchemy.exc import IntegrityError, DataError
 from ..entity import models
 from app.utils.logger import configure_logging
@@ -49,12 +55,44 @@ async def get_current_user(
 
 @router.patch("/changepassword/{id}")
 async def reset_password(
-    password: str,
+    passwordDTO: UpdatePassword,
+    id: int,
     db: Session = Depends(get_db),
     token_data: TokenData = Depends(verify_access_token),
 ):
     logger.info(f"User With Email :{token_data.email} is changing the password")
-    password = hashing.hash(password=password)
+    user = (
+        db.query(models.User)
+        .with_entities(models.User.password)
+        .filter(models.User.id == id)
+        .one()
+    )
+    print(user)
+    if user is None:
+        logger.error(
+            f"Failed to update {token_data.email} Password , account doesn't exist"
+        )
+        raise HTTPException(
+            status_code=404,
+            detail="There's no active account this email : {token_data}",
+        )
+    print(passwordDTO)
+    if (
+        hashing.verfiy_password(
+            hashed_password=user[0], plain_password=passwordDTO.old_password
+        )
+        is False
+    ):
+        logger.error(
+            f"Failed to update {token_data.email} Password , old password provided doesn't matches current password."
+        )
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Your current password does not match our records. Please verify and try again.",
+        )
+
+    password = hashing.hash(password=passwordDTO.new_password)
+
     result = (
         db.query(models.User)
         .filter(models.User.email == token_data.email)
