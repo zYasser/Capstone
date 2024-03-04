@@ -4,9 +4,10 @@ import Head from "next/head";
 import Link from "next/link";
 import FormData from "form-data";
 import isValidEmail from "../../util/isVaildTurkishNumber";
-import { useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import DynamicAlert from "@/components/DynamicAlert";
 import Spanner from "@/components/Spanner";
+import { useSearchParams } from "next/navigation";
 
 const Login = () => {
   const [formData, setFormData] = useState({
@@ -14,6 +15,7 @@ const Login = () => {
     password: "",
   });
   const router = useRouter();
+  const searchParams = useSearchParams();
 
   const [error, setErrorMessage] = useState("");
 
@@ -48,7 +50,11 @@ const Login = () => {
         setErrorMessage("Your email and password doesn't match");
         return;
       }
-      router.push("/dashboard");
+      router.push(
+        searchParams.get("from")
+          ? decodeURIComponent(searchParams.get("from"))
+          : "/"
+      );
     } catch (error) {
       console.error("Login failed:", error);
       setLoading(false); // Set loading to false in case of error

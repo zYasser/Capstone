@@ -4,7 +4,7 @@ import getMe from "@/api/getMe";
 import Pulse from "@/components/Pulse";
 import SideBar from "@/components/SideBar";
 import React, { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import DynamicSucceedAlert from "@/components/DynamicSucceedAlert";
 import DynamicAlert from "@/components/DynamicAlert";
 import updateAccount from "@/api/updateAccount";
@@ -25,11 +25,14 @@ const MyProfile = () => {
   const [vaild, setValid] = useState("");
 
   const [profile, setProfile] = useState(null);
+  const pathname = usePathname();
+
   useEffect(() => {
     const fetchData = async () => {
       const jsonData = await getMe();
+
       if (!jsonData) {
-        router.push("/login");
+        router.push(`/login?from=${encodeURIComponent(pathname)}`);
         return;
       }
       const {
