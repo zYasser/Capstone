@@ -75,12 +75,12 @@ const SolutionForm = () => {
   };
 
   return (
-    <div className="bg-gradient-to-r from-green-200 to-green-400 text-black h-screen py-20 px-20">
-      <h2 className="mt-6 text-center text-3xl font-extrabold text-black">
-        Choose your solution
-      </h2>
+    <div className="bg-gradient-to-r from-green-200 to-green-400 text-black min-h-screen p-4 md:p-8">
+  <h2 className="mt-6 text-center text-3xl font-extrabold text-black">
+    Choose your solution
+  </h2>
 
-      <div className="bg-slate-50 my-20 rounded-3xl py-4 flex flex-col h-3/4">
+  <div className="bg-slate-50 my-10 md:my-20 rounded-3xl py-4 flex flex-col md:h-3/4">
         <div className="flex justify-center mb-4">
           <div className="flex items-center">
             <div
@@ -492,38 +492,38 @@ const SolutionForm = () => {
           
         </form>
 
+        <div className="flex justify-end mx-2 mt-24">
+  {currentStep > 1 && (
+    <button
+      type="button"
+      onClick={handlePrev}
+      className="w-20 sm:w-24 bg-gray-300 text-gray-800 py-2 px-2 rounded-md mr-2 "
+    >
+      Previous
+    </button>
+  )}
+
+  {currentStep < 3 && (
+    <button
+      type="button"
+      onClick={handleNext}
+      className="w-20 sm:w-24 bg-green-400 text-gray-800 py-2 px-2 rounded-md "
+    >
+      Next
+    </button>
+  )}
+
+  {currentStep === 3 && (
+    <button
+      type="submit"
+      className="w-20 sm:w-24 bg-green-400 text-gray-800 py-2 px-2 rounded-md"
+    >
+      Submit
+    </button>
+  )}
+</div>
+
         
-        <div className="flex justify-between mx-2 mt-24 absolute bottom-36 right-24">
-            {currentStep > 1 && (
-              <button
-                type="button"
-                onClick={handlePrev}
-                className="w-24 bg-gray-300 text-gray-800 py-2 px-4 rounded-md mr-4"
-              >
-                Previous
-              </button>
-            )}
-
-            {currentStep < 3 && (
-              <button
-                type="button"
-                onClick={handleNext}
-                className="w-24 bg-green-400 text-gray-800 py-2 px-4 rounded-md "
-              >
-                Next
-              </button>
-            )}
-
-            {currentStep === 3 && (
-              <button
-                type="submit"
-                className="w-24 bg-green-400 text-gray-800 py-2 px-4 rounded-md"
-              >
-                Submit
-              </button>
-            )}
-          </div>
-
         </div>
 
         
