@@ -6,6 +6,7 @@ import React, { useState } from "react";
 const SolutionForm = () => {
   const [formData, setFormData] = useState({
     building_type: "",
+    Advanced: "",
     solution_type: "",
     device_powered: "",
     power_generated: "",
@@ -30,14 +31,18 @@ const SolutionForm = () => {
     });
   };
 
+  
+  
   const handleCheckboxChange = (e) => {
     const { name, value } = e.target;
     setFormData({
       ...formData,
       [name]: value,
+      Advanced: formData.Advanced === value ? "" : value,
+
     });
   };
-
+  
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log(formData);
@@ -76,9 +81,9 @@ const SolutionForm = () => {
 
   return (
     <div className="bg-gradient-to-r from-green-200 to-green-400 text-black min-h-screen p-4 md:p-8">
-  <h2 className="mt-6 text-center text-3xl font-extrabold text-black">
-    Choose your solution
-  </h2>
+    <h2 className="mt-6 text-center text-3xl font-extrabold text-black">
+      Choose your solution
+    </h2>
 
   <div className="bg-slate-50 my-10 md:my-20 rounded-3xl py-4 flex flex-col md:h-3/4">
         <div className="flex justify-center mb-4">
@@ -301,7 +306,9 @@ const SolutionForm = () => {
         )}
 
         {currentStep === 3 && (
-
+          
+          
+         
           <div className="flex flex-col items-center">
             <div className="flex items-center mb-4">
               <p className="font-semibold">Solution Type:</p>
@@ -320,6 +327,7 @@ const SolutionForm = () => {
                   </label>
                 </div>
 
+                 
                 <div className="flex items-center mx-8">
                   <input
                     type="checkbox"
@@ -335,8 +343,23 @@ const SolutionForm = () => {
                 </div>
               </div>
             </div>
+               
+               <div className="flex items-center mx-8">
+                <input
+                type="checkbox"
+                id="Advanced"
+                name="Advanced"
+                value="Advanced"
+                checked={formData.Advanced === "Advanced"}
+                onChange={handleCheckboxChange}
+                />
+                <label className="ml-2">
+                   Advanced
+                </label>
+               </div>
+              
 
-            {formData.solution_type === 'solar' && (
+            {formData.solution_type === 'solar' && formData.Advanced === 'Advanced' && (
               <div className="flex mb-4 pt-4 pl-2">
                 <p className="font-semibold">Panel Type:</p>
                 <div className="flex items-center mx-8">
@@ -400,6 +423,7 @@ const SolutionForm = () => {
               </div>
             </div>
 
+            {formData.Advanced === 'Advanced' && (
             <div className="flex mb-4 pt-4">
               <p className="font-semibold">Grid Type:</p>
               <div className="flex items-center mx-8">
@@ -430,6 +454,7 @@ const SolutionForm = () => {
                 </label>
               </div>
             </div>
+            )}
 
 
           {formData.grid_type === 'off_grid' && (
@@ -455,6 +480,7 @@ const SolutionForm = () => {
             </div>
           )}
 
+{formData.Advanced === 'Advanced' && (
             <div className="flex mb-4 pt-4">
               <p className="font-semibold">Inverter Type:</p>
               <div className="flex items-center mx-8">
@@ -471,6 +497,7 @@ const SolutionForm = () => {
                 </label>
               </div>
 
+
               <div className="flex items-center mx-8">
                 <input
                   type="checkbox"
@@ -484,7 +511,7 @@ const SolutionForm = () => {
                   Type 2
                 </label>
               </div>
-            </div>
+            </div>)}
 
           </div>
 
