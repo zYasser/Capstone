@@ -6,7 +6,6 @@ import isValidEmail from "../../util/isValidEmail";
 import isVaildTurkishNumber from "../../util/isVaildTurkishNumber";
 import { useRouter } from "next/navigation";
 import Spanner from "@/components/Spanner";
-import ChangePasswordForm from "@/components/ChangePasswordForm";
 
 const signUp = async (formData) => {
   return await fetch("http://localhost:8000/api/user/register", {
@@ -29,11 +28,15 @@ const SignUp = () => {
     email: "",
     phone: "",
     date_of_birth: "",
-    country: "",
     password: "",
+    city: "",
+    district: "",
+    street: "",
+    postal_code: "",
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -42,6 +45,25 @@ const SignUp = () => {
       [name]: value,
     });
   };
+
+  const getUserLocation = () => { 
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(success, error);
+    } else {
+      setError("Geolocation is not supported in this browser");
+    }
+    
+    function success(position) {
+      const latitude = position.coords.latitude;
+      const longitude = position.coords.longitude;
+      console.log(`Latitude: ${latitude}, Longitude: ${longitude}`);
+    }
+    
+    function error() {
+      setError("Unable to retrieve your location");
+    }
+    setError("");
+   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -170,11 +192,11 @@ const SignUp = () => {
                 />
               </div>
 
-              <div className="flex items-baseline">
+              <div className="flex items-baseline ">
                 <label htmlFor="phone" className="sr-only">
                   Phone number
                 </label>
-                <div class="m-2">
+                <div class="m-2 ">
                   <span className="text-black text-sm bottom-auto">+90</span>
                 </div>
                 <input
@@ -204,21 +226,88 @@ const SignUp = () => {
                   onChange={handleInputChange}
                 />
               </div>
-              <div>
-                <label htmlFor="country" className="sr-only">
-                  Where do you live
+
+              <div  className="flex flex-col my-4">
+              <div  className="flex justify-between my-4">
+              <p className="font-semibold mb-4">Address:</p> 
+              <button 
+              type="button"
+              className="text-black mb-4 underline hover:text-blue-700"
+              onClick={getUserLocation}
+              >Detect your location
+              </button> 
+            </div>
+            
+              <div className="flex flex-wrap -mx-2">
+  <div className="w-full md:w-1/2 px-2 mb-4">
+    <label htmlFor="city" className="sr-only">
+      City
+    </label>
+    <input
+      id="city"
+      name="city"
+      type="text"
+      required
+      className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+      placeholder="City"
+      value={formData.city}
+      onChange={handleInputChange}
+    />
+  </div>
+
+  <div className="w-full md:w-1/2 px-2 mb-4">
+    <label htmlFor="district" className="sr-only">
+      District
+    </label>
+    <input
+      id="district"
+      name="district"
+      type="text"
+      required
+      className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+      placeholder="District"
+      value={formData.district}
+      onChange={handleInputChange}
+    />
+  </div>
+</div>
+             
+              <div className="flex flex-wrap -mx-2">
+              <div className="w-full md:w-1/2 px-2 mb-4">
+                <label htmlFor="postal_code" className="sr-only">
+                Postal code
                 </label>
                 <input
-                  id="country"
-                  name="country"
+                  id="postal_code"
+                  name="postal_code"
                   type="text"
                   required
-                  className="mb-4 appearance-none rounded-none relative block w-80  px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-                  placeholder="Where do you live"
-                  value={formData.country}
+                  className="mb-4 appearance-none rounded-none relative block w-full  px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                  placeholder="Postal code"
+                  value={formData.postal_code}
                   onChange={handleInputChange}
                 />
               </div>
+
+              <div className="w-full md:w-1/2 px-2 mb-4">
+                <label htmlFor="street" className="sr-only">
+                  Street
+                </label>
+                <input
+                  id="street"
+                  name="street"
+                  type="text"
+                  required
+                  className="mb-4 appearance-none rounded-none relative block w-full  px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                  placeholder="Street"
+                  value={formData.street}
+                  onChange={handleInputChange}
+                />
+              </div>
+              </div>
+
+              </div>
+
             </div>
 
             <div>
