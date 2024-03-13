@@ -25,7 +25,6 @@ const SolutionForm = () => {
 
   const [error, setError] = useState("");
   const [currentStep, setCurrentStep] = useState(1);
-  const [weatherCoords, setWeatherCoords] = useState(null);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -43,19 +42,25 @@ const SolutionForm = () => {
     });
   };
 
-  const getUserLocation = () => { 
+
+  const getWeatherInfo = async () => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(success, error);
     } else {
       setError("Geolocation is not supported in this browser");
     }
     
-    function success(position) {
+    async function success(position) {
       const latitude = position.coords.latitude;
       const longitude = position.coords.longitude;
       console.log(`Latitude: ${latitude}, Longitude: ${longitude}`);
-      setWeatherCoords({ latitude, longitude });
-
+      const weatherData = await Weather({ latitude, longitude });
+  
+    if (weatherData) {
+      console.log("Temperature:", weatherData.temperature2m);
+    } else {
+      console.log("Unable to fetch weather data.");
+    }
     }
     
     function error() {
@@ -106,9 +111,6 @@ const SolutionForm = () => {
   <h2 className="mt-6 text-center text-3xl font-extrabold text-black">
     Choose your solution
   </h2>
-
-  {weatherCoords && <Weather latitude={weatherCoords.latitude} longitude={weatherCoords.longitude} />}
-  
 
   <div className="bg-slate-50 my-10 md:my-20 rounded-3xl py-4 flex flex-col md:h-3/4">
         <div className="flex justify-center mb-4">
@@ -317,7 +319,7 @@ const SolutionForm = () => {
               <button 
               type="button"
               className="text-black mb-4 underline hover:text-blue-700"
-              onClick={getUserLocation}
+              onClick={getWeatherInfo}
               >Detect location
               </button> 
             </div>
