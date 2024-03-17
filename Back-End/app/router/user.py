@@ -38,7 +38,9 @@ logger = logging.getLogger(__name__)
 async def autenticate_user(user: models.User, password) -> bool:
     if not user:
         return False
-    return hashing.verfiy_password(user.password, password)
+    return hashing.verfiy_password(
+        hashed_password=user.password, plain_password=password
+    )
 
 
 @router.get("/me", response_model=UserBase)
@@ -263,7 +265,7 @@ async def login(
             detail="User Doesn't exist",
             headers={"WWW-Authenticate": "Bearer"},
         )
-    if not autenticate_user(user, form_data.password):
+    if not await autenticate_user(user, form_data.password):
         logger.error(
             f"Failed to login user. Email: {user.email}. Reason: Incorrect password provided."
         )

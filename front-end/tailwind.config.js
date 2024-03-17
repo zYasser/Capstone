@@ -7,6 +7,9 @@ module.exports = {
     "./app/**/*.{js,ts,jsx,tsx,mdx}",
   ],
   theme: {
+    fontFamily: {
+      Roboto: ["Roboto", "sans-serif"],
+    },
     extend: {
       backgroundImage: {},
     },
