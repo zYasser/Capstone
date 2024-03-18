@@ -1,5 +1,8 @@
 "use client";
 import React, { useState } from "react";
+import DynamicAlert from "@/components/DynamicAlert";
+import Weather from "@/components/Weather";
+
 
 // Import statements
 
@@ -20,6 +23,7 @@ const SolutionForm = () => {
     selectedDeviceLists: [],
   });
 
+  const [error, setError] = useState("");
   const [currentStep, setCurrentStep] = useState(1);
 
   const handleInputChange = (e) => {
@@ -37,6 +41,34 @@ const SolutionForm = () => {
       [name]: value,
     });
   };
+
+
+  const getWeatherInfo = async () => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(success, error);
+    } else {
+      setError("Geolocation is not supported in this browser");
+    }
+    
+    async function success(position) {
+      const latitude = position.coords.latitude;
+      const longitude = position.coords.longitude;
+      console.log(`Latitude: ${latitude}, Longitude: ${longitude}`);
+      const weatherData = await Weather({ latitude, longitude });
+  
+    if (weatherData) {
+      console.log("Temperature:", weatherData.temperature2m);
+    } else {
+      console.log("Unable to fetch weather data.");
+    }
+    }
+    
+    function error() {
+      setError("Unable to retrieve your location");
+    }
+    setError("");
+
+   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -245,7 +277,7 @@ const SolutionForm = () => {
           
 
         {currentStep === 2 && (
-          <div className="flex flex-col items-center">
+          <div className="flex flex-col ">
 
           <div className="pt-4 mb-4">
             <p className="font-semibold">What device will it power?</p>
@@ -260,29 +292,21 @@ const SolutionForm = () => {
                   onChange={handleInputChange}
                 >
                   <option value="">Select device</option>
-                  <option value="TV">TV</option>
-                  <option value="PC">PC</option>
-                  <option value="dishwasher">Dishwasher</option>
-                  <option value="other">Other</option>
+                  <option value="Refrigerator">Refrigerator</option>
+                  <option value="Freezer">Freezer</option>
+                  <option value="Washing Machine">Washing Machine</option>
+                  <option value="Dryer Machine">Dryer Machine</option>
+                  <option value="Dishwasher">Dishwasher</option>
+                  <option value="Oven">Oven</option>
+                  <option value="Microwave">Microwave</option>
+                  <option value="Television">Television</option>
+
+                  
                 </select>
                 </div>
           </div>
 
           <div className="pt-4 mb-4">
-            <p className="font-semibold">How much power do you plan to generate?</p>
-            <input
-              id="power_generated"
-              name="power_generated"
-              type="text"
-              required
-              className="mt-2 mb-4 w-80 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-              placeholder=""
-              value={formData.power_generated}
-              onChange={handleInputChange}
-            />
-          </div>
-
-          <div className="pt-4 mb-4 mr-3">
             <p className="font-semibold">Building size (in m<sup>2</sup>)</p>
             <input
               id="building_size"
@@ -295,6 +319,16 @@ const SolutionForm = () => {
               onChange={handleInputChange}
             />
           </div>
+
+          <div  className="flex my-4">
+          <p className="font-semibold mr-4 mb-4">Location:</p>
+              <button 
+              type="button"
+              className="text-black mb-4 underline hover:text-blue-700"
+              onClick={getWeatherInfo}
+              >Detect location
+              </button> 
+            </div>
 
         </div>
 
@@ -446,9 +480,9 @@ const SolutionForm = () => {
                     onChange={handleInputChange}
                   >
                     <option value="">Select method</option>
-                    <option value="TV">Battery</option>
-                    <option value="PC">Heat Pump</option>
-                    <option value="dishwasher">Hydro Generator</option>
+                    <option value="Battery">Battery</option>
+                    <option value="Heat Pump">Heat Pump</option>
+                    <option value="Hydro generator">Hydro Generator</option>
                     <option value="other">Other</option>
                   </select>
                   </div>
@@ -490,6 +524,7 @@ const SolutionForm = () => {
 
         )}
           
+          {error ? <DynamicAlert error={error} /> : ""}
         </form>
 
         <div className="flex justify-end mx-2 mt-24">
