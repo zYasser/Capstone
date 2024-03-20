@@ -1,14 +1,12 @@
 "use client";
+
 import CustomerSupportSection from "@/components/CustomerSupport";
 import Footer from "@/components/Footer";
 import NavBar from "@/components/NavBar";
 import greenPlantImage from "../public/green-energy.jpg";
 import Card from "@/components/Card";
-import { useRouter } from "next/navigation";
 
 export default function Home() {
-  const router = useRouter();
-
   return (
     <div>
       <NavBar />
@@ -23,13 +21,8 @@ export default function Home() {
                 Empowering a sustainable future through innovative green energy
                 solutions
               </p>
-              <button
-                className="mt-8 bg-white text-green-600 py-2 px-6 rounded-full hover:bg-green-100 hover:text-green-700 font-semibold"
-                onClick={() => {
-                  router.push("/dashboard");
-                }}
-              >
-                Create Your Solution
+              <button className="mt-8 bg-white text-green-600 py-2 px-6 rounded-full hover:bg-green-100 hover:text-green-700 font-semibold">
+                Learn More
               </button>
             </div>
             <div className="lg:w-1/2">
@@ -42,10 +35,10 @@ export default function Home() {
           </div>
         </header>
 
-        <section className="bg-green-100 py-16 animate-fade-right animate-once animate-duration-500 animate-ease-linear">
-          <div className="container my-10 bg-white shadow-lg mx-auto py-20 px-3 rounded-xl">
-            <h2 className="text-3xl font-bold mb-8 text-center">About Us</h2>
-            <p className="text-lg text-center font-serif font-bold ">
+        <section class="bg-green-100 py-16 animate-fade-right animate-once animate-duration-500 animate-ease-linear">
+          <div class="container my-10 bg-white shadow-lg mx-auto py-20 px-3 rounded-xl">
+            <h2 class="text-3xl font-bold mb-8 text-center">About Us</h2>
+            <p class="text-lg text-center font-serif font-bold ">
               At Green Energy Solutions, our aim is to provide cleaner energy
               while creating solutions that help our customers save money. We're
               dedicated to offering unmatched sustainable energy solutions for
