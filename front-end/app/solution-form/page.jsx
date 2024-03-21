@@ -1,7 +1,7 @@
 "use client";
 import React, { useState } from "react";
 import DynamicAlert from "@/components/DynamicAlert";
-import Weather from "@/components/Weather";
+import Weather from "@/api/Weather";
 
 
 // Import statements
@@ -142,34 +142,6 @@ const SolutionForm = () => {
         <form className="flex flex-col items-center" onSubmit={handleSubmit}>
           {currentStep === 1 && (
             <div className="flex flex-col">
-              <div className="flex flex-col my-4 mr-48">
-                <p className="font-semibold">Building Type:</p>
-                <div className="flex">
-                  <div className="flex mx-8">
-                    <input
-                      type="checkbox"
-                      id="apartment"
-                      name="building_type"
-                      value="apartment"
-                      checked={formData.building_type === "apartment"}
-                      onChange={handleCheckboxChange}
-                    />
-                    <label className="ml-2">Apartment</label>
-                  </div>
-
-                  <div className="flex items-center mx-8">
-                    <input
-                      type="checkbox"
-                      id="single household"
-                      name="building_type"
-                      value="single household"
-                      checked={formData.building_type === "single household"}
-                      onChange={handleCheckboxChange}
-                    />
-                    <label className="ml-2">Single Household</label>
-                  </div>
-                </div>
-              </div>
 
               <div className="flex flex-col my-4">
                 <p className="font-semibold">Electrical Consumption:</p>
@@ -212,10 +184,25 @@ const SolutionForm = () => {
                         onChange={handleInputChange}
                       >
                         <option value="">Select device</option>
-                        <option value="TV">TV</option>
-                        <option value="PC">PC</option>
+                        <option value="Refrigerator">Refrigerator</option>
+                        <option value="Freezer">Freezer</option>
+                        <option value="Washing Machine">Washing Machine</option>
+                        <option value="Dryer Machine">Dryer Machine</option>
                         <option value="Dishwasher">Dishwasher</option>
-                        <option value="other">Other</option>
+                        <option value="Oven">Oven</option>
+                        <option value="Microwave">Microwave</option>
+                        <option value="Television">Television</option>
+                        <option value="Computer">Computer</option>
+                        <option value="Gaming Console">Gaming Console</option>
+                        <option value="Vacuum Cleaner">Vacuum Cleaner</option>
+                        <option value="Air Conditioner">Air Conditioner</option>
+                        <option value="Space Heater">Space Heater</option>
+                        <option value="Dehumidifier">Dehumidifier</option>
+                        <option value="Water Heater">Water Heater</option>
+                        <option value="Toaster">Toaster</option>
+                        <option value="Coffee Maker">Coffee Maker</option>
+                        <option value="Hair Dryer">Hair Dryer</option>
+                        <option value="Clothes Iron">Clothes Iron</option>
                       </select>
                       <button
                         type="button"
@@ -238,6 +225,11 @@ const SolutionForm = () => {
                   {deviceList.map((device, deviceIndex) => (
                     <li key={deviceIndex}>
                       {device}
+                      <input
+                  type="text"
+                  placeholder="Consumption/hour"
+                  className="mx-2 px-2 py-1 border border-gray-300 rounded"
+                />
                       <button
                         type="button"
                         onClick={() => handleRemoveDevice(listIndex, deviceIndex)}
@@ -277,7 +269,52 @@ const SolutionForm = () => {
           
 
         {currentStep === 2 && (
-          <div className="flex flex-col ">
+          <div className="flex flex-col items-center">
+
+<div className="pt-4 mb-4 ml-16 mr-1">
+                <p className="font-semibold">Building Type:</p>
+                <div className="flex">
+                  <div className="flex mx-8">
+                    <input
+                      type="checkbox"
+                      id="apartment"
+                      name="building_type"
+                      value="apartment"
+                      checked={formData.building_type === "apartment"}
+                      onChange={handleCheckboxChange}
+                    />
+                    <label className="ml-2">Apartment</label>
+                  </div>
+
+                  <div className="flex items-center mx-8">
+                    <input
+                      type="checkbox"
+                      id="single household"
+                      name="building_type"
+                      value="single household"
+                      checked={formData.building_type === "single household"}
+                      onChange={handleCheckboxChange}
+                    />
+                    <label className="ml-2">Single Household</label>
+                  </div>
+                </div>
+              </div>
+
+<div className="pt-4 mb-4">
+            <p className="font-semibold">Building size (in m<sup>2</sup>)</p>
+            <input
+              id="building_size"
+              name="building_size"
+              type="text"
+              required
+              className="mt-2 mb-4 w-80 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+              placeholder=""
+              value={formData.building_size}
+              onChange={handleInputChange}
+            />
+          </div>
+
+          
 
           <div className="pt-4 mb-4">
             <p className="font-semibold">What device will it power?</p>
@@ -292,35 +329,33 @@ const SolutionForm = () => {
                   onChange={handleInputChange}
                 >
                   <option value="">Select device</option>
-                  <option value="Refrigerator">Refrigerator</option>
-                  <option value="Freezer">Freezer</option>
-                  <option value="Washing Machine">Washing Machine</option>
-                  <option value="Dryer Machine">Dryer Machine</option>
-                  <option value="Dishwasher">Dishwasher</option>
-                  <option value="Oven">Oven</option>
-                  <option value="Microwave">Microwave</option>
-                  <option value="Television">Television</option>
+                        <option value="Refrigerator">Refrigerator</option>
+                        <option value="Freezer">Freezer</option>
+                        <option value="Washing Machine">Washing Machine</option>
+                        <option value="Dryer Machine">Dryer Machine</option>
+                        <option value="Dishwasher">Dishwasher</option>
+                        <option value="Oven">Oven</option>
+                        <option value="Microwave">Microwave</option>
+                        <option value="Television">Television</option>
+                        <option value="Computer">Computer</option>
+                        <option value="Gaming Console">Gaming Console</option>
+                        <option value="Vacuum Cleaner">Vacuum Cleaner</option>
+                        <option value="Air Conditioner">Air Conditioner</option>
+                        <option value="Space Heater">Space Heater</option>
+                        <option value="Dehumidifier">Dehumidifier</option>
+                        <option value="Electric Water Heater">Electric Water Heater</option>
+                        <option value="Toaster">Toaster</option>
+                        <option value="Coffee Maker">Coffee Maker</option>
+                        <option value="Hair Dryer">Hair Dryer</option>
+                        <option value="Clothes Iron">Clothes Iron</option>
 
-                  
                 </select>
                 </div>
+
           </div>
 
-          <div className="pt-4 mb-4">
-            <p className="font-semibold">Building size (in m<sup>2</sup>)</p>
-            <input
-              id="building_size"
-              name="building_size"
-              type="text"
-              required
-              className="mt-2 mb-4 w-80 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-              placeholder=""
-              value={formData.building_size}
-              onChange={handleInputChange}
-            />
-          </div>
 
-          <div  className="flex my-4">
+          <div  className="flex my-4 mr-32 ml-2">
           <p className="font-semibold mr-4 mb-4">Location:</p>
               <button 
               type="button"
@@ -337,7 +372,7 @@ const SolutionForm = () => {
         {currentStep === 3 && (
 
           <div className="flex flex-col items-center">
-            <div className="flex items-center mb-4">
+            <div className="flex items-center mb-4 mr-3">
               <p className="font-semibold">Solution Type:</p>
               <div className="flex">
                 <div className="flex mx-8">
@@ -560,10 +595,6 @@ const SolutionForm = () => {
 
         
         </div>
-
-        
-        
-        
       </div>
   );
 };
