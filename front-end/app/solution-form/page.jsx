@@ -20,6 +20,7 @@ const SolutionForm = () => {
     building_size: "",
     device_consumption: "",
     excess_energy: "",
+    default_consumption: "",
     selectedDeviceLists: [],
   });
 
@@ -35,12 +36,23 @@ const SolutionForm = () => {
   };
 
   const handleCheckboxChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value,
-    });
+    const { name, value, type, checked } = e.target;
+    if (type === 'checkbox') {
+      if (name === 'default_consumption') {
+        // Handle default consumption checkbox separately
+        setFormData({
+          ...formData,
+          [name]: checked ? "true" : "", // Set to "true" if checked, empty string otherwise
+        });
+      } else {
+        setFormData({
+          ...formData,
+          [name]: value,
+        });
+      }
+    }
   };
+  
 
 
   const getWeatherInfo = async () => {
@@ -76,25 +88,49 @@ const SolutionForm = () => {
   };
 
   const handleAddList = (e) => {
-    // Create a new list with the selected device
+    // Create a new object with the selected device
     const selectedDevice = formData.device_consumption;
     if (selectedDevice) {
+      const newDevice = {
+        device: selectedDevice,
+        consumption: "",
+        useDefault: false
+      };
+  
       setFormData({
         ...formData,
-        selectedDeviceLists: [...formData.selectedDeviceLists, [selectedDevice]],
-        device_consumption: "", // Clear the selected device for the next entry
+        selectedDeviceLists: [...formData.selectedDeviceLists, newDevice],
+        device_consumption: "" // Clear the selected device for the next entry
       });
     }
   };
 
-  const handleRemoveDevice = (listIndex, deviceIndex) => {
-    // Remove the selected device from the list
-    const updatedLists = [...formData.selectedDeviceLists];
-    updatedLists[listIndex].splice(deviceIndex, 1);
-
+  const handleRemoveDevice = (index) => {
+    const updatedSelectedDeviceLists = [...formData.selectedDeviceLists];
+    updatedSelectedDeviceLists.splice(index, 1);
     setFormData({
       ...formData,
-      selectedDeviceLists: updatedLists,
+      selectedDeviceLists: updatedSelectedDeviceLists
+    });
+  };
+
+  const handleConsumptionChange = (e, index) => {
+    const { value } = e.target;
+    const updatedSelectedDeviceLists = [...formData.selectedDeviceLists];
+    updatedSelectedDeviceLists[index].consumption = value;
+    setFormData({
+      ...formData,
+      selectedDeviceLists: updatedSelectedDeviceLists
+    });
+  };
+  
+  const handleDefaultChange = (e, index) => {
+    const { checked } = e.target;
+    const updatedSelectedDeviceLists = [...formData.selectedDeviceLists];
+    updatedSelectedDeviceLists[index].useDefault = checked;
+    setFormData({
+      ...formData,
+      selectedDeviceLists: updatedSelectedDeviceLists
     });
   };
 
@@ -207,9 +243,9 @@ const SolutionForm = () => {
                       <button
                         type="button"
                         onClick={handleAddList}
-                        className="w-10 mx-4 bg-green-400  text-white py-2 px-15 rounded-2xl hover:bg-green-200 focus:outline-none focus:bg-green-700 relative"
+                        className="w-32 mx-4 bg-green-400  text-white py-2 px-15 rounded-2xl hover:bg-green-200 focus:outline-none focus:bg-green-700 relative"
                       >
-                        Add
+                        Add Device
                       </button>
                     </div>
                   </div>
@@ -219,29 +255,42 @@ const SolutionForm = () => {
         formData.electrical_consumption === 'list' && (
           <div className="pt-2 flex flex-col items-start mb-4">
             <p className="font-semibold">Selected Devices:</p>
-            {formData.selectedDeviceLists.map((deviceList, listIndex) => (
-              <div key={listIndex}>
-                <ul>
-                  {deviceList.map((device, deviceIndex) => (
-                    <li key={deviceIndex}>
-                      {device}
-                      <input
-                  type="text"
-                  placeholder="Consumption/hour"
-                  className="mx-2 px-2 py-1 border border-gray-300 rounded"
-                />
-                      <button
-                        type="button"
-                        onClick={() => handleRemoveDevice(listIndex, deviceIndex)}
-                        className="mx-3 my-1 bg-red-500 text-white py-1 px-2 rounded"
-                      >
-                        Remove
-                      </button>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            ))}
+            {formData.selectedDeviceLists.map((device, index) => (
+  <div key={index}>
+    <ul>
+      <li>
+        {device.device}
+        <input
+          type="text"
+          placeholder="Average Daily Usage (hours)"
+          className={`mx-2 px-2 py-1 border border-gray-300 rounded ${
+            device.useDefault ? "bg-gray-300" : ""
+          }`}
+          disabled={device.useDefault}
+          value={device.consumption}
+          onChange={(e) => handleConsumptionChange(e, index)}
+        />
+
+        <input
+          type="checkbox"
+          id={`default-${index}`}
+          name={`default_consumption-${index}`}
+          value={`default-${index}`}
+          checked={device.useDefault}
+          onChange={(e) => handleDefaultChange(e, index)}
+        />
+        <label className="ml-2">Default</label>
+        <button
+          type="button"
+          onClick={() => handleRemoveDevice(index)}
+          className="mx-3 my-1 bg-red-500 text-white py-1 px-2 rounded"
+        >
+          Remove
+        </button>
+      </li>
+    </ul>
+  </div>
+))}
           </div>
       
         )
