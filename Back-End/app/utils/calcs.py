@@ -1,59 +1,51 @@
 import math
-from pvlib import solarposition
 
 
-def solar_declination(day_of_year):
-    """
-    Calculates the solar declination (δ) in degrees
-    """
-    # return 23.45 * math.sin(math.radians(360 * (284 + day_of_year) / 365))
-    return math.degrees(23.45 * math.sin(math.radians(360 * (283 + day_of_year) / 365)))
+class SolarAnglesCalculator:
+    def __init__(self, day_of_year, eot, longitude, standard_time ,altitude):
+        self.altitude=altitude
+        self.day_of_year = day_of_year
+        self.eot = eot
+        self.longitude = longitude
+        self.standard_time = standard_time
+        # Calculate solar declination angle
+        self.solar_declination_angle = self.calculate_solar_declination_angle()
+        self.tst = self.calculate_true_solar_time(self.standard_time)
+
+        self.solar_hour_angle = self.calculate_solar_hour_angle(self.tst)
+
+        self.solar_altitude_angle = self.solar_altitude_angle()
+        self.angle_of_incidence=self
+
+    def calculate_solar_declination_angle(self):
+        return 23.45 * math.sin(math.radians(360 * (283 + self.day_of_year) / 365))
+
+    def calculate_solar_altitude_angle(self):
+        return math.degrees(math.asin(math.sin(math.radians(latitude)) * math.sin(math.radians(self.solar_declination_angle)) +
+                                   math.cos(math.radians(latitude)) * math.cos(math.radians(self.solar_declination_angle)) *
+                                   math.cos(math.radians(self.solar_hour_angle))))
+    def calculate_solar_hour_angle(self, tst):
+        return (tst / 4) - 180 + self.longitude
+
+    def calculate_true_solar_time(self, standard_time):
+
+        return standard_time + self.eot + 4 * self.longitude
+
+    def calculate_angle_of_incidence(self):
+        return 90 - self.altitude - self.solar_declination_angle
 
 
-def solar_hour_angle(tst, longitude):
-    """
-    Calculates the solar hour angle (ω) in degrees
-    """
-    return (tst / 4) - 180 + longitude
+# Example usage:
+day_of_year = 100
+eot = 10  # example value
+longitude = -75  # example value
+latitude = 40  # example value
+standard_time = 720  # Assuming standard time is 12:00 PM
 
+solar_calculator = SolarAnglesCalculator(day_of_year, eot, longitude)
+altitude, incidence_angle = solar_calculator.calculate_all_angles(
+    latitude, standard_time
+)
 
-def true_solar_time(standard_time, eot, longitude):
-    """
-    Calculates the true solar time (TST) in minutes
-    """
-    return standard_time + eot + 4 * longitude
-
-
-def solar_altitude(latitude, declination, hour_angle):
-    """
-    Calculates the solar altitude (α) in degrees
-    """
-    return math.degrees(
-        math.asin(
-            math.sin(math.radians(latitude)) * math.sin(math.radians(declination))
-            + math.cos(math.radians(latitude))
-            * math.cos(math.radians(declination))
-            * math.cos(math.radians(hour_angle))
-        )
-    )
-
-
-def angle_of_incidence(altitude, declination):
-    """
-    Calculates the angle of incidence (θ) in degrees
-    """
-    return 90 - altitude + declination
-
-
-# Example usage
-day_of_year = 101
-latitude = 40.7  # Degrees North
-longitude = -74  # Degrees West
-standard_time = 12 * 60  # 12 PM in minutes
-
-decl = solar_declination(day_of_year)
-tst = true_solar_time(standard_time, 5, longitude)
-hour_angle = solar_hour_angle(tst, longitude)
-alt = solar_altitude(latitude, decl, hour_angle)
-aoi = angle_of_incidence(alt, decl)
-print(decl)
+print("Solar Altitude Angle:", altitude)
+print("Angle of Incidence:", incidence_angle)

@@ -3,7 +3,7 @@ from app.schema import solutin
 from app.config.database import get_db
 from sqlalchemy.orm import Session
 from app.entity.models import Devices
-
+from utils.energyCalculation import totalConsumption
 router = APIRouter(prefix="/solution", tags=["solution"])
 
 
@@ -15,9 +15,5 @@ async def generate_solution(
     usage = {device.id: device.daily_usage_duration for device in solution_req.devices}
 
     consumption = db.query(Devices).filter(Devices.id.in_((ids))).all()
-    cost = 0
-    for r in consumption:
-        cost = cost + (r.consumption_watt * usage[r.id])
-        cost = cost + (r.standby_duration_hours*r.standby_power_consumption)
-    print(cost)
-    return result
+    total_consumption=totalConsumption(usage=usage, consumption=consumption)
+    return total_consumption
