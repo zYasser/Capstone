@@ -8,6 +8,7 @@ from sqlalchemy import (
     Float,
     ForeignKey,
     Integer,
+    Numeric,
     String,
     BOOLEAN,
     UUID,
@@ -82,8 +83,10 @@ class Devices(Base):
     __tablename__ = "devices"
     id = Column(Integer, primary_key=True, autoincrement=True)
     name = Column(String, nullable=False)
-    power_rating = Column(String, nullable=False)
-    type = Column(String)
+    consumption_watt = Column(Integer)
+    average_daily_usage_hour = Column(Numeric(5, 2))
+    standby_power_consumption = Column(Integer)
+    standby_duration_hours = Column(Integer)
 
 
 class Inverter(Base):

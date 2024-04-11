@@ -8,7 +8,7 @@ from app.utils.validation_exception import get_excpetion_data
 
 from .config.database import engine
 from .entity import models
-from .router import (user,green)
+from .router import (user,green,solution)
 
 models.Base.metadata.create_all(bind=engine)
 app = FastAPI()
@@ -16,17 +16,7 @@ app = FastAPI()
 app.include_router(user.router)
 app.include_router(support_ticket.router)
 app.include_router(green.router)
-
-
-@app.exception_handler(RequestValidationError)
-async def validation_exception_handler(request: Request, exc: RequestValidationError):
-    return JSONResponse(
-        status_code=400,
-        content={
-            "detail": get_excpetion_data(exc.errors()),
-        },
-    )
-
+app.include_router(solution.router)
 
 # origins allowed
 origins = ["http://localhost:3000", "http://localhost:3000/"]
