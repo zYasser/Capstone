@@ -26,6 +26,11 @@ const SolutionForm = () => {
 
   const [error, setError] = useState("");
   const [currentStep, setCurrentStep] = useState(1);
+  const [weatherInfo, setWeatherInfo] = useState(null);
+  const [latitude, setLatitude] = useState(null);
+  const [longitude, setLongitude] = useState(null);
+
+  var SunCalc = require('suncalc');
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -66,13 +71,16 @@ const SolutionForm = () => {
       const latitude = position.coords.latitude;
       const longitude = position.coords.longitude;
       console.log(`Latitude: ${latitude}, Longitude: ${longitude}`);
+      setLatitude(latitude); // Set latitude state
+      setLongitude(longitude); // Set longitude state
+      
       const weatherData = await Weather({ latitude, longitude });
+      setWeatherInfo(weatherData);
+
+    var times = SunCalc.getTimes(new Date(), latitude, longitude);
+      var sunrisePos = SunCalc.getPosition(times.sunrise, latitude, longitude);
+      console.log(`Solar Altitude: ${sunrisePos.altitude}, Solar Azimuth: ${sunrisePos.azimuth}`);
   
-    if (weatherData) {
-      console.log("Temperature:", weatherData.temperature2m);
-    } else {
-      console.log("Unable to fetch weather data.");
-    }
     }
     
     function error() {
@@ -413,6 +421,16 @@ const SolutionForm = () => {
               >Detect location
               </button> 
             </div>
+
+            <div>
+      {weatherInfo && (
+        <div className="my-4 mr-40 ml-3">
+          <p>Lattitude: {latitude}</p>
+          <p>Longitude: {longitude}</p>
+          <p>Temperature: {weatherInfo.temperature2m}</p>
+        </div>
+      )}
+    </div>
 
         </div>
 
