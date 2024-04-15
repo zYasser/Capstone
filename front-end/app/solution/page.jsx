@@ -2,11 +2,29 @@
 import CostChart from "@/components/CostChart";
 import CostPieChart from "@/components/CostPie";
 import StatsCards from "@/components/StatsCards";
+
 import { useEffect } from "react";
 import { useState } from "react";
+import CartTable from "@/components/CartTable";
 
 export default function Solution() {
   const [domLoaded, setDomLoaded] = useState(false);
+  const cartItems = [
+    {
+      id: 1,
+      type: "Solar Inverter",
+      name: "SolarMax 5000",
+      quantity: 2,
+      price: 1500,
+    },
+    {
+      id: 2,
+      type: "PV",
+      name: "SunPower 320W",
+      quantity: 10,
+      price: 250,
+    },
+  ];
 
   useEffect(() => {
     setDomLoaded(true);
@@ -21,7 +39,7 @@ export default function Solution() {
           </h1>
         </div>
         {domLoaded && (
-          <div className="">
+          <div className="bg-green-200 rounded-lg	shadow-lg">
             <StatsCards />
             <div className="flex justify-center  w-full mx-4 ">
               <div className="bg-white mr-14  shadow-lg w-3/5">
@@ -32,6 +50,13 @@ export default function Solution() {
               <div className="bg-white shadow-lg h-fit w-fit">
                 <CostPieChart></CostPieChart>
               </div>
+            </div>
+            <div className="my-52 flex flex-col items-center">
+              <h1 className="text-center font-serif	text-xl	">Solution's Compunet</h1>
+              <CartTable cartItems={cartItems} />
+            </div>
+            <div>
+              Hello
             </div>
           </div>
         )}

@@ -89,7 +89,7 @@ const SolutionForm = () => {
       const longitude = position.coords.longitude;
       console.log(`Latitude: ${latitude}, Longitude: ${longitude}`);
       const weatherData = await Weather({ latitude, longitude });
-
+      console.log(weatherData)
       if (weatherData) {
         console.log("Temperature:", weatherData.temperature2m);
       } else {
