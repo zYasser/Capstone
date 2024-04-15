@@ -23,19 +23,19 @@ const CostChart = ({ costs }) => {
   console.log(data);
 
   return (
-    <LineChart
-      width={530}
-      height={250}
-      data={data}
-      margin={{ top: 30, right: 30, left: 20, bottom: 5 }}
-    >
-      <CartesianGrid strokeDasharray="3 3" />
-      <XAxis dataKey="year" />
-      <YAxis />
-      <Tooltip />
-      <Legend />
-      <Line type="monotone" dataKey="profit" stroke="#82ca9d" />
-    </LineChart>
+      <ResponsiveContainer width="99%" >
+        <LineChart
+          data={data}
+          margin={{ top: 30, right: 30, left: 20, bottom: 5 }}
+        >
+          <CartesianGrid strokeDasharray="3 3" />
+          <XAxis dataKey="year" />
+          <YAxis />
+          <Tooltip />
+          <Legend />
+          <Line type="monotone" dataKey="profit" stroke="#82ca9d" />
+        </LineChart>
+      </ResponsiveContainer>
   );
 };
 
