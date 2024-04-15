@@ -63,7 +63,7 @@ const StatsCards = () => {
         <div className="relative p-6 rounded-2xl bg-white shadow ">
           <div className="space-y-2">
             <div className="flex items-center space-x-2 rtl:space-x-reverse text-sm font-medium text-gray-500 ">
-              <span>Time to Recover The Cost</span>
+              <span>Time to Cover The Cost</span>
             </div>
 
             <div className="text-3xl">3543</div>

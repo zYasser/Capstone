@@ -52,7 +52,7 @@ export default function Solution() {
               </div>
             </div>
             <div className="my-52 flex flex-col items-center">
-              <h1 className="text-center font-serif	text-xl	">Solution's Compunet</h1>
+              <h1 className="text-center font-serif	text-xl	">Solution's Componentes</h1>
               <CartTable cartItems={cartItems} />
             </div>
             <div>
