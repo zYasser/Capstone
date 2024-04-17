@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Optional
 from pydantic import BaseModel
 
 
@@ -8,4 +8,8 @@ class Device(BaseModel):
 
 
 class SolutionRequest(BaseModel):
-    devices: List[Device]
+    devices: Optional[List[Device]] = None
+    latitude :float
+    longitude :float 
+    day_of_year:int 
+    standard_time_min:int

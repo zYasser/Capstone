@@ -1,4 +1,5 @@
-import React from 'react';
+"use client";
+import React from "react";
 
 const CartTable = ({ cartItems }) => {
   return (
@@ -9,26 +10,44 @@ const CartTable = ({ cartItems }) => {
             <table className="min-w-full">
               <thead className="bg-gray-100 border-b">
                 <tr>
-                  <th scope="col" className="text-sm font-medium text-gray-900 px-6 py-4 text-left">
+                  <th
+                    scope="col"
+                    className="text-sm font-medium text-gray-900 px-6 py-4 text-left"
+                  >
                     Type of Product
                   </th>
-                  <th scope="col" className="text-sm font-medium text-gray-900 px-6 py-4 text-left">
+                  <th
+                    scope="col"
+                    className="text-sm font-medium text-gray-900 px-6 py-4 text-left"
+                  >
                     Name of Product
                   </th>
-                  <th scope="col" className="text-sm font-medium text-gray-900 px-6 py-4 text-left">
+                  <th
+                    scope="col"
+                    className="text-sm font-medium text-gray-900 px-6 py-4 text-left"
+                  >
                     Quantity
                   </th>
-                  <th scope="col" className="text-sm font-medium text-gray-900 px-6 py-4 text-left">
+                  <th
+                    scope="col"
+                    className="text-sm font-medium text-gray-900 px-6 py-4 text-left"
+                  >
                     Price
                   </th>
-                  <th scope="col" className="text-sm font-medium text-gray-900 px-6 py-4 text-left">
+                  <th
+                    scope="col"
+                    className="text-sm font-medium text-gray-900 px-6 py-4 text-left"
+                  >
                     Total Price
                   </th>
                 </tr>
               </thead>
               <tbody>
                 {cartItems.map((item) => (
-                  <tr key={item.id} className="bg-white border-b transition duration-300 ease-in-out hover:bg-gray-100">
+                  <tr
+                    key={item.id}
+                    className="bg-white border-b transition duration-300 ease-in-out hover:bg-gray-100"
+                  >
                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                       {item.type}
                     </td>
