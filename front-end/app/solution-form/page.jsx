@@ -25,6 +25,11 @@ const SolutionForm = () => {
 
   const [error, setError] = useState("");
   const [currentStep, setCurrentStep] = useState(1);
+  const [weatherInfo, setWeatherInfo] = useState(null);
+  const [latitude, setLatitude] = useState(null);
+  const [longitude, setLongitude] = useState(null);
+  const [solarData, setSolarData] = useState(null);
+
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -33,9 +38,6 @@ const SolutionForm = () => {
       [name]: value,
     });
   };
-  const [latitude, setLatitude] = useState(40.7128); // Example: New York City
-  const [longitude, setLongitude] = useState(-74.0059);
-  const [solarData, setSolarData] = useState(null);
 
   useEffect(() => {
     const fetchSolarData = async () => {
@@ -88,6 +90,11 @@ const SolutionForm = () => {
       const latitude = position.coords.latitude;
       const longitude = position.coords.longitude;
       console.log(`Latitude: ${latitude}, Longitude: ${longitude}`);
+      setLatitude(latitude); // Set latitude state
+      setLongitude(longitude); // Set longitude state
+
+      setWeatherInfo({ latitude, longitude });
+
       const weatherData = await Weather({ latitude, longitude });
       console.log(weatherData)
       if (weatherData) {
@@ -421,18 +428,28 @@ const SolutionForm = () => {
                 </div>
               </div>
 
-              <div className="flex my-4 mr-32 ml-2">
-                <p className="font-semibold mr-4 mb-4">Location:</p>
-                <button
-                  type="button"
-                  className="text-black mb-4 underline hover:text-blue-700"
-                  onClick={getWeatherInfo}
-                >
-                  Detect location
-                </button>
-              </div>
+              <div  className="flex my-4 mr-32 ml-2">
+          <p className="font-semibold mr-4 mb-4">Location:</p>
+              <button 
+              type="button"
+              className="text-black mb-4 underline hover:text-blue-700"
+              onClick={getWeatherInfo}
+              >Detect location
+              </button> 
             </div>
-          )}
+
+            <div>
+      {weatherInfo && (
+        <div className="my-4 mr-20">
+          <p>Lattitude: {latitude}</p>
+          <p>Longitude: {longitude}</p>
+        </div>
+      )}
+    </div>
+
+        </div>
+
+        )}
 
           {currentStep === 3 && (
             <div className="flex flex-col items-center">
