@@ -24,6 +24,14 @@ export default function Solution() {
       quantity: 10,
       price: 250,
     },
+    {
+      type: "Solar Inverter",
+      name: "SolarEdge SE3800H",
+      quantity: 10,
+      price: 1500,
+    },
+    { type: "PV", name: "Canadian Solar CS3W-415MS", quantity: 20, price: 200 },
+    { type: "WIND", name: "Vestas V117-4.2MW", quantity: 5, price: 5000 },
   ];
 
   useEffect(() => {
@@ -52,12 +60,13 @@ export default function Solution() {
               </div>
             </div>
             <div className="my-52 flex flex-col items-center">
-              <h1 className="text-center font-serif	text-xl	">Solution's Componentes</h1>
+              <h1 className="text-center font-serif	text-xl	">
+                Solution's Componentes
+              </h1>
               <CartTable cartItems={cartItems} />
             </div>
-            <div>
-              Hello
-            </div>
+            <div>Hello</div>
+            <div></div>
           </div>
         )}
       </div>

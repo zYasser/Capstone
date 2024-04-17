@@ -38,83 +38,106 @@
       "price": "2500.0"
     }
   ],
-  "devices":[
+  "devices": [
     {
-        "name": "Refrigerator",
-        "daily_usage_duration": 24.00
+      "name": "Refrigerator",
+      "daily_usage_duration": 24.0
     },
     {
-        "name": "Freezer",
-        "daily_usage_duration": 24.00
+      "name": "Freezer",
+      "daily_usage_duration": 24.0
     },
     {
-        "name": "Clothes Washer",
-        "daily_usage_duration": 5
+      "name": "Clothes Washer",
+      "daily_usage_duration": 5
     },
     {
-        "name": "Clothes Dryer (Electric)",
-        "daily_usage_duration": 7
+      "name": "Clothes Dryer (Electric)",
+      "daily_usage_duration": 7
     },
     {
-        "name": "Dishwasher",
-        "daily_usage_duration": 2.00
+      "name": "Dishwasher",
+      "daily_usage_duration": 2.0
     },
     {
-        "name": "Oven",
-        "daily_usage_duration": 9
+      "name": "Oven",
+      "daily_usage_duration": 9
     },
     {
-        "name": "Microwave",
-        "daily_usage_duration": 1
+      "name": "Microwave",
+      "daily_usage_duration": 1
     },
     {
-        "name": "Television",
-        "daily_usage_duration": 4.00
+      "name": "Television",
+      "daily_usage_duration": 4.0
     },
     {
-        "name": "Computer",
-        "daily_usage_duration": 6.00
+      "name": "Computer",
+      "daily_usage_duration": 6.0
     },
     {
-        "name": "Gaming Console",
-        "daily_usage_duration": 2.25
+      "name": "Gaming Console",
+      "daily_usage_duration": 2.25
     },
     {
-        "name": "Vacuum Cleaner",
-        "daily_usage_duration": 0.30
+      "name": "Vacuum Cleaner",
+      "daily_usage_duration": 0.3
     },
     {
-        "name": "Air Conditioner",
-        "daily_usage_duration": 6.00
+      "name": "Air Conditioner",
+      "daily_usage_duration": 6.0
     },
     {
-        "name": "Space Heater",
-        "daily_usage_duration": 2.50
+      "name": "Space Heater",
+      "daily_usage_duration": 2.5
     },
     {
-        "name": "Dehumidifier",
-        "daily_usage_duration": 6.00
+      "name": "Dehumidifier",
+      "daily_usage_duration": 6.0
     },
     {
-        "name": "Electric Water Heater",
-        "daily_usage_duration": 0.15
+      "name": "Electric Water Heater",
+      "daily_usage_duration": 0.15
     },
     {
-        "name": "Toaster",
-        "daily_usage_duration": 0.15
+      "name": "Toaster",
+      "daily_usage_duration": 0.15
     },
     {
-        "name": "Coffee Maker",
-        "daily_usage_duration": 0.15
+      "name": "Coffee Maker",
+      "daily_usage_duration": 0.15
     },
     {
-        "name": "Hair Dryer",
-        "daily_usage_duration": 0.15
+      "name": "Hair Dryer",
+      "daily_usage_duration": 0.15
     },
     {
-        "name": "Clothes Iron",
-        "daily_usage_duration": 0.15
+      "name": "Clothes Iron",
+      "daily_usage_duration": 0.15
     }
-]
-
+  ],
+  "Solution": {
+    "devices": [
+      {
+        "id": 14,
+        "daily_usage_duration": 5
+      },
+      {
+        "id": 18,
+        "daily_usage_duration": 7
+      },
+      {
+        "id": 22,
+        "daily_usage_duration": 2.0
+      },
+      {
+        "id": 11,
+        "daily_usage_duration": 9
+      }
+    ],
+    "longitude": 29.2637849,
+    "latitude": 40.8921878,
+    "day_of_year": 53,
+    "standard_time_min": 520
+  }
 }
