@@ -616,7 +616,6 @@ const SolutionForm = () => {
                   </div>
                 </div>
               )}
-
               <div className="flex mb-4 pt-4">
                 <p className="font-semibold">Roof Type:</p>
                 <div className="flex items-center mx-8">
