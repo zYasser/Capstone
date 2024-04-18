@@ -26,6 +26,98 @@ const SolutionForm = () => {
   const [error, setError] = useState("");
   const [currentStep, setCurrentStep] = useState(1);
 
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalContent, setModalContent] = useState('');
+
+
+
+  const handleInfoClick = (type) => {
+    const infoDetails = {
+      solar: (
+        <div>
+          <p>Advantages:</p>
+          <p>• Wide applicability: Solar panels can work in most locations with sufficient sunlight.<br />
+          • Low maintenance: They have no moving parts and require minimal maintenance.<br />
+          • Silent operation: Solar panels produce electricity silently.</p>
+          <p>Disadvantages:</p>
+          <p>• Weather dependent: Solar energy production is dependent on sunshine availability.<br />
+          • Lower power density: Compared to wind turbines, solar panels require more space to generate the same amount of energy.</p>
+        </div>
+      ),
+      wind: (
+        <div>
+          <p>Advantages:</p>
+          <p>• High power density: Wind turbines can generate more electricity per unit of space compared to solar panels (in suitable wind conditions).<br />
+          • Wind is a predictable resource: Wind patterns can be studied and predicted to some extent.</p>
+          <p>Disadvantages:</p>
+          <p>• Site limitations: Wind turbines require sufficient wind resource and open space for efficient operation.<br />
+          • Visual and noise impact: Wind turbines can be visually unappealing and generate noise, which may raise concerns for nearby residents.<br />
+          • High maintenance: Wind turbines require regular maintenance due to their moving parts.</p>
+        </div>
+      ),
+      Slope: (
+        <div>
+          <p>• SELF CLEANING DUE TO THE ANGLE</p>
+          <p>• EASY INSTALLATION</p>
+          <p>• IDEAL TILT ANGLE </p>
+          <p>• MOST COMMON</p>
+          <p>• CHEAPEST OPTION</p>
+          <p>• BEST OPTION FOR MOUNTING</p>
+
+        </div>
+      ), Flat: (
+        <div>
+        <p>• FLEXIBILITY IN LAYOUT</p>
+          <p>• TRACKING SYSTEMS MIGHT NEEDED WHICH IS EXTRA COST</p>
+          <p>• MIDDLE COST</p>
+          <p>• NEEDED MORE ROBUST MOUNTING SYSTEMS WHICH ADD EXTRA COST</p>
+
+        </div>
+      ), Composite: (
+        <div>
+          <p>• COMPLEX MOUNTING AND TRACKING SYSTEM</p>
+          <p>• HIGHEST COST</p>
+          <p>• NEEDED MORE ROBUST MOUNTING SYSTEMS WHICH ADD EXTRA COST</p>
+
+        </div>
+      ), OnGrid: (
+        <div>
+          <p>Advantages:</p>
+          <p>•	Lower initial cost: No need for batteries, simplifying the system and reducing upfront investment <br />
+          • 	Reliable backup: Access to grid power when solar generation is insufficient <br />
+          • Net metering: Receive credits for exported electricity, offsetting electricity bills </p>
+          <p>Disadvantages:</p>
+          <p>• 	Dependence on the grid: Power outages affect your supply [10].<br />
+          • Limited export quotas: Excess generation beyond a threshold might not be credited <br />
+          • Additional fees: Some grid operators charge fees for exported energy.<br />
+          </p>
+        </div>
+      ), OffGrid : (
+        <div>
+          <p>Advantages:</p>
+          <p>• 	Energy independence: Freedom from grid outages and fluctuations.<br />
+          • 	Flexibility: Suitable for remote locations or areas with unreliable grid access.<br />
+          •  Environmental benefits: Reduced reliance on fossil fuels.</p>
+          <p>Disadvantages:</p>
+          <p>• 	Higher initial cost: Batteries and additional equipment increase upfront investment..<br />
+          • System complexity: Requires careful sizing and management to ensure sufficient energy storage.</p>
+        </div>
+      ),
+    };
+
+    setModalContent(infoDetails[type]);
+    setIsModalOpen(true);
+};
+
+  
+
+
+
+
+
+
+
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData({
@@ -449,6 +541,11 @@ const SolutionForm = () => {
                       onChange={handleCheckboxChange}
                     />
                     <label className="ml-2">Solar</label>
+                    <div
+                    className="flex h-6 w-6 items-center justify-center text-xs bg-gray-200 rounded-full ml-2 cursor-pointer"
+                    onClick={() => handleInfoClick("solar")}
+                    title="Click for more info on Solar Energy"
+                   >?</div>
                   </div>
 
                   <div className="flex items-center mx-8">
@@ -461,9 +558,35 @@ const SolutionForm = () => {
                       onChange={handleCheckboxChange}
                     />
                     <label className="ml-2">Wind</label>
+                    <div
+                      className="flex h-6 w-6 items-center justify-center text-xs bg-gray-200 rounded-full ml-2 cursor-pointer"
+                      onClick={() => handleInfoClick("wind")}
+                      title="Click for more info on Wind Energy"
+                    >?</div>
                   </div>
                 </div>
               </div>
+              {isModalOpen && (
+  <div className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50">
+    <div className="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white">
+      <div className="mt-3 text-center">
+        <h3 className="text-lg leading-6 font-medium text-gray-900">Information</h3>
+        <div className="mt-2 px-7 py-3">
+          <p className="text-sm text-gray-500">{modalContent}</p>
+        </div>
+        <div className="items-center px-4 py-3">
+          <button
+            className="px-4 py-2 bg-gray-500 text-white text-base font-medium rounded-md w-full shadow-sm hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-300"
+            onClick={() => setIsModalOpen(false)}
+          >
+            Close
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+)}
+
 
               {formData.solution_type === "solar" && (
                 <div className="flex mb-4 pt-4 pl-2">
@@ -493,7 +616,6 @@ const SolutionForm = () => {
                   </div>
                 </div>
               )}
-
               <div className="flex mb-4 pt-4">
                 <p className="font-semibold">Roof Type:</p>
                 <div className="flex items-center mx-8">
@@ -501,11 +623,33 @@ const SolutionForm = () => {
                     type="checkbox"
                     id="straight"
                     name="roof_type"
-                    value="straight"
-                    checked={formData.roof_type === "straight"}
+                    value="Slope"
+                    checked={formData.roof_type === "Slope"}
                     onChange={handleCheckboxChange}
                   />
-                  <label className="ml-2">Straight</label>
+                  <label className="ml-2">Slope</label>
+                  <div
+                      className="flex h-6 w-6 items-center justify-center text-xs bg-gray-200 rounded-full ml-2 cursor-pointer"
+                      onClick={() => handleInfoClick("Slope")}
+                      title="Click for more info on Slope Type"
+                    >?</div>
+                </div>
+
+                <div className="flex items-center mx-8">
+                  <input
+                    type="checkbox"
+                    id="straight"
+                    name="roof_type"
+                    value="Flat"
+                    checked={formData.roof_type === "Flat"}
+                    onChange={handleCheckboxChange}
+                  />
+                  <label className="ml-2">Flat</label>
+                  <div
+                      className="flex h-6 w-6 items-center justify-center text-xs bg-gray-200 rounded-full ml-2 cursor-pointer"
+                      onClick={() => handleInfoClick("Flat")}
+                      title="Click for more info on Flat Type"
+                    >?</div>
                 </div>
 
                 <div className="flex items-center mx-8">
@@ -513,11 +657,16 @@ const SolutionForm = () => {
                     type="checkbox"
                     id="curved"
                     name="roof_type"
-                    value="curved"
-                    checked={formData.roof_type === "curved"}
+                    value="Composite"
+                    checked={formData.roof_type === "Composite"}
                     onChange={handleCheckboxChange}
                   />
-                  <label className="ml-2">Curved</label>
+                  <label className="ml-2">Composite</label>
+                  <div
+                      className="flex h-6 w-6 items-center justify-center text-xs bg-gray-200 rounded-full ml-2 cursor-pointer"
+                      onClick={() => handleInfoClick("Composite")}
+                      title="Click for more info on Composite Type"
+                    >?</div>
                 </div>
               </div>
 
@@ -533,6 +682,11 @@ const SolutionForm = () => {
                     onChange={handleCheckboxChange}
                   />
                   <label className="ml-2">On-Grid</label>
+                  <div
+                      className="flex h-6 w-6 items-center justify-center text-xs bg-gray-200 rounded-full ml-2 cursor-pointer"
+                      onClick={() => handleInfoClick("OnGrid")}
+                      title="Click for more info for On-grid"
+                    >?</div>
                 </div>
 
                 <div className="flex items-center mx-8">
@@ -541,10 +695,15 @@ const SolutionForm = () => {
                     id="off_grid"
                     name="grid_type"
                     value="off_grid"
-                    checked={formData.grid_type === "off_grid"}
+                    checked={formData.grid_type === "offGrid"}
                     onChange={handleCheckboxChange}
                   />
                   <label className="ml-2">Off-grid</label>
+                  <div
+                      className="flex h-6 w-6 items-center justify-center text-xs bg-gray-200 rounded-full ml-2 cursor-pointer"
+                      onClick={() => handleInfoClick("OffGrid")}
+                      title="Click for more info for Off-grid"
+                    >?</div>
                 </div>
               </div>
 
