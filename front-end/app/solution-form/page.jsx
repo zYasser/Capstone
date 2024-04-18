@@ -28,8 +28,14 @@ const SolutionForm = () => {
   const [weatherInfo, setWeatherInfo] = useState(null);
   const [latitude, setLatitude] = useState(null);
   const [longitude, setLongitude] = useState(null);
-  const [solarData, setSolarData] = useState(null);
+  const [altitude, setAltitude] = useState(null);
+  const [azimuth, setAzimuth] = useState(null);
+  const [solarDeclination, setSolarDeclination] = useState(null);
+  const [trueSolarTime, setTrueSolarTime] = useState(null);
+  const [solarHourAngle, setSolarHourAngle] = useState(null);
+  const [angleOfIncidence, setAngleOfIncidence] = useState(null);
 
+  var SunCalc = require('suncalc');
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -39,32 +45,10 @@ const SolutionForm = () => {
     });
   };
 
-  useEffect(() => {
-    const fetchSolarData = async () => {
-      const date = new Date();
-      const apiUrl = `https://api.sunrise-sunset.org/json?lat=${latitude}&lng=${longitude}&date=${
-        date.toISOString().split("T")[0]
-      }`;
-
-      try {
-        const response = await fetch(apiUrl);
-        const data = await response.json();
-        console.log(data);
-        const { declination, azimuth, altitude } = data.results.solar_noon;
-        console.log(declination);
-        setSolarData({ declination, azimuth, altitude });
-      } catch (error) {
-        console.error("Error fetching solar data:", error);
-      }
-    };
-
-    fetchSolarData();
-  }, [latitude, longitude]);
-
   const handleCheckboxChange = (e) => {
     const { name, value, type, checked } = e.target;
-    if (type === "checkbox") {
-      if (name === "default_consumption") {
+    if (type === 'checkbox') {
+      if (name === 'default_consumption') {
         // Handle default consumption checkbox separately
         setFormData({
           ...formData,
@@ -78,6 +62,8 @@ const SolutionForm = () => {
       }
     }
   };
+  
+
 
   const getWeatherInfo = async () => {
     if (navigator.geolocation) {
@@ -85,35 +71,80 @@ const SolutionForm = () => {
     } else {
       setError("Geolocation is not supported in this browser");
     }
-
+    
     async function success(position) {
       const latitude = position.coords.latitude;
       const longitude = position.coords.longitude;
       console.log(`Latitude: ${latitude}, Longitude: ${longitude}`);
-      setLatitude(latitude); // Set latitude state
-      setLongitude(longitude); // Set longitude state
-
-      setWeatherInfo({ latitude, longitude });
-
+      setLatitude(latitude); 
+      setLongitude(longitude); 
+      
       const weatherData = await Weather({ latitude, longitude });
-      console.log(weatherData)
-      if (weatherData) {
-        console.log("Temperature:", weatherData.temperature2m);
-      } else {
-        console.log("Unable to fetch weather data.");
-      }
+      setWeatherInfo(weatherData);
+
+    var times = SunCalc.getTimes(new Date(), latitude, longitude);
+      var sunrisePos = SunCalc.getPosition(times.sunrise, latitude, longitude);
+      console.log(`Solar Altitude: ${sunrisePos.altitude}, Solar Azimuth: ${sunrisePos.azimuth}`);
+      setAltitude(sunrisePos.altitude); // Set latitude state
+      setAzimuth(sunrisePos.azimuth); // Set longitude state
     }
 
+    var now = new Date();
+    var start = new Date(now.getFullYear(), 0, 0);
+    var diff = now - start;
+    var dayInMs = 1000 * 60 * 60 * 24
+    var dayOfYear = Math.floor(diff / dayInMs); 
+
+    const solarDeclination = 23.27 * Math.sin(360 * (dayOfYear + 283) /265)
+    setSolarDeclination(solarDeclination);
+
+    var currentHour = now.getHours();
+    var currentMinute = now.getMinutes();
+  
+  // Calculate the total minutes passed since midnight
+    var totalMinutesPassed = (currentHour * 60) + currentMinute;
+
+    var EOT = 5
+
+    const trueSolarTime = totalMinutesPassed + (EOT * 4) + (longitude * 4)
+    setTrueSolarTime(trueSolarTime);
+
+    const solarHourAngle = (trueSolarTime / 4) - 180
+    setSolarHourAngle(solarHourAngle);
+
+    const angleOfIncidence = 90 - altitude - solarDeclination
+    setAngleOfIncidence(angleOfIncidence);
+
+    
     function error() {
       setError("Unable to retrieve your location");
     }
     setError("");
-  };
 
-  const handleSubmit = (e) => {
+   };
+
+
+   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(formData);
+  
+    const output = {
+      ...formData, // Include existing form data
+      latitude: latitude,
+      longitude: longitude,
+      altitude: altitude,
+      azimuth: azimuth,
+      // Include weather information only if available
+      averageSolarIrradiancePerDay: weatherInfo ? weatherInfo.averageSolarIrradiancePerDay : null,
+      averageSunshineDuration: weatherInfo ? weatherInfo.averageSunshineDuration : null,
+      solarDeclination: solarDeclination,
+      trueSolarTime: trueSolarTime,
+      solarHourAngle: solarHourAngle,
+      angleOfIncidence: angleOfIncidence,
+    };
+  
+    console.log(output);
   };
+  
 
   const handleAddList = (e) => {
     // Create a new object with the selected device
@@ -428,28 +459,28 @@ const SolutionForm = () => {
                 </div>
               </div>
 
-              <div  className="flex my-4 mr-32 ml-2">
-          <p className="font-semibold mr-4 mb-4">Location:</p>
-              <button 
-              type="button"
-              className="text-black mb-4 underline hover:text-blue-700"
-              onClick={getWeatherInfo}
-              >Detect location
-              </button> 
-            </div>
+              <div className="flex my-4 mr-32 ml-2">
+                <p className="font-semibold mr-4 mb-4">Location:</p>
+                <button
+                  type="button"
+                  className="text-black mb-4 underline hover:text-blue-700"
+                  onClick={getWeatherInfo}
+                >
+                  Detect location
+                </button>
+              </div>
 
-            <div>
-      {weatherInfo && (
-        <div className="my-4 mr-20">
+              <div>
+
+        <div className="my-4 mr-40 ml-3">
           <p>Lattitude: {latitude}</p>
           <p>Longitude: {longitude}</p>
         </div>
-      )}
+
     </div>
 
-        </div>
-
-        )}
+            </div>
+          )}
 
           {currentStep === 3 && (
             <div className="flex flex-col items-center">
@@ -646,6 +677,7 @@ const SolutionForm = () => {
             <button
               type="submit"
               className="w-20 sm:w-24 bg-green-400 text-gray-800 py-2 px-2 rounded-md"
+              onClick={handleSubmit}
             >
               Submit
             </button>
