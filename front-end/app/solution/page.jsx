@@ -61,7 +61,7 @@ export default function Solution() {
             </div>
             <div className="my-52 flex flex-col items-center">
               <h1 className="text-center font-serif	text-xl	">
-                Solution's Componentes
+                Solution's Components
               </h1>
               <CartTable cartItems={cartItems} />
             </div>

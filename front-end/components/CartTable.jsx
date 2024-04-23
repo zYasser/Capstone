@@ -1,7 +1,11 @@
-"use client";
 import React from "react";
 
 const CartTable = ({ cartItems }) => {
+  // Calculate total cost
+  const totalCost = cartItems.reduce((acc, item) => {
+    return acc + item.price * item.quantity;
+  }, 0);
+
   return (
     <div className="flex flex-col shadow-m w-11/12">
       <div className="overflow-x-auto  sm:-mx-6 lg:-mx-8">
@@ -69,6 +73,10 @@ const CartTable = ({ cartItems }) => {
             </table>
           </div>
         </div>
+      </div>
+      {/* Display total cost */}
+      <div className="mt-4 text-right">
+        <span className=" font-black">Total Cost: ${totalCost.toFixed(2)}</span>
       </div>
     </div>
   );

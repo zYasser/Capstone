@@ -372,7 +372,7 @@ const SolutionForm = () => {
                         onChange={handleInputChange}
                       >
                         <option value="">Select device</option>
-                        <option value="11">Refrigerator</option>
+                        <option value="Refrigerator">Refrigerator</option>
                         <option value="12">Freezer</option>
                         <option value="13">Washing Machine</option>
                         <option value="14">Dryer Machine</option>
