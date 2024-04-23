@@ -16,6 +16,7 @@ const SolutionForm = () => {
     inverter_type: "",
     panel_type: "",
     electrical_consumption: "",
+    average_consumption: "",
     building_size: "",
     device_consumption: "",
     excess_energy: "",
@@ -458,13 +459,13 @@ const handleSolutionCustomizationChange = (e) => {
                   <div className="pt-4 flex flex-col items-start mb-4">
                     <p className="font-semibold">Average:</p>
                     <input
-                      id="device_powered"
-                      name="device_powered"
+                      id="average_consumption "
+                      name="average_consumption"
                       type="text"
                       required
                       className="mt-2 mb-4 w-24 px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
                       placeholder=""
-                      value={formData.device_powered}
+                      value={formData.average_consumption}
                       onChange={handleInputChange}
                     />
                   </div>
@@ -788,9 +789,7 @@ const handleSolutionCustomizationChange = (e) => {
                     id="off_grid"
                     name="grid_type"
                     value="off_grid"
-                    disabled={useDefaultSettings}
-
-                    checked={formData.grid_type === "offGrid"}
+                    checked={formData.grid_type === "off_grid"}
                     onChange={handleCheckboxChange}
                   />
                   <label className="ml-2">Off-grid</label>
