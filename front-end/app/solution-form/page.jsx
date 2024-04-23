@@ -16,6 +16,7 @@ const SolutionForm = () => {
     inverter_type: "",
     panel_type: "",
     electrical_consumption: "",
+    average_consumption: "",
     building_size: "",
     device_consumption: "",
     excess_energy: "",
@@ -34,6 +35,8 @@ const SolutionForm = () => {
   const [trueSolarTime, setTrueSolarTime] = useState(null);
   const [solarHourAngle, setSolarHourAngle] = useState(null);
   const [angleOfIncidence, setAngleOfIncidence] = useState(null);
+  const [useDefaultSettings, setUseDefaultSettings] = useState(false);
+
 
   var SunCalc = require('suncalc');
 
@@ -121,12 +124,16 @@ const SolutionForm = () => {
 };
 
   
+const handleDefaultCustomizeChange = (e) => {
+  setUseDefaultSettings(e.target.id === "default" && e.target.checked);
 
+};
 
-
-
-
-
+const handleSolutionCustomizationChange = (e) => {
+  const { id, checked } = e.target;
+  // Toggle the state based on which checkbox was clicked
+  setIsCustomizeSelected(id === 'customize' ? checked : !checked);
+};
 
 
   const handleInputChange = (e) => {
@@ -452,13 +459,13 @@ const SolutionForm = () => {
                   <div className="pt-4 flex flex-col items-start mb-4">
                     <p className="font-semibold">Average:</p>
                     <input
-                      id="device_powered"
-                      name="device_powered"
+                      id="average_consumption "
+                      name="average_consumption"
                       type="text"
                       required
                       className="mt-2 mb-4 w-24 px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
                       placeholder=""
-                      value={formData.device_powered}
+                      value={formData.average_consumption}
                       onChange={handleInputChange}
                     />
                   </div>
@@ -575,7 +582,34 @@ const SolutionForm = () => {
           )}
 
           {currentStep === 3 && (
+             
             <div className="flex flex-col items-center">
+            <div className="w-full flex justify-center mb-4">
+    <div className="flex items-center">
+            <p className="font-semibold mr-4">Solution:</p>
+            <div className="flex items-center">
+            <input
+                 type="checkbox"
+                 id="default"
+                  checked={useDefaultSettings}
+                  onChange={handleDefaultCustomizeChange}
+                 className="form-checkbox h-5 w-5 text-green-600"
+
+              />
+               <label htmlFor="default" className="ml-2 mr-6">Default</label>
+                <input
+                type="checkbox"
+                id="customize"
+                checked={!useDefaultSettings}
+                onChange={handleDefaultCustomizeChange}
+                className="form-checkbox h-5 w-5 text-green-600"
+               />
+      <label htmlFor="customize" className="ml-2">Customize</label>
+    </div>
+  </div>
+</div>
+
+     
               <div className="flex items-center mb-4 mr-3">
                 <p className="font-semibold">Solution Type:</p>
                 <div className="flex">
@@ -585,6 +619,8 @@ const SolutionForm = () => {
                       id="solar"
                       name="solution_type"
                       value="solar"
+                      disabled={useDefaultSettings}
+
                       checked={formData.solution_type === "solar"}
                       onChange={handleCheckboxChange}
                     />
@@ -602,6 +638,8 @@ const SolutionForm = () => {
                       id="wind"
                       name="solution_type"
                       value="wind"
+                      disabled={useDefaultSettings}
+
                       checked={formData.solution_type === "wind"}
                       onChange={handleCheckboxChange}
                     />
@@ -672,6 +710,8 @@ const SolutionForm = () => {
                     id="straight"
                     name="roof_type"
                     value="Slope"
+                    disabled={useDefaultSettings}
+
                     checked={formData.roof_type === "Slope"}
                     onChange={handleCheckboxChange}
                   />
@@ -689,6 +729,8 @@ const SolutionForm = () => {
                     id="straight"
                     name="roof_type"
                     value="Flat"
+                    disabled={useDefaultSettings}
+
                     checked={formData.roof_type === "Flat"}
                     onChange={handleCheckboxChange}
                   />
@@ -706,6 +748,8 @@ const SolutionForm = () => {
                     id="curved"
                     name="roof_type"
                     value="Composite"
+                    disabled={useDefaultSettings}
+
                     checked={formData.roof_type === "Composite"}
                     onChange={handleCheckboxChange}
                   />
@@ -726,6 +770,8 @@ const SolutionForm = () => {
                     id="on_grid"
                     name="grid_type"
                     value="on_grid"
+                    disabled={useDefaultSettings}
+
                     checked={formData.grid_type === "on_grid"}
                     onChange={handleCheckboxChange}
                   />
@@ -743,7 +789,7 @@ const SolutionForm = () => {
                     id="off_grid"
                     name="grid_type"
                     value="off_grid"
-                    checked={formData.grid_type === "offGrid"}
+                    checked={formData.grid_type === "off_grid"}
                     onChange={handleCheckboxChange}
                   />
                   <label className="ml-2">Off-grid</label>
@@ -787,6 +833,8 @@ const SolutionForm = () => {
                     id="type_1"
                     name="inverter_type"
                     value="type_1"
+                    disabled={useDefaultSettings}
+
                     checked={formData.inverter_type === "type_1"}
                     onChange={handleCheckboxChange}
                   />
@@ -799,6 +847,8 @@ const SolutionForm = () => {
                     id="type_2"
                     name="inverter_type"
                     value="type_2"
+                    disabled={useDefaultSettings}
+
                     checked={formData.inverter_type === "type_2"}
                     onChange={handleCheckboxChange}
                   />

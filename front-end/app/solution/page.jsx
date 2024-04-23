@@ -15,7 +15,7 @@ export default function Solution() {
       type: "Solar Inverter",
       name: "SolarMax 5000",
       quantity: 2,
-      price: 1500,
+      price: 170,
     },
     {
       id: 2,
