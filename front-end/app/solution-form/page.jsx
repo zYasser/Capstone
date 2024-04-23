@@ -415,24 +415,24 @@ const SolutionForm = () => {
                       >
                         <option value="">Select device</option>
                         <option value="Refrigerator">Refrigerator</option>
-                        <option value="12">Freezer</option>
-                        <option value="13">Washing Machine</option>
-                        <option value="14">Dryer Machine</option>
-                        <option value="15">Dishwasher</option>
-                        <option value="16">Oven</option>
-                        <option value="17">Microwave</option>
-                        <option value="18">Television</option>
-                        <option value="19">Computer</option>
-                        <option value="20">Gaming Console</option>
-                        <option value="21">Vacuum Cleaner</option>
-                        <option value="22">Air Conditioner</option>
-                        <option value="23">Space Heater</option>
-                        <option value="24">Dehumidifier</option>
-                        <option value="25">Water Heater</option>
-                        <option value="26">Toaster</option>
-                        <option value="27">Coffee Maker</option>
-                        <option value="28">Hair Dryer</option>
-                        <option value="29">Clothes Iron</option>
+                        <option value="Freezer">Freezer</option>
+                        <option value="Washing Machine">Washing Machine</option>
+                        <option value="Dryer Machine">Dryer Machine</option>
+                        <option value="Dishwasher">Dishwasher</option>
+                        <option value="Oven">Oven</option>
+                        <option value="Microwave">Microwave</option>
+                        <option value="Television">Television</option>
+                        <option value="Computer">Computer</option>
+                        <option value="Gaming Console">Gaming Console</option>
+                        <option value="Vacuum Cleaner">Vacuum Cleaner</option>
+                        <option value="Air Conditioner">Air Conditioner</option>
+                        <option value="Space Heater">Space Heater</option>
+                        <option value="Dehumidifier">Dehumidifier</option>
+                        <option value="Water Heater">Water Heater</option>
+                        <option value="Toaster">Toaster</option>
+                        <option value="Coffee Maker">Coffee Maker</option>
+                        <option value="Hair Dryer">Hair Dryer</option>
+                        <option value="Clothes Iron">Clothes Iron</option>
                       </select>
                       <button
                         type="button"
