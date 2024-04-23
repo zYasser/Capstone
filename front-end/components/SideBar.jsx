@@ -7,7 +7,7 @@ const SideBar = () => {
         <div className="fixed flex flex-col top-0 left-0 w-64 bg-white h-full border-r">
           <div>
             <img src="./green.png" alt="" className="object-scale-down h-12" />
-            <h1 href="#" classNameN="text-xl font-bold font text-green-800">
+            <h1 href="#" className="text-xl font-bold font text-green-800">
               Green Energy Solutions
             </h1>
           </div>

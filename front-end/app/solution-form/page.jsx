@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from "react";
 import DynamicAlert from "@/components/DynamicAlert";
 import Weather from "@/api/Weather";
+import { useRouter } from "next/navigation";
 
 // Import statements
 
@@ -37,36 +38,55 @@ const SolutionForm = () => {
   const [angleOfIncidence, setAngleOfIncidence] = useState(null);
   const [useDefaultSettings, setUseDefaultSettings] = useState(false);
 
-
-  var SunCalc = require('suncalc');
+  var SunCalc = require("suncalc");
 
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [modalContent, setModalContent] = useState('');
+  const [modalContent, setModalContent] = useState("");
 
-
+  const router = useRouter();
 
   const handleInfoClick = (type) => {
     const infoDetails = {
       solar: (
         <div>
           <p>Advantages:</p>
-          <p>• Wide applicability: Solar panels can work in most locations with sufficient sunlight.<br />
-          • Low maintenance: They have no moving parts and require minimal maintenance.<br />
-          • Silent operation: Solar panels produce electricity silently.</p>
+          <p>
+            • Wide applicability: Solar panels can work in most locations with
+            sufficient sunlight.
+            <br />
+            • Low maintenance: They have no moving parts and require minimal
+            maintenance.
+            <br />• Silent operation: Solar panels produce electricity silently.
+          </p>
           <p>Disadvantages:</p>
-          <p>• Weather dependent: Solar energy production is dependent on sunshine availability.<br />
-          • Lower power density: Compared to wind turbines, solar panels require more space to generate the same amount of energy.</p>
+          <p>
+            • Weather dependent: Solar energy production is dependent on
+            sunshine availability.
+            <br />• Lower power density: Compared to wind turbines, solar panels
+            require more space to generate the same amount of energy.
+          </p>
         </div>
       ),
       wind: (
         <div>
           <p>Advantages:</p>
-          <p>• High power density: Wind turbines can generate more electricity per unit of space compared to solar panels (in suitable wind conditions).<br />
-          • Wind is a predictable resource: Wind patterns can be studied and predicted to some extent.</p>
+          <p>
+            • High power density: Wind turbines can generate more electricity
+            per unit of space compared to solar panels (in suitable wind
+            conditions).
+            <br />• Wind is a predictable resource: Wind patterns can be studied
+            and predicted to some extent.
+          </p>
           <p>Disadvantages:</p>
-          <p>• Site limitations: Wind turbines require sufficient wind resource and open space for efficient operation.<br />
-          • Visual and noise impact: Wind turbines can be visually unappealing and generate noise, which may raise concerns for nearby residents.<br />
-          • High maintenance: Wind turbines require regular maintenance due to their moving parts.</p>
+          <p>
+            • Site limitations: Wind turbines require sufficient wind resource
+            and open space for efficient operation.
+            <br />
+            • Visual and noise impact: Wind turbines can be visually unappealing
+            and generate noise, which may raise concerns for nearby residents.
+            <br />• High maintenance: Wind turbines require regular maintenance
+            due to their moving parts.
+          </p>
         </div>
       ),
       Slope: (
@@ -77,64 +97,79 @@ const SolutionForm = () => {
           <p>• MOST COMMON</p>
           <p>• CHEAPEST OPTION</p>
           <p>• BEST OPTION FOR MOUNTING</p>
-
         </div>
-      ), Flat: (
+      ),
+      Flat: (
         <div>
-        <p>• FLEXIBILITY IN LAYOUT</p>
+          <p>• FLEXIBILITY IN LAYOUT</p>
           <p>• TRACKING SYSTEMS MIGHT NEEDED WHICH IS EXTRA COST</p>
           <p>• MIDDLE COST</p>
           <p>• NEEDED MORE ROBUST MOUNTING SYSTEMS WHICH ADD EXTRA COST</p>
-
         </div>
-      ), Composite: (
+      ),
+      Composite: (
         <div>
           <p>• COMPLEX MOUNTING AND TRACKING SYSTEM</p>
           <p>• HIGHEST COST</p>
           <p>• NEEDED MORE ROBUST MOUNTING SYSTEMS WHICH ADD EXTRA COST</p>
-
         </div>
-      ), OnGrid: (
+      ),
+      OnGrid: (
         <div>
           <p>Advantages:</p>
-          <p>•	Lower initial cost: No need for batteries, simplifying the system and reducing upfront investment <br />
-          • 	Reliable backup: Access to grid power when solar generation is insufficient <br />
-          • Net metering: Receive credits for exported electricity, offsetting electricity bills </p>
+          <p>
+            • Lower initial cost: No need for batteries, simplifying the system
+            and reducing upfront investment <br />
+            • Reliable backup: Access to grid power when solar generation is
+            insufficient <br />• Net metering: Receive credits for exported
+            electricity, offsetting electricity bills{" "}
+          </p>
           <p>Disadvantages:</p>
-          <p>• 	Dependence on the grid: Power outages affect your supply [10].<br />
-          • Limited export quotas: Excess generation beyond a threshold might not be credited <br />
-          • Additional fees: Some grid operators charge fees for exported energy.<br />
+          <p>
+            • Dependence on the grid: Power outages affect your supply [10].
+            <br />
+            • Limited export quotas: Excess generation beyond a threshold might
+            not be credited <br />
+            • Additional fees: Some grid operators charge fees for exported
+            energy.
+            <br />
           </p>
         </div>
-      ), OffGrid : (
+      ),
+      OffGrid: (
         <div>
           <p>Advantages:</p>
-          <p>• 	Energy independence: Freedom from grid outages and fluctuations.<br />
-          • 	Flexibility: Suitable for remote locations or areas with unreliable grid access.<br />
-          •  Environmental benefits: Reduced reliance on fossil fuels.</p>
+          <p>
+            • Energy independence: Freedom from grid outages and fluctuations.
+            <br />
+            • Flexibility: Suitable for remote locations or areas with
+            unreliable grid access.
+            <br />• Environmental benefits: Reduced reliance on fossil fuels.
+          </p>
           <p>Disadvantages:</p>
-          <p>• 	Higher initial cost: Batteries and additional equipment increase upfront investment..<br />
-          • System complexity: Requires careful sizing and management to ensure sufficient energy storage.</p>
+          <p>
+            • Higher initial cost: Batteries and additional equipment increase
+            upfront investment..
+            <br />• System complexity: Requires careful sizing and management to
+            ensure sufficient energy storage.
+          </p>
         </div>
       ),
     };
 
     setModalContent(infoDetails[type]);
     setIsModalOpen(true);
-};
+  };
 
-  
-const handleDefaultCustomizeChange = (e) => {
-  setUseDefaultSettings(e.target.id === "default" && e.target.checked);
+  const handleDefaultCustomizeChange = (e) => {
+    setUseDefaultSettings(e.target.id === "default" && e.target.checked);
+  };
 
-};
-
-const handleSolutionCustomizationChange = (e) => {
-  const { id, checked } = e.target;
-  // Toggle the state based on which checkbox was clicked
-  setIsCustomizeSelected(id === 'customize' ? checked : !checked);
-};
-
+  const handleSolutionCustomizationChange = (e) => {
+    const { id, checked } = e.target;
+    // Toggle the state based on which checkbox was clicked
+    setIsCustomizeSelected(id === "customize" ? checked : !checked);
+  };
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -146,8 +181,8 @@ const handleSolutionCustomizationChange = (e) => {
 
   const handleCheckboxChange = (e) => {
     const { name, value, type, checked } = e.target;
-    if (type === 'checkbox') {
-      if (name === 'default_consumption') {
+    if (type === "checkbox") {
+      if (name === "default_consumption") {
         // Handle default consumption checkbox separately
         setFormData({
           ...formData,
@@ -161,8 +196,6 @@ const handleSolutionCustomizationChange = (e) => {
       }
     }
   };
-  
-
 
   const getWeatherInfo = async () => {
     if (navigator.geolocation) {
@@ -170,20 +203,22 @@ const handleSolutionCustomizationChange = (e) => {
     } else {
       setError("Geolocation is not supported in this browser");
     }
-    
+
     async function success(position) {
       const latitude = position.coords.latitude;
       const longitude = position.coords.longitude;
       console.log(`Latitude: ${latitude}, Longitude: ${longitude}`);
-      setLatitude(latitude); 
-      setLongitude(longitude); 
-      
+      setLatitude(latitude);
+      setLongitude(longitude);
+
       const weatherData = await Weather({ latitude, longitude });
       setWeatherInfo(weatherData);
 
-    var times = SunCalc.getTimes(new Date(), latitude, longitude);
+      var times = SunCalc.getTimes(new Date(), latitude, longitude);
       var sunrisePos = SunCalc.getPosition(times.sunrise, latitude, longitude);
-      console.log(`Solar Altitude: ${sunrisePos.altitude}, Solar Azimuth: ${sunrisePos.azimuth}`);
+      console.log(
+        `Solar Altitude: ${sunrisePos.altitude}, Solar Azimuth: ${sunrisePos.azimuth}`
+      );
       setAltitude(sunrisePos.altitude); // Set latitude state
       setAzimuth(sunrisePos.azimuth); // Set longitude state
     }
@@ -191,41 +226,38 @@ const handleSolutionCustomizationChange = (e) => {
     var now = new Date();
     var start = new Date(now.getFullYear(), 0, 0);
     var diff = now - start;
-    var dayInMs = 1000 * 60 * 60 * 24
-    var dayOfYear = Math.floor(diff / dayInMs); 
+    var dayInMs = 1000 * 60 * 60 * 24;
+    var dayOfYear = Math.floor(diff / dayInMs);
 
-    const solarDeclination = 23.27 * Math.sin(360 * (dayOfYear + 283) /265)
+    const solarDeclination = 23.27 * Math.sin((360 * (dayOfYear + 283)) / 265);
     setSolarDeclination(solarDeclination);
 
     var currentHour = now.getHours();
     var currentMinute = now.getMinutes();
-  
-  // Calculate the total minutes passed since midnight
-    var totalMinutesPassed = (currentHour * 60) + currentMinute;
 
-    var EOT = 5
+    // Calculate the total minutes passed since midnight
+    var totalMinutesPassed = currentHour * 60 + currentMinute;
 
-    const trueSolarTime = totalMinutesPassed + (EOT * 4) + (longitude * 4)
+    var EOT = 5;
+
+    const trueSolarTime = totalMinutesPassed + EOT * 4 + longitude * 4;
     setTrueSolarTime(trueSolarTime);
 
-    const solarHourAngle = (trueSolarTime / 4) - 180
+    const solarHourAngle = trueSolarTime / 4 - 180;
     setSolarHourAngle(solarHourAngle);
 
-    const angleOfIncidence = 90 - altitude - solarDeclination
+    const angleOfIncidence = 90 - altitude - solarDeclination;
     setAngleOfIncidence(angleOfIncidence);
 
-    
     function error() {
       setError("Unable to retrieve your location");
     }
     setError("");
+  };
 
-   };
-
-
-   const handleSubmit = (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-  
+    router.p;
     const output = {
       ...formData, // Include existing form data
       latitude: latitude,
@@ -233,17 +265,20 @@ const handleSolutionCustomizationChange = (e) => {
       altitude: altitude,
       azimuth: azimuth,
       // Include weather information only if available
-      averageSolarIrradiancePerDay: weatherInfo ? weatherInfo.averageSolarIrradiancePerDay : null,
-      averageSunshineDuration: weatherInfo ? weatherInfo.averageSunshineDuration : null,
+      averageSolarIrradiancePerDay: weatherInfo
+        ? weatherInfo.averageSolarIrradiancePerDay
+        : null,
+      averageSunshineDuration: weatherInfo
+        ? weatherInfo.averageSunshineDuration
+        : null,
       solarDeclination: solarDeclination,
       trueSolarTime: trueSolarTime,
       solarHourAngle: solarHourAngle,
       angleOfIncidence: angleOfIncidence,
     };
-  
+    router.push("solution");
     console.log(output);
   };
-  
 
   const handleAddList = (e) => {
     // Create a new object with the selected device
@@ -570,46 +605,44 @@ const handleSolutionCustomizationChange = (e) => {
               </div>
 
               <div>
-
-        <div className="my-4 mr-40 ml-3">
-          <p>Lattitude: {latitude}</p>
-          <p>Longitude: {longitude}</p>
-        </div>
-
-    </div>
-
+                <div className="my-4 mr-40 ml-3">
+                  <p>Lattitude: {latitude}</p>
+                  <p>Longitude: {longitude}</p>
+                </div>
+              </div>
             </div>
           )}
 
           {currentStep === 3 && (
-             
             <div className="flex flex-col items-center">
-            <div className="w-full flex justify-center mb-4">
-    <div className="flex items-center">
-            <p className="font-semibold mr-4">Solution:</p>
-            <div className="flex items-center">
-            <input
-                 type="checkbox"
-                 id="default"
-                  checked={useDefaultSettings}
-                  onChange={handleDefaultCustomizeChange}
-                 className="form-checkbox h-5 w-5 text-green-600"
+              <div className="w-full flex justify-center mb-4">
+                <div className="flex items-center">
+                  <p className="font-semibold mr-4">Solution:</p>
+                  <div className="flex items-center">
+                    <input
+                      type="checkbox"
+                      id="default"
+                      checked={useDefaultSettings}
+                      onChange={handleDefaultCustomizeChange}
+                      className="form-checkbox h-5 w-5 text-green-600"
+                    />
+                    <label htmlFor="default" className="ml-2 mr-6">
+                      I want Green Solution to generate solution for me
+                    </label>
+                    <input
+                      type="checkbox"
+                      id="customize"
+                      checked={!useDefaultSettings}
+                      onChange={handleDefaultCustomizeChange}
+                      className="form-checkbox h-5 w-5 text-green-600"
+                    />
+                    <label htmlFor="customize" className="ml-2">
+                      I want customize my solution
+                    </label>
+                  </div>
+                </div>
+              </div>
 
-              />
-               <label htmlFor="default" className="ml-2 mr-6">Default</label>
-                <input
-                type="checkbox"
-                id="customize"
-                checked={!useDefaultSettings}
-                onChange={handleDefaultCustomizeChange}
-                className="form-checkbox h-5 w-5 text-green-600"
-               />
-      <label htmlFor="customize" className="ml-2">Customize</label>
-    </div>
-  </div>
-</div>
-
-     
               <div className="flex items-center mb-4 mr-3">
                 <p className="font-semibold">Solution Type:</p>
                 <div className="flex">
@@ -620,16 +653,17 @@ const handleSolutionCustomizationChange = (e) => {
                       name="solution_type"
                       value="solar"
                       disabled={useDefaultSettings}
-
                       checked={formData.solution_type === "solar"}
                       onChange={handleCheckboxChange}
                     />
                     <label className="ml-2">Solar</label>
                     <div
-                    className="flex h-6 w-6 items-center justify-center text-xs bg-gray-200 rounded-full ml-2 cursor-pointer"
-                    onClick={() => handleInfoClick("solar")}
-                    title="Click for more info on Solar Energy"
-                   >?</div>
+                      className="flex h-6 w-6 items-center justify-center text-xs bg-gray-200 rounded-full ml-2 cursor-pointer"
+                      onClick={() => handleInfoClick("solar")}
+                      title="Click for more info on Solar Energy"
+                    >
+                      ?
+                    </div>
                   </div>
 
                   <div className="flex items-center mx-8">
@@ -639,7 +673,6 @@ const handleSolutionCustomizationChange = (e) => {
                       name="solution_type"
                       value="wind"
                       disabled={useDefaultSettings}
-
                       checked={formData.solution_type === "wind"}
                       onChange={handleCheckboxChange}
                     />
@@ -648,31 +681,34 @@ const handleSolutionCustomizationChange = (e) => {
                       className="flex h-6 w-6 items-center justify-center text-xs bg-gray-200 rounded-full ml-2 cursor-pointer"
                       onClick={() => handleInfoClick("wind")}
                       title="Click for more info on Wind Energy"
-                    >?</div>
+                    >
+                      ?
+                    </div>
                   </div>
                 </div>
               </div>
               {isModalOpen && (
-  <div className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50">
-    <div className="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white">
-      <div className="mt-3 text-center">
-        <h3 className="text-lg leading-6 font-medium text-gray-900">Information</h3>
-        <div className="mt-2 px-7 py-3">
-          <p className="text-sm text-gray-500">{modalContent}</p>
-        </div>
-        <div className="items-center px-4 py-3">
-          <button
-            className="px-4 py-2 bg-gray-500 text-white text-base font-medium rounded-md w-full shadow-sm hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-300"
-            onClick={() => setIsModalOpen(false)}
-          >
-            Close
-          </button>
-        </div>
-      </div>
-    </div>
-  </div>
-)}
-
+                <div className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50">
+                  <div className="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white">
+                    <div className="mt-3 text-center">
+                      <h3 className="text-lg leading-6 font-medium text-gray-900">
+                        Information
+                      </h3>
+                      <div className="mt-2 px-7 py-3">
+                        <p className="text-sm text-gray-500">{modalContent}</p>
+                      </div>
+                      <div className="items-center px-4 py-3">
+                        <button
+                          className="px-4 py-2 bg-gray-500 text-white text-base font-medium rounded-md w-full shadow-sm hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-300"
+                          onClick={() => setIsModalOpen(false)}
+                        >
+                          Close
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
 
               {formData.solution_type === "solar" && (
                 <div className="flex mb-4 pt-4 pl-2">
@@ -711,16 +747,17 @@ const handleSolutionCustomizationChange = (e) => {
                     name="roof_type"
                     value="Slope"
                     disabled={useDefaultSettings}
-
                     checked={formData.roof_type === "Slope"}
                     onChange={handleCheckboxChange}
                   />
                   <label className="ml-2">Slope</label>
                   <div
-                      className="flex h-6 w-6 items-center justify-center text-xs bg-gray-200 rounded-full ml-2 cursor-pointer"
-                      onClick={() => handleInfoClick("Slope")}
-                      title="Click for more info on Slope Type"
-                    >?</div>
+                    className="flex h-6 w-6 items-center justify-center text-xs bg-gray-200 rounded-full ml-2 cursor-pointer"
+                    onClick={() => handleInfoClick("Slope")}
+                    title="Click for more info on Slope Type"
+                  >
+                    ?
+                  </div>
                 </div>
 
                 <div className="flex items-center mx-8">
@@ -730,16 +767,17 @@ const handleSolutionCustomizationChange = (e) => {
                     name="roof_type"
                     value="Flat"
                     disabled={useDefaultSettings}
-
                     checked={formData.roof_type === "Flat"}
                     onChange={handleCheckboxChange}
                   />
                   <label className="ml-2">Flat</label>
                   <div
-                      className="flex h-6 w-6 items-center justify-center text-xs bg-gray-200 rounded-full ml-2 cursor-pointer"
-                      onClick={() => handleInfoClick("Flat")}
-                      title="Click for more info on Flat Type"
-                    >?</div>
+                    className="flex h-6 w-6 items-center justify-center text-xs bg-gray-200 rounded-full ml-2 cursor-pointer"
+                    onClick={() => handleInfoClick("Flat")}
+                    title="Click for more info on Flat Type"
+                  >
+                    ?
+                  </div>
                 </div>
 
                 <div className="flex items-center mx-8">
@@ -749,16 +787,17 @@ const handleSolutionCustomizationChange = (e) => {
                     name="roof_type"
                     value="Composite"
                     disabled={useDefaultSettings}
-
                     checked={formData.roof_type === "Composite"}
                     onChange={handleCheckboxChange}
                   />
                   <label className="ml-2">Composite</label>
                   <div
-                      className="flex h-6 w-6 items-center justify-center text-xs bg-gray-200 rounded-full ml-2 cursor-pointer"
-                      onClick={() => handleInfoClick("Composite")}
-                      title="Click for more info on Composite Type"
-                    >?</div>
+                    className="flex h-6 w-6 items-center justify-center text-xs bg-gray-200 rounded-full ml-2 cursor-pointer"
+                    onClick={() => handleInfoClick("Composite")}
+                    title="Click for more info on Composite Type"
+                  >
+                    ?
+                  </div>
                 </div>
               </div>
 
@@ -771,16 +810,17 @@ const handleSolutionCustomizationChange = (e) => {
                     name="grid_type"
                     value="on_grid"
                     disabled={useDefaultSettings}
-
                     checked={formData.grid_type === "on_grid"}
                     onChange={handleCheckboxChange}
                   />
                   <label className="ml-2">On-Grid</label>
                   <div
-                      className="flex h-6 w-6 items-center justify-center text-xs bg-gray-200 rounded-full ml-2 cursor-pointer"
-                      onClick={() => handleInfoClick("OnGrid")}
-                      title="Click for more info for On-grid"
-                    >?</div>
+                    className="flex h-6 w-6 items-center justify-center text-xs bg-gray-200 rounded-full ml-2 cursor-pointer"
+                    onClick={() => handleInfoClick("OnGrid")}
+                    title="Click for more info for On-grid"
+                  >
+                    ?
+                  </div>
                 </div>
 
                 <div className="flex items-center mx-8">
@@ -794,10 +834,12 @@ const handleSolutionCustomizationChange = (e) => {
                   />
                   <label className="ml-2">Off-grid</label>
                   <div
-                      className="flex h-6 w-6 items-center justify-center text-xs bg-gray-200 rounded-full ml-2 cursor-pointer"
-                      onClick={() => handleInfoClick("OffGrid")}
-                      title="Click for more info for Off-grid"
-                    >?</div>
+                    className="flex h-6 w-6 items-center justify-center text-xs bg-gray-200 rounded-full ml-2 cursor-pointer"
+                    onClick={() => handleInfoClick("OffGrid")}
+                    title="Click for more info for Off-grid"
+                  >
+                    ?
+                  </div>
                 </div>
               </div>
 
@@ -834,7 +876,6 @@ const handleSolutionCustomizationChange = (e) => {
                     name="inverter_type"
                     value="type_1"
                     disabled={useDefaultSettings}
-
                     checked={formData.inverter_type === "type_1"}
                     onChange={handleCheckboxChange}
                   />
@@ -848,7 +889,6 @@ const handleSolutionCustomizationChange = (e) => {
                     name="inverter_type"
                     value="type_2"
                     disabled={useDefaultSettings}
-
                     checked={formData.inverter_type === "type_2"}
                     onChange={handleCheckboxChange}
                   />
