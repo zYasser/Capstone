@@ -6,7 +6,7 @@ import StatsCards from "@/components/StatsCards";
 import { useEffect } from "react";
 import { useState } from "react";
 import CartTable from "@/components/CartTable";
-import { BlobProvider, PDFDownloadLink, pdf } from "@react-pdf/renderer";
+import { pdf } from "@react-pdf/renderer";
 import Invoice from "@/components/Invoice";
 import { saveAs } from "file-saver";
 
@@ -80,7 +80,7 @@ export default function Solution() {
                   generatePdfDocument(cartItems);
                 }}
               >
-                Generate PDF 
+                Generate PDF
               </button>
             </div>
             <div></div>

@@ -334,6 +334,7 @@ const SolutionForm = () => {
   const handlePrev = () => {
     setCurrentStep(currentStep - 1);
   };
+  
 
   return (
     <div className="bg-gradient-to-r from-green-200 to-green-400 text-black min-h-screen p-4 md:p-8">
