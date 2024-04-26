@@ -19,6 +19,7 @@ const SolutionForm = () => {
     electrical_consumption: "",
     average_consumption: "",
     building_size: "",
+    roof_size: "",
     device_consumption: "",
     excess_energy: "",
     default_consumption: "",
@@ -498,7 +499,7 @@ const SolutionForm = () => {
                       name="average_consumption"
                       type="text"
                       required
-                      className="mt-2 mb-4 w-24 px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                      className="mt-2 mb-4 w-80 px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
                       placeholder=""
                       value={formData.average_consumption}
                       onChange={handleInputChange}
@@ -552,6 +553,22 @@ const SolutionForm = () => {
                   className="mt-2 mb-4 w-80 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
                   placeholder=""
                   value={formData.building_size}
+                  onChange={handleInputChange}
+                />
+              </div>
+
+              <div className="pt-4 mb-4">
+                <p className="font-semibold">
+                  Roof size (in m<sup>2</sup>)
+                </p>
+                <input
+                  id="roof_size"
+                  name="roof_size"
+                  type="text"
+                  required
+                  className="mt-2 mb-4 w-80 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                  placeholder=""
+                  value={formData.roof_size}
                   onChange={handleInputChange}
                 />
               </div>
