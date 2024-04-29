@@ -1,6 +1,7 @@
 from typing import List
 import uuid
 from sqlalchemy import (
+    DECIMAL,
     Boolean,
     Column,
     Date,
@@ -12,6 +13,7 @@ from sqlalchemy import (
     String,
     BOOLEAN,
     UUID,
+    Text,
 )
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql.expression import text
@@ -42,7 +44,7 @@ class User(Base):
     state = Column(String)
     postal_code = Column(String(20))
     date_of_birth = Column(DateTime, nullable=False)
-    district=Column(String)
+    district = Column(String)
 
 
 class SupportTicket(Base):
@@ -103,15 +105,28 @@ class Inverter(Base):
 
 
 class PVPanel(Base):
-    __tablename__ = "pv_panel"
-
-    panel_id = Column(Integer, primary_key=True, autoincrement=True)
-    model_name = Column(String(255), nullable=False)
-    capacity = Column(Float, nullable=False)
-    efficiency = Column(Float)
-    manufacturer = Column(String(255))
-    manufacture_date = Column(Date)
-    price = Column(Float, nullable=False)
+    __tablename__ = "panel"
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    model = Column(String)
+    cell_technology = Column(Text)
+    dimensions = Column(Text)
+    weight = Column(Text)
+    product_warranty = Column(Text)
+    power_output_warranty = Column(Text)
+    max_power_stc = Column(Integer)
+    open_circuit_voltage = Column(Integer)
+    short_circuit_current = Column(Integer)
+    max_power_voltage = Column(Integer)
+    max_power_current = Column(Integer)
+    module_efficiency = Column(Integer)
+    power_temp_coeff = Column(Integer)
+    voltage_temp_coeff = Column(Integer)
+    current_temp_coeff = Column(Integer)
+    operating_temp_range = Column(Text)
+    max_wind_load = Column(Integer)
+    max_snow_load = Column(Integer)
+    junction_box = Column(Text)
+    connector = Column(Text)
 
 
 class WindPower(Base):

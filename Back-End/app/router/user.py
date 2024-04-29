@@ -69,7 +69,6 @@ async def reset_password(
         .filter(models.User.id == id)
         .one()
     )
-    print(user)
     if user is None:
         logger.error(
             f"Failed to update {token_data.email} Password , account doesn't exist"
@@ -78,7 +77,6 @@ async def reset_password(
             status_code=404,
             detail="There's no active account this email : {token_data}",
         )
-    print(passwordDTO)
     if (
         hashing.verfiy_password(
             hashed_password=user[0], plain_password=passwordDTO.old_password
@@ -185,7 +183,6 @@ async def forgetpassowrd(email: str, db: Session = Depends(get_db)):
 
 @router.post("/token")
 async def token(token: ChangePassword, db: Session = Depends(get_db)):
-    print(token.token)
     try:
         tok = db.query(models.Token).filter(models.Token.id == token.token).first()
     except DataError as e:
