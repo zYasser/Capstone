@@ -10,7 +10,7 @@ const SolutionForm = () => {
   const [formData, setFormData] = useState({
     building_type: "",
     solution_type: "",
-    device_powered: "",
+    purpose: "",
     power_generated: "",
     roof_type: "",
     grid_type: "",
@@ -575,38 +575,23 @@ const SolutionForm = () => {
               </div>
 
               <div className="pt-4 mb-4">
-                <p className="font-semibold">What device will it power?</p>
+                <p className="font-semibold">Purpose of the solution:</p>
                 <div>
                   <select
-                    id="device_powered"
-                    name="device_powered"
+                    id="purpose"
+                    name="purpose"
                     required
                     className="mt-2 mb-4 w-80 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
                     value={formData.powered}
                     onChange={handleInputChange}
                   >
-                    <option value="">Select device</option>
-                    <option value="Refrigerator">Refrigerator</option>
-                    <option value="Freezer">Freezer</option>
-                    <option value="Washing Machine">Washing Machine</option>
-                    <option value="Dryer Machine">Dryer Machine</option>
-                    <option value="Dishwasher">Dishwasher</option>
-                    <option value="Oven">Oven</option>
-                    <option value="Microwave">Microwave</option>
-                    <option value="Television">Television</option>
-                    <option value="Computer">Computer</option>
-                    <option value="Gaming Console">Gaming Console</option>
-                    <option value="Vacuum Cleaner">Vacuum Cleaner</option>
-                    <option value="Air Conditioner">Air Conditioner</option>
-                    <option value="Space Heater">Space Heater</option>
-                    <option value="Dehumidifier">Dehumidifier</option>
-                    <option value="Electric Water Heater">
-                      Electric Water Heater
-                    </option>
-                    <option value="Toaster">Toaster</option>
-                    <option value="Coffee Maker">Coffee Maker</option>
-                    <option value="Hair Dryer">Hair Dryer</option>
-                    <option value="Clothes Iron">Clothes Iron</option>
+                    <option value="">Select purpose</option>
+                    <option value="Lower down electricity bill">Lower down electricity bill</option>
+                    <option value="Charge EV car">Charge EV car</option>
+                    <option value="Heating/Cooling">Heating/Cooling</option>
+                    <option value="Energy independence/Protection from power outages">Energy independence/Protection from power outages</option>
+                    <option value="Contribution to eco-system and carbon footprint">Contribution to eco-system and carbon footprint</option>
+                    <option value="Increase home value">Increase home value</option>
                   </select>
                 </div>
               </div>
