@@ -94,7 +94,7 @@ const Weather = async ({ latitude, longitude }) => {
       const averageSolarIrradiancePerDay = totalSolarIrradiance / (hours / 24) / 1000 // in kWh/m2/day
 
       console.log("Average Solar Irradiance per day:", averageSolarIrradiancePerDay);
-
+      
       // Assuming you want to return these values
       return {
         averageSolarIrradiancePerDay,

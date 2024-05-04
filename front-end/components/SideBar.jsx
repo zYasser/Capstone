@@ -1,3 +1,5 @@
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 import React from "react";
 
 const SideBar = () => {
@@ -20,8 +22,8 @@ const SideBar = () => {
                 </div>
               </li>
               <li>
-                <a
-                  href="#"
+                <Link
+                  href="/dashboard"
                   className="relative flex flex-row items-center h-11 focus:outline-none hover:bg-gray-50 text-gray-600 hover:text-gray-800 border-l-4 border-transparent hover:border-indigo-500 pr-6"
                 >
                   <span className="inline-flex justify-center items-center ml-4">
@@ -43,7 +45,7 @@ const SideBar = () => {
                   <span className="ml-2 text-sm tracking-wide truncate">
                     Solutions
                   </span>
-                </a>
+                </Link>
               </li>
               <li>
                 <a
@@ -79,8 +81,8 @@ const SideBar = () => {
                 </div>
               </li>
               <li>
-                <a
-                  href="#"
+                <Link
+                  href="/myprofile"
                   className="relative flex flex-row items-center h-11 focus:outline-none hover:bg-gray-50 text-gray-600 hover:text-gray-800 border-l-4 border-transparent hover:border-indigo-500 pr-6"
                 >
                   <span className="inline-flex justify-center items-center ml-4">
@@ -102,7 +104,7 @@ const SideBar = () => {
                   <span className="ml-2 text-sm tracking-wide truncate">
                     Profile
                   </span>
-                </a>
+                </Link>
               </li>
 
               <li>

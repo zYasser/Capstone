@@ -83,7 +83,6 @@ export default function Solution() {
                 Generate PDF
               </button>
             </div>
-            <div></div>
           </div>
         )}
       </div>

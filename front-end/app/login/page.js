@@ -53,7 +53,7 @@ const Login = () => {
       router.push(
         searchParams.get("from")
           ? decodeURIComponent(searchParams.get("from"))
-          : "/"
+          : "/dashboard"
       );
     } catch (error) {
       console.error("Login failed:", error);
