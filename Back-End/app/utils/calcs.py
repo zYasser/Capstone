@@ -61,8 +61,8 @@ class SolarCalculator:
 
 # Example usage:
 day_of_year = 150
-latitude = 40.7128
-longitude = -74.0060
+latitude = 33.4484
+longitude = 112.0740
 standard_time_min = 720  # Noon
 
 solar_calc = SolarCalculator(day_of_year, latitude, longitude, standard_time_min)

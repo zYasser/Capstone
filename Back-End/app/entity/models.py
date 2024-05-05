@@ -45,6 +45,8 @@ class User(Base):
     postal_code = Column(String(20))
     date_of_birth = Column(DateTime, nullable=False)
     district = Column(String)
+    # Relationship with SupportTicket
+    support_tickets = relationship("SupportTicket", back_populates="user")
 
 
 class SupportTicket(Base):
@@ -67,6 +69,10 @@ class SupportTicket(Base):
     topic = Column(String)
     body = Column(String)
     messages: Mapped[List["SupportTicektMessage"]] = relationship(cascade="all, delete")
+    user_id = Column(Integer, ForeignKey("users.id"))  # Foreign key linking to User.id
+
+    # Relationship with User
+    user = relationship("User", back_populates="support_tickets")
 
 
 class SupportTicektMessage(Base):
@@ -107,26 +113,63 @@ class Inverter(Base):
 class PVPanel(Base):
     __tablename__ = "panel"
     id = Column(Integer, primary_key=True, autoincrement=True)
-    model = Column(String)
-    cell_technology = Column(Text)
-    dimensions = Column(Text)
-    weight = Column(Text)
-    product_warranty = Column(Text)
-    power_output_warranty = Column(Text)
-    max_power_stc = Column(Integer)
-    open_circuit_voltage = Column(Integer)
-    short_circuit_current = Column(Integer)
-    max_power_voltage = Column(Integer)
-    max_power_current = Column(Integer)
-    module_efficiency = Column(Integer)
-    power_temp_coeff = Column(Integer)
-    voltage_temp_coeff = Column(Integer)
-    current_temp_coeff = Column(Integer)
-    operating_temp_range = Column(Text)
-    max_wind_load = Column(Integer)
-    max_snow_load = Column(Integer)
-    junction_box = Column(Text)
-    connector = Column(Text)
+    model = Column(
+        String(255),
+    )
+    cell_technology = Column(
+        String(255),
+    )
+    dimensions = Column(
+        String(255),
+    )
+    weight = Column(
+        Numeric(5, 1),
+    )
+    maximum_power = Column(
+        Numeric(5, 1),
+    )
+    open_circuit_voltage = Column(
+        Numeric(4, 1),
+    )
+    short_circuit_current = Column(
+        Numeric(5, 2),
+    )
+    maximum_power_voltage = Column(
+        Numeric(4, 1),
+    )
+    maximum_power_current = Column(
+        Numeric(5, 2),
+    )
+    module_efficiency = Column(
+        Numeric(4, 1),
+    )
+    maximum_system_voltage = Column(
+        Integer,
+    )
+    power_temp_coefficient = Column(
+        Numeric(4, 2),
+    )
+    voltage_temp_coefficient = Column(
+        Numeric(4, 2),
+    )
+    current_temp_coefficient = Column(
+        Numeric(5, 3),
+    )
+    operating_temp_range = Column(
+        String(255),
+    )
+    maximum_wind_load = Column(
+        Integer,
+    )
+    maximum_snow_load = Column(
+        Integer,
+    )
+    junction_box = Column(
+        String(255),
+    )
+    connector = Column(
+        String(255),
+    )
 
 
 class WindPower(Base):
