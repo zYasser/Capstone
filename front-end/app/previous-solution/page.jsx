@@ -57,12 +57,14 @@ const ComparisonTable = ({ data }) => {
             )}
           </div>
 
-          <table className="table-auto w-full">
-            <thead>
+          <table className="table-auto w-full shadow-lg">
+            <thead className="">
               <tr>
-                <th className="px-4 py-2">Link</th>
-                <th className="px-4 py-2">Overall Cost</th>
-                <th className="px-4 py-2">Total Energy Generated</th>
+                <th className="px-4 py-2 bg-gray-300">Link</th>
+                <th className="px-4 py-2 bg-gray-300">Overall Cost</th>
+                <th className="px-4 py-2 bg-gray-300">
+                  Total Energy Generated
+                </th>
                 <th className="px-4 py-2"></th>
               </tr>
             </thead>
