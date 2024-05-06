@@ -156,6 +156,56 @@ const SolutionForm = () => {
           </p>
         </div>
       ),
+
+      panel1: (
+          <div className="flex flex-col items-center justify-center">
+          <img src="./panel1.png"/>
+          <a href="https://static.csisolar.com/wp-content/uploads/2024/04/03113544/CS-Datasheet-TOPHiKu6-TOPConAll-Black_CS6R-T_v1.2_EN.pdf" className="py-4 text-blue-500 hover:underline">Panel datasheet</a>
+          </div>
+      ),
+
+      panel2: (
+        <div className="flex flex-col items-center justify-center">
+        <img src="./panel2.png"/>
+        <a href="https://static.trinasolar.com/sites/default/files/Vertex_NEG21C.20_EN_2023_APAC_C_web.pdf" className="py-4 text-blue-500 hover:underline">Panel datasheet</a>
+        </div>
+    ),
+
+    panel3: (
+          <div className="flex flex-col items-center justify-center">
+          <img src="./panel3.png"/>
+          <a href="https://www.canadiansolar.com/wp-content/uploads/2019/12/Canadian_Solar-Datasheet-HiKu_CS3L-MS_EN.pdf" className="py-4 text-blue-500 hover:underline">Panel datasheet</a>
+          </div>
+      ),
+
+      panel4: (
+        <div className="flex flex-col items-center justify-center">
+        <img src="./panel4.png"/>
+        <a href="https://www.jinkosolar.com/uploads/619f40ec/JKM550-570N-72HL4-BDV-F1-EN.pdf" className="py-4 text-blue-500 hover:underline">Panel datasheet</a>
+        </div>
+    ),
+
+    inverter1: (
+      <div className="flex flex-col items-center justify-center">
+      <img src="./inverter1.png"/>
+      <a href="https://files.sma.de/downloads/SBS38-60-US-DSP_MX183417W.pdf" className="py-4 text-blue-500 hover:underline">Inverter datasheet</a>
+      </div>
+  ),
+
+  inverter2: (
+    <div className="flex flex-col items-center justify-center">
+    <img src="./inverter2.png"/>
+    <a href="https://www.fronius.com/en-gb/uk/solar-energy/installers-partners/technical-data/all-products/inverters/fronius-symo/fronius-symo-5-0-3-m" className="py-4 text-blue-500 hover:underline">Inverter datasheet</a>
+    </div>
+),
+
+inverter3: (
+      <div className="flex flex-col items-center justify-center">
+      <img src="./inverter3.png"/>
+      <a href="https://www.fronius.com/~/downloads/Solar%20Energy/Datasheets/SE_DS_Fronius_Symo_EN.pdf" className="py-4 text-blue-500 hover:underline">Inverter datasheet</a>
+      </div>
+  ),
+
     };
 
     setModalContent(infoDetails[type]);
@@ -691,8 +741,8 @@ const SolutionForm = () => {
                 </div>
               </div>
               {isModalOpen && (
-                <div className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50">
-                  <div className="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white">
+                <div className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-screen w-screen z-50">
+                  <div className="relative top-20 mx-auto p-5 border w-auto shadow-lg rounded-md bg-white">
                     <div className="mt-3 text-center">
                       <h3 className="text-lg leading-6 font-medium text-gray-900">
                         Information
@@ -714,34 +764,85 @@ const SolutionForm = () => {
               )}
 
               {formData.solution_type === "solar" && (
-                <div className="flex mb-4 pt-4 pl-2">
+                <div className="flex-col mb-4 pt-2 pl-28 pr-2">
                   <p className="font-semibold">Panel Type:</p>
                   <div className="flex items-center mx-8">
                     <input
                       type="checkbox"
-                      id="mono"
+                      id="type1"
                       name="panel_type"
-                      value="mono"
-                      checked={formData.panel_type === "mono"}
+                      value="type1"
+                      checked={formData.panel_type === "type1"}
                       onChange={handleCheckboxChange}
                     />
-                    <label className="ml-2">Monocrystal</label>
+                    <label className="ml-2">OPHiku6 (All-Black) CS6R-T -420W</label>
+                    <div
+                      className="flex h-6 w-6 items-center justify-center text-xs bg-gray-200 rounded-full ml-2 cursor-pointer"
+                      onClick={() => handleInfoClick("panel1")}
+                      title="Click for more info on panel types"
+                    >
+                      ?
+                    </div>
                   </div>
 
-                  <div className="flex items-center">
+                  <div className="flex items-center mx-8">
                     <input
                       type="checkbox"
-                      id="poly"
+                      id="type2"
                       name="panel_type"
-                      value="poly"
-                      checked={formData.panel_type === "poly"}
+                      value="type2"
+                      checked={formData.panel_type === "type2"}
                       onChange={handleCheckboxChange}
                     />
-                    <label className="ml-2">Polycrsytal</label>
+                    <label className="ml-2">Trina Solar Vertex S 670W (TSM-700P-AB)</label>
+                    <div
+                      className="flex h-6 w-6 items-center justify-center text-xs bg-gray-200 rounded-full ml-2 cursor-pointer"
+                      onClick={() => handleInfoClick("panel2")}
+                      title="Click for more info on panel types"
+                    >
+                      ?
+                    </div>
+                  </div>
+                  <div className="flex items-center mx-8">
+                    <input
+                      type="checkbox"
+                      id="type3"
+                      name="panel_type"
+                      value="type3"
+                      checked={formData.panel_type === "type3"}
+                      onChange={handleCheckboxChange}
+                    />
+                    <label className="ml-2">Canadian Solar CS3L-405M Poly 405W Solar Panel</label>
+                    <div
+                      className="flex h-6 w-6 items-center justify-center text-xs bg-gray-200 rounded-full ml-2 cursor-pointer"
+                      onClick={() => handleInfoClick("panel3")}
+                      title="Click for more info on panel types"
+                    >
+                      ?
+                    </div>
+                  </div>
+
+                  <div className="flex items-center mx-8">
+                    <input
+                      type="checkbox"
+                      id="type4"
+                      name="panel_type"
+                      value="type4"
+                      checked={formData.panel_type === "type4"}
+                      onChange={handleCheckboxChange}
+                    />
+                    <label className="ml-2">Jinko Solar Tiger Pro 7R 570 W (JKM570N-72HL4-BDV) </label>
+                    <div
+                      className="flex h-6 w-6 items-center justify-center text-xs bg-gray-200 rounded-full ml-2 cursor-pointer"
+                      onClick={() => handleInfoClick("panel4")}
+                      title="Click for more info on panel types"
+                    >
+                      ?
+                    </div>
                   </div>
                 </div>
               )}
-              <div className="flex mb-4 pt-4">
+              <div className="flex mb-4 pt-4 pl-40 pr-2">
                 <p className="font-semibold">Roof Type:</p>
                 <div className="flex items-center mx-8">
                   <input
@@ -870,33 +971,69 @@ const SolutionForm = () => {
                 </div>
               )}
 
-              <div className="flex mb-4 pt-4">
+                <div className="flex-col mb-4 pt-2 pr-20 pl-2">
                 <p className="font-semibold">Inverter Type:</p>
                 <div className="flex items-center mx-8">
                   <input
                     type="checkbox"
-                    id="type_1"
+                    id="type1"
                     name="inverter_type"
-                    value="type_1"
+                    value="type1"
                     disabled={useDefaultSettings}
-                    checked={formData.inverter_type === "type_1"}
+                    checked={formData.inverter_type === "type1"}
                     onChange={handleCheckboxChange}
                   />
-                  <label className="ml-2">Type 1</label>
+                  <label className="ml-2">SMA Sunny Boy Storage 5.0 (US) </label>
+                  <div
+                      className="flex h-6 w-6 items-center justify-center text-xs bg-gray-200 rounded-full ml-2 cursor-pointer"
+                      onClick={() => handleInfoClick("inverter1")}
+                      title="Click for more info on inverter types"
+                    >
+                      ?
+                    </div>
                 </div>
 
                 <div className="flex items-center mx-8">
                   <input
                     type="checkbox"
-                    id="type_2"
+                    id="type2"
                     name="inverter_type"
-                    value="type_2"
+                    value="type2"
                     disabled={useDefaultSettings}
-                    checked={formData.inverter_type === "type_2"}
+                    checked={formData.inverter_type === "type2"}
                     onChange={handleCheckboxChange}
                   />
-                  <label className="ml-2">Type 2</label>
+                  <label className="ml-2">Fronius Symo 5.0-3-M</label>
+                  <div
+                      className="flex h-6 w-6 items-center justify-center text-xs bg-gray-200 rounded-full ml-2 cursor-pointer"
+                      onClick={() => handleInfoClick("inverter2")}
+                      title="Click for more info on inverter types"
+                    >
+                      ?
+                    </div>
                 </div>
+
+
+                <div className="flex items-center mx-8">
+                  <input
+                    type="checkbox"
+                    id="type3"
+                    name="inverter_type"
+                    value="type3"
+                    disabled={useDefaultSettings}
+                    checked={formData.inverter_type === "type3"}
+                    onChange={handleCheckboxChange}
+                  />
+                  <label className="ml-2">Fronius Symo 12.5-3M</label>
+                  <div
+                      className="flex h-6 w-6 items-center justify-center text-xs bg-gray-200 rounded-full ml-2 cursor-pointer"
+                      onClick={() => handleInfoClick("inverter3")}
+                      title="Click for more info on inverter types"
+                    >
+                      ?
+                    </div>
+                </div>
+
               </div>
             </div>
           )}
