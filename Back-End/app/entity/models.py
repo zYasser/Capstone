@@ -47,6 +47,9 @@ class User(Base):
     district = Column(String)
     # Relationship with SupportTicket
     support_tickets = relationship("SupportTicket", back_populates="user")
+    ticket_replays: Mapped[List["SupportTicektMessage"]] = relationship(
+        cascade="all, delete"
+    )
 
 
 class SupportTicket(Base):
@@ -84,6 +87,10 @@ class SupportTicektMessage(Base):
     )
     support_ticket_id: Mapped[int] = mapped_column(
         ForeignKey("support_ticket.id", ondelete="CASCADE")
+    )
+
+    user_email: Mapped[String] = mapped_column(
+        ForeignKey("users.email", ondelete="CASCADE")
     )
 
 

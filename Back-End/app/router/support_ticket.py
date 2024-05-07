@@ -1,17 +1,19 @@
 from datetime import datetime
 
+from json import load
 import os
 import sys
 from typing import List
 from fastapi import APIRouter, Depends, HTTPException
-from sqlalchemy import select
+from sqlalchemy import select, text
 from sqlalchemy.orm import Session
 
 from app.config.database import get_db
-from app.entity.models import SupportTicektMessage, SupportTicket
+from app.entity.models import SupportTicektMessage, SupportTicket, User
 from app.schema.support_ticket import (
     SupportTicket as ST,
     SupportTicketMessage as TicketMessage,
+    SupportTicketReplay,
 )
 
 
@@ -34,13 +36,18 @@ async def create_support_ticket(support_ticket: ST, db: Session = Depends(get_db
     return ticket
 
 
-@router.get("", response_model=ST)
+@router.get("")
 async def get_ticket_by_id(id: int, db: Session = Depends(get_db)):
-    ticket = db.query(SupportTicket).filter(SupportTicket.id == id).first()
+    ticket = (
+        db.query(SupportTicket)
+        .filter(SupportTicket.id == id)
+        .one()
+    )
     if not ticket:
         raise HTTPException(
             status_code=404, detail=f"Ticket with id: {id} doesn't exit"
         )
+    print(ticket.messages)
     return ticket
 
 
@@ -66,6 +73,12 @@ async def replay_to_ticket(message: TicketMessage, db: Session = Depends(get_db)
             raise HTTPException(
                 status_code=404, detail=f"Ticket with id: {id} doesn't exit"
             )
+        user = db.query(User).where(User.email == message.user_email).first()
+        if user is None:
+            raise HTTPException(
+                status_code=404, detail=f"User with id: {id} doesn't exit"
+            )
+
         message.support_ticket_id = id
         db.query(SupportTicket).where(SupportTicket.id == id).update(
             {SupportTicket.updated_at: datetime.now()}
