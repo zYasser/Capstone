@@ -19,7 +19,8 @@ class SupportTicket(BaseModel):
 
 class SupportTicketReplay(SupportTicket):
     messages: Optional[List["SupportTicketMessage"]]
-    email:str
+    email: str
+
     class Config:
         from_attributes = True
 
@@ -29,4 +30,4 @@ class SupportTicketMessage(BaseModel):
     message: str
     created_at: Optional[datetime] = None
     support_ticket_id: int
-    user_email:str
+    user_email: Optional[str] = None
