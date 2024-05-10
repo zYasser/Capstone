@@ -742,7 +742,7 @@ inverter3: (
               </div>
               {isModalOpen && (
                 <div className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-screen w-screen z-50">
-                  <div className="relative top-20 mx-auto p-5 border w-auto shadow-lg rounded-md bg-white">
+                  <div className="relative top-20 mx-auto p-5 border w-1/3 shadow-lg rounded-md bg-white">
                     <div className="mt-3 text-center">
                       <h3 className="text-lg leading-6 font-medium text-gray-900">
                         Information
