@@ -772,6 +772,7 @@ inverter3: (
                       id="type1"
                       name="panel_type"
                       value="type1"
+                      disabled={useDefaultSettings}
                       checked={formData.panel_type === "type1"}
                       onChange={handleCheckboxChange}
                     />

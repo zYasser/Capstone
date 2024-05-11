@@ -38,7 +38,7 @@ const StatsCards = () => {
               <span>Saving Money</span>
             </div>
 
-            <div className="text-3xl">1340</div>
+            <div className="text-3xl">1350</div>
 
             <div className="flex items-center space-x-1 rtl:space-x-reverse text-sm font-medium text-red-600">
               <span>3% decrease</span>
