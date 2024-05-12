@@ -35,7 +35,7 @@ router = APIRouter(prefix="/api/user", tags=["user"])
 logger = logging.getLogger(__name__)
 
 
-async def autenticate_user(user: models.User, password) -> bool:
+def autenticate_user(user: models.User, password) -> bool:
     if not user:
         return False
     return hashing.verfiy_password(
@@ -256,7 +256,7 @@ async def get_all_user(db: Session = Depends(get_db)):
 
 
 @router.post("/login")
-async def login(
+def login(
     response: Response,
     form_data: OAuth2PasswordRequestForm = Depends(),
     db: Session = Depends(get_db),
@@ -271,7 +271,7 @@ async def login(
             detail="User Doesn't exist",
             headers={"WWW-Authenticate": "Bearer"},
         )
-    if not await autenticate_user(user, form_data.password):
+    if not  autenticate_user(user, form_data.password):
         logger.error(
             f"Failed to login user. Email: {user.email}. Reason: Incorrect password provided."
         )

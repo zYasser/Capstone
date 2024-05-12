@@ -1,67 +1,90 @@
 import math
 
 
-class WindTurbineCalculator:
+class WindTurbineSystem:
     def __init__(
         self,
-        rated_capacity,
-        average_wind_speed,
-        hours_per_day,
+        rotor_diameter,
+        system_loss,
+        wind_speed,
+        time,
+        actual_energy,
+        max_theoretical_energy,
+        rated_power,
         daily_electricity_usage,
+        energy_per_turbine,
     ):
-        self.rated_capacity = rated_capacity
-        self.average_wind_speed = average_wind_speed
-        self.hours_per_day = hours_per_day
+        self.air_density = 1.225
+        self.system_loss = system_loss
+        self.rotor_area = 3.14 * ((rotor_diameter / 2) ** 2)
+        self.wind_speed = wind_speed
+        self.time = time
+        self.actual_energy = actual_energy
+        self.max_theoretical_energy = max_theoretical_energy
+        self.rated_power = rated_power
         self.daily_electricity_usage = daily_electricity_usage
-        self.system_losses = 0.2
-        self.derating_factor = 0.6
+        self.energy_per_turbine = energy_per_turbine
 
-    def calculate_daily_energy_production(self):
-        return round(
-            self.calculate_effective_turbine_capacity()
-            * self.average_wind_speed
-            * self.hours_per_day,
-            2,
+    def power_available(self):
+        power =( 0.5 * self.air_density * self.rotor_area * self.wind_speed**3)/1000
+        return power
+
+    def energy_output(self):
+        energy = self.power_available() * self.time
+        return energy
+
+    def capacity_factor(self):
+        capacity_factor = self.actual_energy / self.max_theoretical_energy
+        return capacity_factor
+
+    def daily_energy_production(self):
+        daily_production = (
+            self.rated_power
+            * self.capacity_factor()
+            * self.wind_speed
+            * 24
+            * (1 - self.system_loss)
         )
+        return daily_production
 
-    def calculate_usable_energy_production(self):
-        effective_capacity = self.calculate_effective_turbine_capacity()
-        usable_energy_production = round(
-            effective_capacity * self.average_wind_speed * self.hours_per_day, 2
+    def num_turbines_needed(self):
+        num_turbines = math.ceil(self.daily_electricity_usage / self.energy_per_turbine)
+        return num_turbines
+
+    def system_loss_factor(self):
+        system_loss_factor = self.system_loss / (
+            self.system_loss + self.daily_energy_production()
         )
-        return usable_energy_production
+        return system_loss_factor
 
-    def calculate_number_of_turbines_needed(self):
-        usable_energy_per_turbine = self.calculate_usable_energy_production()
-        return math.ceil(self.daily_electricity_usage / usable_energy_per_turbine)
+    def self_sufficiency_ratio(self):
+        ssr = (self.daily_energy_production() / self.daily_electricity_usage) * 100
+        return ssr
 
-    def calculate_effective_turbine_capacity(self):
-        return round(
-            self.rated_capacity * self.derating_factor * (1 - self.system_losses), 2
-        )
-
-    def calculate_system_loss_factor(self):
-        usable_energy_production = self.calculate_usable_energy_production()
-        return round(
-            (
-                self.system_losses
-                / (self.system_losses + usable_energy_production)
-                * 100
-            ),
-            4,
-        )
-
-    def calculate_self_sufficiency_ratio(self):
-        usable_energy_production = self.calculate_usable_energy_production()
-        return round((usable_energy_production / self.daily_electricity_usage) * 100, 2)
-
-    def calculate_all_metrics(self):
-        results = {
-            "Daily Energy Production": self.calculate_daily_energy_production(),
-            "Usable Energy Production": self.calculate_usable_energy_production(),
-            "Number of Turbines Needed": self.calculate_number_of_turbines_needed(),
-            "Effective Turbine Capacity": self.calculate_effective_turbine_capacity(),
-            "System Loss Factor": self.calculate_system_loss_factor(),
-            "Self Sufficiency Ratio": self.calculate_self_sufficiency_ratio(),
-        }
+    def run_system_analysis(self):
+        results = {}
+        results["power_available"] = self.power_available()
+        results["energy_output"] = self.energy_output()
+        results["capacity_factor"] = self.capacity_factor()
+        results["daily_energy_production"] = self.daily_energy_production()
+        results["num_turbines_needed"] = self.num_turbines_needed()
+        results["system_loss_factor"] = self.system_loss_factor()
+        results["self_sufficiency_ratio"] = self.self_sufficiency_ratio()
         return results
+
+
+# Example usage:
+system = WindTurbineSystem(
+    system_loss=0.15,
+    rotor_diameter=6.2,
+    wind_speed=6.2,
+    time=24,
+    actual_energy=43.04,
+    max_theoretical_energy=105.8,
+    rated_power=6,
+    daily_electricity_usage=1000,
+    energy_per_turbine=1000,
+)
+analysis_results = system.run_system_analysis()
+
+print(analysis_results)
