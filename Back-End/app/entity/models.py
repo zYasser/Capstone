@@ -43,7 +43,7 @@ class User(Base):
     city = Column(String)
     state = Column(String)
     postal_code = Column(String(20))
-    date_of_birth = Column(DateTime, nullable=False)
+    date_of_birth = Column(DateTime)
     district = Column(String)
     # Relationship with SupportTicket
     support_tickets = relationship("SupportTicket", back_populates="user")

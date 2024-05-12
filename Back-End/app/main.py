@@ -3,12 +3,11 @@ from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
 from app.router import support_ticket
 from fastapi.middleware.cors import CORSMiddleware
-
 from app.utils.validation_exception import get_excpetion_data
 
 from .config.database import engine
 from .entity import models
-from .router import (user,green,solution)
+from .router import user, green, solution
 
 models.Base.metadata.create_all(bind=engine)
 app = FastAPI()

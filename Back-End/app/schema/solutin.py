@@ -13,3 +13,10 @@ class SolutionRequest(BaseModel):
     longitude :float 
     day_of_year:int 
     standard_time_min:int
+
+
+
+class SolutionRequestWind(BaseModel):
+    devices: Optional[List[Device]] = None
+    wind_speed :float
+    wind_direction : float 

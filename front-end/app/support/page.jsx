@@ -2,6 +2,7 @@
 import Link from "next/link";
 import React, { useState } from "react";
 const Support = () => {
+
   const [completedEmails, setCompletedEmails] = useState([]);
 
   const emails = [

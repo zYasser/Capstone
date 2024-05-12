@@ -7,10 +7,10 @@ class UserBase(BaseModel):
     id: int = None
     first_name: str
     last_name: str
-    phone: str = None
+    phone: Optional[str] = None
     email: EmailStr
     nationality: Optional[str] = None
-    country: str = None
+    country: Optional[str] = None
     street: Optional[str] = None
     city: Optional[str] = None
     state: Optional[str] = None

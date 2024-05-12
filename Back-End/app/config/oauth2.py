@@ -25,7 +25,6 @@ def decode_token(token: str):
 
 
 def create_access_token(data: dict, expires_delta: Optional[timedelta] = None):
-    print(settings)
 
     to_encode = data.copy()
     if expires_delta:
@@ -44,14 +43,12 @@ def verify_access_token(access_token: str = Cookie(...)) -> TokenData:
         headers={"WWW-Authenticate": "Bearer"},
     )
     try:
-        print(access_token)
         payload = jwt.decode(
             access_token.split(" ")[1], SECRET_KEY, algorithms=[ALGORITHM]
         )
         if payload.get("email") is None:
             raise credentials_exception
         token_data = TokenData(**payload)
-        print(token_data)
     except JWTError as e:
         print(e)
         raise credentials_exception

@@ -205,7 +205,7 @@ async def token(token: ChangePassword, db: Session = Depends(get_db)):
 
 
 @router.post("/register", response_model=UserBase, status_code=201)
-async def create_user(user: UserCreate, db: Session = Depends(get_db)):
+def create_user(user: UserCreate, db: Session = Depends(get_db)):
     user.password = hashing.hash(user.password)
     new_user = models.User(**user.dict())
     try:
@@ -213,9 +213,18 @@ async def create_user(user: UserCreate, db: Session = Depends(get_db)):
         db.commit()
         db.refresh(new_user)
         logger.info(f"Successfully Registered User {new_user}")
+
         return new_user
     except IntegrityError as e:
-        col = unique_constraint_handler.find_column(e._message())[0]
+        col=unique_constraint_handler.find_column(e._message())
+        if(len(col)==0):
+            logger.error(f"Failed To Register User: {user}  ,Something Went wrong {str(e)}")
+
+            raise HTTPException(status_code=500, detail=f"Something went wrong")
+
+
+        
+        col = col[0]
         if col != "":
             logger.error(
                 f"Failed To Register User: {user}  , {col.capitalize()} Already Used"
@@ -230,7 +239,7 @@ async def create_user(user: UserCreate, db: Session = Depends(get_db)):
 
 @router.get("/", response_model=UserBase)
 async def get_user_by_id(id: int, db: Session = Depends(get_db)):
-    user = db.query(models.User).filter(models.User.user_id == id).first()
+    user = db.query(models.User).filter(models.User.id == id).first()
     if not user:
         logger.error(f"User With id :{id} Doesn't exist")
 

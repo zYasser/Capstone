@@ -56,8 +56,6 @@ function ResetPassword() {
     } finally {
       setLoading(false);
     }
-    // Here you would implement logic to send verification code to the provided email
-    // For demonstration purposes, let's just set a message
   };
 
   return (
