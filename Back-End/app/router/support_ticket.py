@@ -4,7 +4,7 @@ from json import load
 import os
 import sys
 from typing import List
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, Query
 from sqlalchemy import select, text
 from sqlalchemy.orm import Session
 
@@ -25,8 +25,12 @@ router = APIRouter(prefix="/api/ticket", tags=["ticket"])
 
 
 @router.get("/all", response_model=List[ST])
-async def get_all_ticket(db: Session = Depends(get_db)):
-    result = db.query(SupportTicket).all()
+async def get_all_ticket(
+    page: int = Query(default=1, ge=1),
+    db: Session = Depends(get_db),
+):
+    offset = (page - 1) * 5
+    result = db.query(SupportTicket).offset(offset).limit(6).all()
     return result
 
 
