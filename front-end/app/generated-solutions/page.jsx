@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 import SideBar from "@/components/SideBar";
 
@@ -11,6 +11,15 @@ import Link from "next/link";
 import DynamicAlert from "@/components/DynamicAlert";
 
 const App = () => {
+
+  const [output, setOutput] = useState('');
+
+  useEffect(() => {
+    const storedOutput = JSON.parse(localStorage.getItem("output"));
+    if (storedOutput) {
+      setOutput(storedOutput);
+    }
+  }, []);
 
   const [selectedIds, setSelectedIds] = useState([]);
 
@@ -92,6 +101,8 @@ const App = () => {
     setModalContent(details);
 
     setIsModalOpen(true);
+
+    console.log(output)
 
   };
 

@@ -11,14 +11,16 @@ const SolutionForm = () => {
     building_type: "",
     solution_type: "",
     purpose: "",
+    region: "",
     power_generated: "",
     roof_type: "",
     grid_type: "",
     inverter_type: "",
     panel_type: "",
+    wind_type : "",
+    wind_battery: "" , 
     electrical_consumption: "",
     average_consumption: "",
-    building_size: "",
     roof_size: "",
     device_consumption: "",
     excess_energy: "",
@@ -37,7 +39,9 @@ const SolutionForm = () => {
   const [trueSolarTime, setTrueSolarTime] = useState(null);
   const [solarHourAngle, setSolarHourAngle] = useState(null);
   const [angleOfIncidence, setAngleOfIncidence] = useState(null);
-  const [useDefaultSettings, setUseDefaultSettings] = useState(false);
+  const [useDefaultSettings, setUseDefaultSettings] = useState(true);
+  const [showGasBillInput, setShowGasBillInput] = useState(false);
+
 
   var SunCalc = require("suncalc");
 
@@ -52,11 +56,9 @@ const SolutionForm = () => {
         <div>
           <p>Advantages:</p>
           <p>
-            • Wide applicability: Solar panels can work in most locations with
-            sufficient sunlight.
+            •	Wide applicability: Solar panels can work in most locations with sufficient sunlight.
             <br />
-            • Low maintenance: They have no moving parts and require minimal
-            maintenance.
+            •	Low maintenance: They have no moving parts and require minimal maintenance.
             <br />• Silent operation: Solar panels produce electricity silently.
           </p>
           <p>Disadvantages:</p>
@@ -91,28 +93,18 @@ const SolutionForm = () => {
         </div>
       ),
       Slope: (
-        <div>
-          <p>• SELF CLEANING DUE TO THE ANGLE</p>
-          <p>• EASY INSTALLATION</p>
-          <p>• IDEAL TILT ANGLE </p>
-          <p>• MOST COMMON</p>
-          <p>• CHEAPEST OPTION</p>
-          <p>• BEST OPTION FOR MOUNTING</p>
+        <div className="flex flex-col items-center justify-center">
+        <img src="./slop.png"/>
         </div>
       ),
       Flat: (
-        <div>
-          <p>• FLEXIBILITY IN LAYOUT</p>
-          <p>• TRACKING SYSTEMS MIGHT NEEDED WHICH IS EXTRA COST</p>
-          <p>• MIDDLE COST</p>
-          <p>• NEEDED MORE ROBUST MOUNTING SYSTEMS WHICH ADD EXTRA COST</p>
+        <div className="flex flex-col items-center justify-center">
+        <img src="./flat.png"/>
         </div>
       ),
       Composite: (
-        <div>
-          <p>• COMPLEX MOUNTING AND TRACKING SYSTEM</p>
-          <p>• HIGHEST COST</p>
-          <p>• NEEDED MORE ROBUST MOUNTING SYSTEMS WHICH ADD EXTRA COST</p>
+        <div className="flex flex-col items-center justify-center">
+        <img src="./composite.png"/>
         </div>
       ),
       OnGrid: (
@@ -160,51 +152,96 @@ const SolutionForm = () => {
       panel1: (
           <div className="flex flex-col items-center justify-center">
           <img src="./panel1.png"/>
-          <a href="https://static.csisolar.com/wp-content/uploads/2024/04/03113544/CS-Datasheet-TOPHiKu6-TOPConAll-Black_CS6R-T_v1.2_EN.pdf" className="py-4 text-blue-500 hover:underline">Panel datasheet</a>
+          
           </div>
       ),
 
       panel2: (
         <div className="flex flex-col items-center justify-center">
         <img src="./panel2.png"/>
-        <a href="https://static.trinasolar.com/sites/default/files/Vertex_NEG21C.20_EN_2023_APAC_C_web.pdf" className="py-4 text-blue-500 hover:underline">Panel datasheet</a>
         </div>
     ),
 
     panel3: (
           <div className="flex flex-col items-center justify-center">
           <img src="./panel3.png"/>
-          <a href="https://www.canadiansolar.com/wp-content/uploads/2019/12/Canadian_Solar-Datasheet-HiKu_CS3L-MS_EN.pdf" className="py-4 text-blue-500 hover:underline">Panel datasheet</a>
           </div>
       ),
 
-      panel4: (
-        <div className="flex flex-col items-center justify-center">
-        <img src="./panel4.png"/>
-        <a href="https://www.jinkosolar.com/uploads/619f40ec/JKM550-570N-72HL4-BDV-F1-EN.pdf" className="py-4 text-blue-500 hover:underline">Panel datasheet</a>
-        </div>
-    ),
+      
 
     inverter1: (
       <div className="flex flex-col items-center justify-center">
       <img src="./inverter1.png"/>
-      <a href="https://files.sma.de/downloads/SBS38-60-US-DSP_MX183417W.pdf" className="py-4 text-blue-500 hover:underline">Inverter datasheet</a>
       </div>
   ),
+  AirBreeze:(
+  <div className="flex flex-col items-center justify-center">
+  <img src="./AirBreeze.png"/>
+  </div>
+  ),
+  BERGEYexcel6:(
+    <div className="flex flex-col items-center justify-center">
+    <img src="./BERGEY excel 6.png"/>
+    </div>
+    ),
+    BattleBornBattery:(
+      <div className="flex flex-col items-center justify-center">
+      <img src="./battleBornBattery.png"/>
+      </div>
+      ),surretteBattery:(
+        <div className="flex flex-col items-center justify-center">
+        <img src="./surretteBattery.png"/>
+        </div>
+        ),
+        trojanBattery:(
+          <div className="flex flex-col items-center justify-center">
+          <img src="./trojanBattery.png"/>
+          </div>
+          ),
+          Whisper100:(
+            <div className="flex flex-col items-center justify-center">
+            <img src="./whisper-100.png"/>
+            </div>
+            ),
+
 
   inverter2: (
     <div className="flex flex-col items-center justify-center">
     <img src="./inverter2.png"/>
-    <a href="https://www.fronius.com/en-gb/uk/solar-energy/installers-partners/technical-data/all-products/inverters/fronius-symo/fronius-symo-5-0-3-m" className="py-4 text-blue-500 hover:underline">Inverter datasheet</a>
     </div>
 ),
 
 inverter3: (
-      <div className="flex flex-col items-center justify-center">
-      <img src="./inverter3.png"/>
-      <a href="https://www.fronius.com/~/downloads/Solar%20Energy/Datasheets/SE_DS_Fronius_Symo_EN.pdf" className="py-4 text-blue-500 hover:underline">Inverter datasheet</a>
-      </div>
-  ),
+  <div className="flex flex-col items-center justify-center">
+  <img src="./inverter3.png"/>
+  </div>
+),
+
+inverter4: (
+  <div className="flex flex-col items-center justify-center">
+  <img src="./inverter4.png"/>
+  </div>
+),
+
+inverter5: (
+  <div className="flex flex-col items-center justify-center">
+  <img src="./inverter5.png"/>
+  </div>
+),
+
+  battery: (
+  <div className="flex flex-col items-center justify-center">
+  <img src="./battery.png"/>
+  </div>
+),
+  HeatPump: (
+  <div className="flex flex-col items-center justify-center">
+  <img src="./HeatPump.png"/>
+  </div>
+),
+
+
 
     };
 
@@ -213,13 +250,25 @@ inverter3: (
   };
 
   const handleDefaultCustomizeChange = (e) => {
-    setUseDefaultSettings(e.target.id === "default" && e.target.checked);
+    const { id, checked } = e.target;
+    setUseDefaultSettings(id === "default" && checked);
+
+    if (id === "customize" && checked) {
+      alert('We are not responsible for customized solutions.');
+    }
   };
 
   const handleSolutionCustomizationChange = (e) => {
     const { id, checked } = e.target;
     // Toggle the state based on which checkbox was clicked
-    setIsCustomizeSelected(id === "customize" ? checked : !checked);
+    setIsCustomizeSelected(id === "customize" ? checked : !checked);const isDefault = event.target.id === 'default';
+    setUseDefaultSettings(isDefault);
+
+    if (!isDefault) {
+      setIsAgreementModalOpen(true);
+    } else {
+      setIsAgreed(false); // Reset agreement when switching to default
+    }
   };
 
   const handleInputChange = (e) => {
@@ -228,6 +277,11 @@ inverter3: (
       ...formData,
       [name]: value,
     });
+    if (name === "purpose" && value === "Heating/Cooling") {
+      setShowGasBillInput(true);
+    } else if (name === "purpose") {
+      setShowGasBillInput(false);
+    }
   };
 
   const handleCheckboxChange = (e) => {
@@ -329,6 +383,10 @@ inverter3: (
     };
     router.push("solution");
     console.log(output);
+    if (errorMessage) {
+      console.log('Form contains errors.');
+      return;
+    }
   };
 
   const handleAddList = (e) => {
@@ -592,37 +650,26 @@ inverter3: (
                 </div>
               </div>
 
-              <div className="pt-4 mb-4">
-                <p className="font-semibold">
-                  Building size (in m<sup>2</sup>)
-                </p>
-                <input
-                  id="building_size"
-                  name="building_size"
-                  type="text"
-                  required
-                  className="mt-2 mb-4 w-80 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-                  placeholder=""
-                  value={formData.building_size}
-                  onChange={handleInputChange}
-                />
-              </div>
+              
 
               <div className="pt-4 mb-4">
                 <p className="font-semibold">
                   Roof size (in m<sup>2</sup>)
                 </p>
                 <input
-                  id="roof_size"
-                  name="roof_size"
-                  type="text"
-                  required
-                  className="mt-2 mb-4 w-80 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-                  placeholder=""
-                  value={formData.roof_size}
-                  onChange={handleInputChange}
-                />
-              </div>
+              id="roof_size"
+              name="roof_size"
+              type="text"
+              required
+              className="mt-2 mb-4 w-80 py-2 px-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+              placeholder="width x height"
+              value={formData.roof_size}
+              onChange={handleInputChange}
+            />
+            {error && (
+              <p className="text-red-500 text-sm mt-2">{error}</p>
+            )}
+          </div>
 
               <div className="pt-4 mb-4">
                 <p className="font-semibold">Purpose of the solution:</p>
@@ -644,8 +691,45 @@ inverter3: (
                     <option value="Increase home value">Increase home value</option>
                   </select>
                 </div>
+                {formData.purpose === 'Heating/Cooling' && ( // Conditional rendering
+    <div className="mt-4">
+      <label htmlFor="averageGasBill" className="block text-sm font-medium text-gray-700">
+        Write the average of gas bills for the last year:
+      </label>
+      <input
+        type="text"
+        id="averageGasBill"
+        name="averageGasBill"
+        value={formData.averageGasBill}
+        onChange={handleInputChange}
+        className="mt-1 w-80 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+      />
+    </div>
+  )}
               </div>
 
+              <div className="pt-4 mb-4">
+                <p className="font-semibold">Select your region:</p>
+                <div>
+                  <select
+                    id="region"
+                    name="region"
+                    required
+                    className="mt-2 mb-4 w-80 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                    value={formData.powered}
+                    onChange={handleInputChange}
+                  >
+                    <option value="">Select region</option>
+                    <option value="Southeastern Anatolia">Southeastern Anatolia</option>
+                    <option value="Mediterranean">Mediterranean</option>
+                    <option value="Eastern Anatolia">Eastern Anatolia</option>
+                    <option value="Central Anatolia">Central Anatolia</option>
+                    <option value="Aegean">Aegean</option>
+                    <option value="Marmara">Marmara</option>
+                    <option value="Black Sea">Black Sea</option>
+                  </select>
+                </div>
+              </div>
               <div className="flex my-4 mr-32 ml-2">
                 <p className="font-semibold mr-4 mb-4">Location:</p>
                 <button
@@ -656,7 +740,7 @@ inverter3: (
                   Detect location
                 </button>
               </div>
-
+              
               <div>
                 <div className="my-4 mr-40 ml-3">
                   <p>Lattitude: {latitude}</p>
@@ -664,6 +748,7 @@ inverter3: (
                 </div>
               </div>
             </div>
+            
           )}
 
           {currentStep === 3 && (
@@ -683,19 +768,44 @@ inverter3: (
                       I want Green Solution to generate solution for me
                     </label>
                     <input
-                      type="checkbox"
-                      id="customize"
-                      checked={!useDefaultSettings}
-                      onChange={handleDefaultCustomizeChange}
-                      className="form-checkbox h-5 w-5 text-green-600"
-                    />
-                    <label htmlFor="customize" className="ml-2">
+                    type="checkbox"
+                     id="customize"
+                     checked={!useDefaultSettings}
+                     onChange={(e) => {
+                   handleDefaultCustomizeChange(e);
+                    if (!e.target.checked) {
+                alert('We are not responsible for customized solutions.');
+                  }
+            }}
+            className="form-checkbox h-5 w-5 text-green-600"
+          />
+          <label htmlFor="customize" className="ml-2">
                       I want customize my solution
                     </label>
                   </div>
                 </div>
               </div>
-
+              {isModalOpen && (
+        <div className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-screen w-screen z-50">
+          <div className="relative top-20 mx-auto p-5 border w-1/3 shadow-lg rounded-md bg-white">
+            <div className="mt-3 text-center">
+              <h3 className="text-lg leading-6 font-medium text-gray-900">Information</h3>
+              <div className="mt-2 px-7 py-3">
+                <p className="text-sm text-gray-500">{modalContent}</p>
+              </div>
+              <div className="items-center px-4 py-3">
+                <button
+                  className="px-4 py-2 bg-gray-500 text-white text-base font-medium rounded-md w-full shadow-sm hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-300"
+                  onClick={() => setIsModalOpen(false)}
+                >
+                  Close
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+  
               <div className="flex items-center mb-4 mr-3">
                 <p className="font-semibold">Solution Type:</p>
                 <div className="flex">
@@ -740,6 +850,73 @@ inverter3: (
                   </div>
                 </div>
               </div>
+              {formData.solution_type === "wind" && (
+                <div className="flex-col mb-4 pt-2 pr-12">
+                  <p className="font-semibold">Air turbines :</p>
+                  <div className="flex items-center mx-8">
+                    <input
+                      type="checkbox"
+                      id="AIR Breeze"
+                      name="wind_type"
+                      value="AIR Breeze"
+                      disabled={useDefaultSettings}
+                      checked={formData.wind_type === "AIR Breeze"}
+                      onChange={handleCheckboxChange}
+                    />
+                    <label className="ml-2">AIR Breeze</label>
+                    <div
+                      className="flex h-6 w-6 items-center justify-center text-xs bg-gray-200 rounded-full ml-2 cursor-pointer"
+                      onClick={() => handleInfoClick("AirBreeze")}
+                      title="Click for more info on panel type"
+                    >
+                      ?
+                    </div>
+                  </div>
+
+                  <div className="flex items-center mx-8">
+                    <input
+                      type="checkbox"
+                      id="BERGEYexcel6"
+                      name="wind_type"
+                      value="BERGEYexcel6"
+                      disabled={useDefaultSettings}
+                      checked={formData.wind_type === "BERGEYexcel6"}
+                      onChange={handleCheckboxChange}
+                    />
+                    <label className="ml-2">BERGEY excel 6</label>
+                    <div
+                      className="flex h-6 w-6 items-center justify-center text-xs bg-gray-200 rounded-full ml-2 cursor-pointer"
+                      onClick={() => handleInfoClick("BERGEYexcel6")}
+                      title="Click for more info on panel type"
+                    >
+                      ?
+                    </div>
+                  </div>
+                  <div className="flex items-center mx-8">
+                    <input
+                      type="checkbox"
+                      id="Whisper-100"
+                      name="wind_type"
+                      value="Whisper-100"
+                      disabled={useDefaultSettings}
+                      checked={formData.wind_type === "Whisper-100"}
+                      onChange={handleCheckboxChange}
+                    />
+                    <label className="ml-2">Whisper 100</label>
+                    <div
+                      className="flex h-6 w-6 items-center justify-center text-xs bg-gray-200 rounded-full ml-2 cursor-pointer"
+                      onClick={() => handleInfoClick("Whisper100")}
+                      title="Click for more info on panel type"
+                    >
+                      ?
+                    </div>
+                    
+                  </div>
+                  
+                </div>
+                
+              )}
+                          
               {isModalOpen && (
                 <div className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-screen w-screen z-50">
                   <div className="relative top-20 mx-auto p-5 border w-1/3 shadow-lg rounded-md bg-white">
@@ -762,7 +939,7 @@ inverter3: (
                   </div>
                 </div>
               )}
-
+              
               {formData.solution_type === "solar" && (
                 <div className="flex-col mb-4 pt-2 pl-28 pr-2">
                   <p className="font-semibold">Panel Type:</p>
@@ -776,7 +953,7 @@ inverter3: (
                       checked={formData.panel_type === "type1"}
                       onChange={handleCheckboxChange}
                     />
-                    <label className="ml-2">OPHiku6 (All-Black) CS6R-T -420W</label>
+                    <label className="ml-2">Canadian Solar CS6P-200PM</label>
                     <div
                       className="flex h-6 w-6 items-center justify-center text-xs bg-gray-200 rounded-full ml-2 cursor-pointer"
                       onClick={() => handleInfoClick("panel1")}
@@ -792,10 +969,11 @@ inverter3: (
                       id="type2"
                       name="panel_type"
                       value="type2"
+                      disabled={useDefaultSettings}
                       checked={formData.panel_type === "type2"}
                       onChange={handleCheckboxChange}
                     />
-                    <label className="ml-2">Trina Solar Vertex S 670W (TSM-700P-AB)</label>
+                    <label className="ml-2">Canadian Solar HiDM CS1U-MS</label>
                     <div
                       className="flex h-6 w-6 items-center justify-center text-xs bg-gray-200 rounded-full ml-2 cursor-pointer"
                       onClick={() => handleInfoClick("panel2")}
@@ -810,10 +988,11 @@ inverter3: (
                       id="type3"
                       name="panel_type"
                       value="type3"
+                      disabled={useDefaultSettings}
                       checked={formData.panel_type === "type3"}
                       onChange={handleCheckboxChange}
                     />
-                    <label className="ml-2">Canadian Solar CS3L-405M Poly 405W Solar Panel</label>
+                    <label className="ml-2">Trina Solar Vertex TSM-DE20-600</label>
                     <div
                       className="flex h-6 w-6 items-center justify-center text-xs bg-gray-200 rounded-full ml-2 cursor-pointer"
                       onClick={() => handleInfoClick("panel3")}
@@ -823,24 +1002,7 @@ inverter3: (
                     </div>
                   </div>
 
-                  <div className="flex items-center mx-8">
-                    <input
-                      type="checkbox"
-                      id="type4"
-                      name="panel_type"
-                      value="type4"
-                      checked={formData.panel_type === "type4"}
-                      onChange={handleCheckboxChange}
-                    />
-                    <label className="ml-2">Jinko Solar Tiger Pro 7R 570 W (JKM570N-72HL4-BDV) </label>
-                    <div
-                      className="flex h-6 w-6 items-center justify-center text-xs bg-gray-200 rounded-full ml-2 cursor-pointer"
-                      onClick={() => handleInfoClick("panel4")}
-                      title="Click for more info on panel types"
-                    >
-                      ?
-                    </div>
-                  </div>
+                 
                 </div>
               )}
               <div className="flex mb-4 pt-4 pl-40 pr-2">
@@ -934,6 +1096,7 @@ inverter3: (
                     id="off_grid"
                     name="grid_type"
                     value="off_grid"
+                    disabled={useDefaultSettings}
                     checked={formData.grid_type === "off_grid"}
                     onChange={handleCheckboxChange}
                   />
@@ -947,31 +1110,123 @@ inverter3: (
                   </div>
                 </div>
               </div>
+                  
 
-              {formData.grid_type === "off_grid" && (
-                <div className="pt-4 flex flex-col items-start mb-4 pr-14">
-                  <p className="font-semibold">
-                    How do you plan to store excess energy?
-                  </p>
-                  <div>
-                    <select
-                      id="excess_energy"
-                      name="excess_energy"
-                      required
-                      className="mt-2 mb-4 w-80 px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-                      value={formData.excess_energy}
-                      onChange={handleInputChange}
+              {formData.grid_type === "off_grid" && 
+                formData.solution_type === "solar" && (
+               <div className="flex-col mb-4 pt-2 pl-28 pr-2">
+               <p className="font-semibold">How would you like to excess energy ? </p>
+               <div className="flex items-center mx-8">
+                 <input
+                   type="checkbox"
+                   id="type1"
+                   name="excess_energy"
+                   value="type1"
+                   disabled={useDefaultSettings}
+                   checked={formData.excess_energy === "type1"}
+                   onChange={handleCheckboxChange}
+                 />
+                 <label className="ml-2">Battery (Sonnen Eco GEN3 ECO15)</label>
+                 <div
+                   className="flex h-6 w-6 items-center justify-center text-xs bg-gray-200 rounded-full ml-2 cursor-pointer"
+                   onClick={() => handleInfoClick("battery")}
+                   title="Click for more info "
+                 >
+                   ?
+                 </div>
+               </div>
+
+               <div className="flex items-center mx-8">
+                 <input
+                   type="checkbox"
+                   id="type2"
+                   name="excess_energy"
+                   value="type2"
+                   checked={formData.excess_energy === "type2"}
+                   onChange={handleCheckboxChange}
+                 />
+                 <label className="ml-2">Heat pump ( DAİKİN RXB12AXVJU ) </label>
+                 <div
+                   className="flex h-6 w-6 items-center justify-center text-xs bg-gray-200 rounded-full ml-2 cursor-pointer"
+                   onClick={() => handleInfoClick("HeatPump")}
+                   title="Click for more info "
+                 >
+                   ?
+                 </div>
+               </div>
+               
+             </div>
+              )}
+
+{formData.grid_type === "off_grid" && 
+                formData.solution_type === "wind" && (
+                  <div className="flex-col mb-4 pt-2 pl-96">
+                  <p className="font-semibold">Battery :</p>
+                  <div className="flex items-center mx-8">
+                    <input
+                      type="checkbox"
+                      id="surretteBattery"
+                      name="wind_battery"
+                      value="surretteBattery"
+                      disabled={useDefaultSettings}
+                      checked={formData.wind_battery === "surretteBattery"}
+                      onChange={handleCheckboxChange}
+                    />
+                    <label className="ml-2">Surrette Rolls S6 L16-HC (S-550) 445Ah 6V Deep Cycle </label>
+                    <div
+                      className="flex h-6 w-6 items-center justify-center text-xs bg-gray-200 rounded-full ml-2 cursor-pointer"
+                      onClick={() => handleInfoClick("surretteBattery")}
+                      title="Click for more info on battery type"
                     >
-                      <option value="">Select method</option>
-                      <option value="Battery">Battery</option>
-                      <option value="Heat Pump">Heat Pump</option>
-                      <option value="Hydro generator">Hydro Generator</option>
-                      <option value="other">Other</option>
-                    </select>
+                      ?
+                    </div>
                   </div>
+
+                  <div className="flex items-center mx-8">
+                    <input
+                      type="checkbox"
+                      id="trojanBattery"
+                      name="wind_battery"
+                      value="trojanBattery"
+                      disabled={useDefaultSettings}
+                      checked={formData.wind_battery === "trojanBattery"}
+                      onChange={handleCheckboxChange}
+                    />
+                    <label className="ml-2">Trojan Battery Trojan T-125 6V 240Ah Deep Cycle </label>
+                    <div
+                      className="flex h-6 w-6 items-center justify-center text-xs bg-gray-200 rounded-full ml-2 cursor-pointer"
+                      onClick={() => handleInfoClick("trojanBattery")}
+                      title="Click for more info on battery type"
+                    >
+                      ?
+                    </div>
+                  </div>
+                  <div className="flex items-center mx-8">
+                    <input
+                      type="checkbox"
+                      id="BattleBornBattery"
+                      name="wind_battery"
+                      value="BattleBornBattery"
+                      disabled={useDefaultSettings}
+                      checked={formData.wind_battery === "BattleBornBattery"}
+                      onChange={handleCheckboxChange}
+                    />
+                    <label className="ml-2">Battle Born Battery BB250-12V 100Ah Lithium Iron Phosphate (LiFePO4) </label>
+                    <div
+                      className="flex h-6 w-6 items-center justify-center text-xs bg-gray-200 rounded-full ml-2 cursor-pointer"
+                      onClick={() => handleInfoClick("BattleBornBattery")}
+                      title="Click for more info on battery type"
+                    >
+                      ?
+                    </div>
+                    
+                  </div>
+                  
                 </div>
               )}
 
+
+                {formData.solution_type === "solar" && (
                 <div className="flex-col mb-4 pt-2 pr-20 pl-2">
                 <p className="font-semibold">Inverter Type:</p>
                 <div className="flex items-center mx-8">
@@ -984,7 +1239,7 @@ inverter3: (
                     checked={formData.inverter_type === "type1"}
                     onChange={handleCheckboxChange}
                   />
-                  <label className="ml-2">SMA Sunny Boy Storage 5.0 (US) </label>
+                  <label className="ml-2">Hoymiles HM-600NT </label>
                   <div
                       className="flex h-6 w-6 items-center justify-center text-xs bg-gray-200 rounded-full ml-2 cursor-pointer"
                       onClick={() => handleInfoClick("inverter1")}
@@ -1004,7 +1259,7 @@ inverter3: (
                     checked={formData.inverter_type === "type2"}
                     onChange={handleCheckboxChange}
                   />
-                  <label className="ml-2">Fronius Symo 5.0-3-M</label>
+                  <label className="ml-2">Growatt SPH 6000</label>
                   <div
                       className="flex h-6 w-6 items-center justify-center text-xs bg-gray-200 rounded-full ml-2 cursor-pointer"
                       onClick={() => handleInfoClick("inverter2")}
@@ -1014,7 +1269,13 @@ inverter3: (
                     </div>
                 </div>
 
+              </div>
+               )}
 
+
+{formData.solution_type === "wind" && (
+                <div className="flex-col mb-4 pt-2 pr-20 pl-2">
+                <p className="font-semibold">Inverter Type:</p>
                 <div className="flex items-center mx-8">
                   <input
                     type="checkbox"
@@ -1025,7 +1286,7 @@ inverter3: (
                     checked={formData.inverter_type === "type3"}
                     onChange={handleCheckboxChange}
                   />
-                  <label className="ml-2">Fronius Symo 12.5-3M</label>
+                  <label className="ml-2">Schneider Electric Conext SW+ 5000W </label>
                   <div
                       className="flex h-6 w-6 items-center justify-center text-xs bg-gray-200 rounded-full ml-2 cursor-pointer"
                       onClick={() => handleInfoClick("inverter3")}
@@ -1035,7 +1296,50 @@ inverter3: (
                     </div>
                 </div>
 
+                <div className="flex items-center mx-8">
+                  <input
+                    type="checkbox"
+                    id="type4"
+                    name="inverter_type"
+                    value="type4"
+                    disabled={useDefaultSettings}
+                    checked={formData.inverter_type === "type4"}
+                    onChange={handleCheckboxChange}
+                  />
+                  <label className="ml-2">PVI-6000w Power-One Aurora0</label>
+                  <div
+                      className="flex h-6 w-6 items-center justify-center text-xs bg-gray-200 rounded-full ml-2 cursor-pointer"
+                      onClick={() => handleInfoClick("inverter4")}
+                      title="Click for more info on inverter types"
+                    >
+                      ?
+                    </div>
+                </div>
+
+                <div className="flex items-center mx-8">
+                  <input
+                    type="checkbox"
+                    id="type5"
+                    name="inverter_type"
+                    value="type5"
+                    disabled={useDefaultSettings}
+                    checked={formData.inverter_type === "type5"}
+                    onChange={handleCheckboxChange}
+                  />
+                  <label className="ml-2">Marsrock 1000W 1KW MPPT Wind Grid Tie</label>
+                  <div
+                      className="flex h-6 w-6 items-center justify-center text-xs bg-gray-200 rounded-full ml-2 cursor-pointer"
+                      onClick={() => handleInfoClick("inverter5")}
+                      title="Click for more info on inverter types"
+                    >
+                      ?
+                    </div>
+                </div>
+
               </div>
+               )}
+
+
             </div>
           )}
 
