@@ -3,20 +3,23 @@ from pydantic import BaseModel
 
 
 class Device(BaseModel):
-    id: int
-    daily_usage_duration: int
+    device: str
+    consumption: float
 
 
 class SolutionRequest(BaseModel):
-    devices: Optional[List[Device]] = None
+    roof_size: Optional[str] = None
+    selectedDeviceLists: Optional[List[Device]] = None
     latitude: float
     longitude: float
-    day_of_year: int
-    standard_time_min: int
     region: str
     oversize: Optional[bool] = False
     off_grid: Optional[bool] = False
-    gas: Optional[int] = None
+    averageGasBill: Optional[int] = None
+    solution_type: Optional[str] = None
+    grid_type: Optional[str] = None
+    purpose: Optional[str] = None
+    average_consumption: Optional[int] = None
 
 
 class SolutionRequestWind(BaseModel):

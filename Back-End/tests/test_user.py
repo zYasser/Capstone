@@ -253,9 +253,8 @@ def test_get_current_user():
     headers = {"Content-Type": "application/x-www-form-urlencoded"}
     login_response = client.post("/api/user/login", data=login_data, headers=headers)
     access_token = login_response.json()["access_token"]
-
     # Test the get_current_user endpoint
     headers = {"Authorization": f"Bearer {access_token}"}
     response = client.get("/api/user/me", headers=headers)
     assert response.status_code == 200
-    assert response.json()["email"] == login_data["email"]
+    assert response.json()["email"] == login_data["username"]

@@ -258,8 +258,10 @@ class PVCalculation:
                 "Name": "Sonnen Eco GEN3 ECO15",
                 "Battery Count": round(((battery_capacity * 58) / 1000) / 15),
             }
+        heat_pump = None
         if clean_energy is not None:
             clean_energy = round(clean_energy, 2)
+            heat_pump = "DAİKİN RXB12AXVJU"
 
         return {
             "DC System Size": round(energy_consuming, 2),
@@ -270,6 +272,7 @@ class PVCalculation:
             "Energy Production": round(energy_production, 2),
             "Clean Energy": clean_energy,
             "Carbon Footprint": round((0.699 * energy_production) / 1000, 2),
+            "Heat Pump": heat_pump,
         }
 
     def calculate_gas_to_electricity(self):

@@ -2,7 +2,7 @@
 import CostChart from "@/components/CostChart";
 import CostPieChart from "@/components/CostPie";
 import StatsCards from "@/components/StatsCards";
-import convertToCart from "@/util/ComponentsToItems";
+
 import { useEffect } from "react";
 import { useState } from "react";
 import CartTable from "@/components/CartTable";
@@ -11,9 +11,6 @@ import Invoice from "@/components/Invoice";
 import { saveAs } from "file-saver";
 
 export default function Solution() {
-  let data = localStorage.getItem("result");
-  data = JSON.parse(data);
-  console.log(convertToCart(data));
   const generatePdfDocument = async (cartItem) => {
     const blob = await pdf(<Invoice cartItems={cartItem} />).toBlob();
     saveAs(blob, "invoice");
