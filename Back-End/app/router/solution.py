@@ -1,3 +1,4 @@
+from datetime import datetime
 from fastapi import APIRouter, Depends
 from app.schema import solutin
 from app.config.database import get_db
@@ -5,6 +6,16 @@ from sqlalchemy.orm import Session
 from app.entity.models import Devices
 from app.utils.energyCalculation import totalConsumption
 from app.utils.calcs import SolarCalculator
+from app.utils.panel import PVCalculation
+
+
+PANELS = [
+    "Canadian Solar CS6P-200PM",
+    "Canadian Solar HiDM CS1U-MS",
+    "Trina Solar Vertex TSM-DE20-600",
+]
+INVERTERS = ["HM-600NT", "GrowattSPH6000"]
+
 
 router = APIRouter(prefix="/solution", tags=["solution"])
 
@@ -16,8 +27,9 @@ direction_tracking_system = {
     "SOUTHEAST": "SINGLE AXIS",
     "SOUTHWEST": "SINGLE AXIS",
     "NORTHEAST": "DUAL AXIS",
-    "NORTHWEST": "DUAL AXIS"
+    "NORTHWEST": "DUAL AXIS",
 }
+
 
 def get_direction(degrees):
     if degrees == 0:
@@ -46,17 +58,48 @@ async def generate_solution(
 ):
     ids = [device.id for device in req.devices]
     usage = {device.id: device.daily_usage_duration for device in req.devices}
+    current_time = datetime.now().strftime("%H:%M")
 
+    print(current_time)
     consumption = db.query(Devices).filter(Devices.id.in_((ids))).all()
     total_consumption = totalConsumption(usage=usage, consumption=consumption)
     result = SolarCalculator(
-        req.day_of_year, req.latitude, req.longitude, req.standard_time_min
+        req.day_of_year,
+        req.latitude,
+        req.longitude,
+        req.standard_time_min,
+        current_time,
     )
-    
+
     result.calculate_all()
-    direction=get_direction(result.solar_azimuth)
-    tracking_system=direction_tracking_system[direction]
-    return {"total_consumption": total_consumption, **result.get_results()}
+    direction = get_direction(result.solar_azimuth)
+    tracking_system = direction_tracking_system[direction]
+    solutions = []
+    for panel in PANELS:
+        for inverter in INVERTERS:
+            calculation = PVCalculation(
+                region=req.region,
+                roof_size=48,
+                panel_name=panel,
+                energy_consuming=total_consumption,
+                tracking_system=tracking_system,
+                inverter_name=inverter,
+                off_grid=req.off_grid,
+                oversize=req.oversize,
+                average_gas_consumption=req.gas,
+            )
+            solution = calculation.calculate()
+            if solution is not None:
+                solutions.append(solution)
+    solutions = sorted(solutions, key=lambda x: x["Energy Production"], reverse=True)
+
+    return {
+        "total_consumption": total_consumption,
+        **result.get_results(),
+        "direction": direction,
+        "tracking_system": tracking_system,
+        "Solutions": solutions[0],
+    }
 
 
 # @router.post("/wind", status_code=200)

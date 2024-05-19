@@ -9,14 +9,17 @@ class Device(BaseModel):
 
 class SolutionRequest(BaseModel):
     devices: Optional[List[Device]] = None
-    latitude :float
-    longitude :float 
-    day_of_year:int 
-    standard_time_min:int
-
+    latitude: float
+    longitude: float
+    day_of_year: int
+    standard_time_min: int
+    region: str
+    oversize: Optional[bool] = False
+    off_grid: Optional[bool] = False
+    gas: Optional[int] = None
 
 
 class SolutionRequestWind(BaseModel):
     devices: Optional[List[Device]] = None
-    wind_speed :float
-    wind_direction : float 
+    wind_speed: float
+    wind_direction: float
