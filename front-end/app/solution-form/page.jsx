@@ -30,15 +30,9 @@ const SolutionForm = () => {
 
   const [error, setError] = useState("");
   const [currentStep, setCurrentStep] = useState(1);
-  const [weatherInfo, setWeatherInfo] = useState(null);
   const [latitude, setLatitude] = useState(null);
   const [longitude, setLongitude] = useState(null);
-  const [altitude, setAltitude] = useState(null);
-  const [azimuth, setAzimuth] = useState(null);
-  const [solarDeclination, setSolarDeclination] = useState(null);
-  const [trueSolarTime, setTrueSolarTime] = useState(null);
-  const [solarHourAngle, setSolarHourAngle] = useState(null);
-  const [angleOfIncidence, setAngleOfIncidence] = useState(null);
+  const [windSpeed, setWindSpeed] = useState(null);
   const [useDefaultSettings, setUseDefaultSettings] = useState(true);
   const [showGasBillInput, setShowGasBillInput] = useState(false);
 
@@ -317,42 +311,11 @@ inverter5: (
       setLongitude(longitude);
 
       const weatherData = await Weather({ latitude, longitude });
-      setWeatherInfo(weatherData);
 
-      var times = SunCalc.getTimes(new Date(), latitude, longitude);
-      var sunrisePos = SunCalc.getPosition(times.sunrise, latitude, longitude);
-      console.log(
-        `Solar Altitude: ${sunrisePos.altitude}, Solar Azimuth: ${sunrisePos.azimuth}`
-      );
-      setAltitude(sunrisePos.altitude); // Set latitude state
-      setAzimuth(sunrisePos.azimuth); // Set longitude state
+      setWindSpeed(weatherData.windSpeed10m)
+
+
     }
-
-    var now = new Date();
-    var start = new Date(now.getFullYear(), 0, 0);
-    var diff = now - start;
-    var dayInMs = 1000 * 60 * 60 * 24;
-    var dayOfYear = Math.floor(diff / dayInMs);
-
-    const solarDeclination = 23.27 * Math.sin((360 * (dayOfYear + 283)) / 265);
-    setSolarDeclination(solarDeclination);
-
-    var currentHour = now.getHours();
-    var currentMinute = now.getMinutes();
-
-    // Calculate the total minutes passed since midnight
-    var totalMinutesPassed = currentHour * 60 + currentMinute;
-
-    var EOT = 5;
-
-    const trueSolarTime = totalMinutesPassed + EOT * 4 + longitude * 4;
-    setTrueSolarTime(trueSolarTime);
-
-    const solarHourAngle = trueSolarTime / 4 - 180;
-    setSolarHourAngle(solarHourAngle);
-
-    const angleOfIncidence = 90 - altitude - solarDeclination;
-    setAngleOfIncidence(angleOfIncidence);
 
     function error() {
       setError("Unable to retrieve your location");
@@ -367,42 +330,52 @@ inverter5: (
       ...formData, // Include existing form data
       latitude: latitude,
       longitude: longitude,
-      altitude: altitude,
-      azimuth: azimuth,
-      // Include weather information only if available
-      averageSolarIrradiancePerDay: weatherInfo
-        ? weatherInfo.averageSolarIrradiancePerDay
-        : null,
-      averageSunshineDuration: weatherInfo
-        ? weatherInfo.averageSunshineDuration
-        : null,
-      solarDeclination: solarDeclination,
-      trueSolarTime: trueSolarTime,
-      solarHourAngle: solarHourAngle,
-      angleOfIncidence: angleOfIncidence,
+      windSpeed: windSpeed,
+
     };
     router.push("solution");
     console.log(output);
-    if (errorMessage) {
+    if (error) {
       console.log('Form contains errors.');
       return;
     }
   };
 
+  const deviceConsumptionMapping = {
+    'Refrigerator': 24,
+    'Freezer': 24,
+    'Washing Machine': 1.25,
+    'Dryer Machine': 1.25,
+    'Dishwasher': 2,
+    'Oven': 1.25,
+    'Microwave': 0.55,
+    'Television': 4,
+    'Computer': 6,
+    'Gaming Console': 2.25,
+    'Vacuum Cleaner': 0.3,
+    'Air Conditioner': 6,
+    'Space Heater': 2.5,
+    'Dehumidifier': 6,
+    'Water Heater': 0.15,
+    'Toaster': 0.15,
+    'Coffee Maker': 0.15,
+    'Hair Dryer': 0.15,
+    'Clothes Iron': 0.15,
+  };
+
   const handleAddList = (e) => {
-    // Create a new object with the selected device
     const selectedDevice = formData.device_consumption;
     if (selectedDevice) {
       const newDevice = {
         device: selectedDevice,
-        consumption: "",
-        useDefault: false,
+        consumption: deviceConsumptionMapping[selectedDevice],
+        useDefault: true, // Initially set to true, you can change this later based on your requirements
       };
 
       setFormData({
         ...formData,
         selectedDeviceLists: [...formData.selectedDeviceLists, newDevice],
-        device_consumption: "", // Clear the selected device for the next entry
+        device_consumption: '', // Clear the selected device for the next entry
       });
     }
   };
