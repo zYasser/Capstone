@@ -18,11 +18,14 @@ const MyProfile = () => {
     last_name: "",
     email: "",
     phone: "",
-    address: "",
+    street: "",
+    city: "",
+    postal_code: "",
+    district: "",
   });
   const [error, setError] = useState("");
   const [fetch, setFetch] = useState(false);
-  const [vaild, setValid] = useState("");
+  const [valid, setValid] = useState("");
 
   const [profile, setProfile] = useState(null);
   const pathname = usePathname();
@@ -58,7 +61,8 @@ const MyProfile = () => {
       });
     };
     fetchData();
-  }, []);
+  }, [router, pathname]);
+
   if (!profile) {
     return <Pulse />;
   }
@@ -93,24 +97,24 @@ const MyProfile = () => {
 
   return (
     <div className="bg-green-200 min-h-screen">
-      <div className="container mx-auto w-1/2 px-4 py-8 ">
+      <div className="container mx-auto w-1/2 px-4 py-8">
         <SideBar />
-        <div className="bg-white  rounded px-8 pt-6 pb-8 mb-4 shadow-2xl">
-          {vaild && <DynamicSucceedAlert message={vaild} />}
+        <div className="bg-white rounded px-8 pt-6 pb-8 mb-4 shadow-2xl">
+          {valid && <DynamicSucceedAlert message={valid} />}
           {error && <DynamicAlert error={error} />}
-          <form action="handleSubmit" onSubmit={handleSubmit}>
+          <form onSubmit={handleSubmit}>
             <h1 className="text-2xl font-bold mb-4">Account Settings</h1>
             <div className="grid grid-cols-2 gap-4">
               <div className="mb-4">
                 <label
                   className="block text-gray-700 text-sm font-bold mb-2"
-                  htmlFor="first-name"
+                  htmlFor="first_name"
                 >
                   First Name
                 </label>
                 <input
                   className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                  id="first-name"
+                  id="first_name"
                   type="text"
                   placeholder="First Name"
                   value={formData.first_name}
@@ -120,13 +124,13 @@ const MyProfile = () => {
               <div className="mb-4">
                 <label
                   className="block text-gray-700 text-sm font-bold mb-2"
-                  htmlFor="last-name"
+                  htmlFor="last_name"
                 >
                   Last Name
                 </label>
                 <input
                   className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                  id="last-name"
+                  id="last_name"
                   type="text"
                   placeholder="Last Name"
                   value={formData.last_name}
@@ -180,7 +184,6 @@ const MyProfile = () => {
                 id="street"
                 type="text"
                 placeholder="Street"
-                name="street"
                 value={formData.street}
                 onChange={handleChange}
               />
@@ -197,7 +200,6 @@ const MyProfile = () => {
                 id="city"
                 type="text"
                 placeholder="City"
-                name="city"
                 value={formData.city}
                 onChange={handleChange}
               />
@@ -205,16 +207,15 @@ const MyProfile = () => {
             <div className="mb-4">
               <label
                 className="block text-gray-700 text-sm font-bold mb-2"
-                htmlFor="postal-code"
+                htmlFor="postal_code"
               >
                 Postal Code
               </label>
               <input
                 className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                id="postal-code"
+                id="postal_code"
                 type="text"
                 placeholder="Postal Code"
-                name="postal_code"
                 value={formData.postal_code}
                 onChange={handleChange}
               />
@@ -231,15 +232,14 @@ const MyProfile = () => {
                 id="district"
                 type="text"
                 placeholder="District"
-                name="district"
                 value={formData.district}
                 onChange={handleChange}
               />
             </div>
-            <div className="mb-4 ">
+            <div className="mb-4">
               <div className="flex items-center justify-between flex-row-reverse my-3">
                 <button
-                  className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline "
+                  className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
                   type="submit"
                   disabled={fetch}
                 >

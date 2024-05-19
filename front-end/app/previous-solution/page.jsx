@@ -79,7 +79,7 @@ const ComparisonTable = ({ data }) => {
                   }
                 >
                   <td className="border px-4 py-2">
-                    <Link href={`/solutin/${item.id}`}>{item.id}</Link>
+                    <Link href={`/solution/${item.id}`}>{item.id}</Link>
                   </td>
                   <td className="border px-4 py-2">{item.overallCost}₺</td>
                   <td className="border px-4 py-2">
