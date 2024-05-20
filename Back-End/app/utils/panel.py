@@ -155,14 +155,6 @@ class PVCalculation:
         area = self.calculate_area(initial_num_panel, num_of_inverters)
         num_of_panel = self.calculate_num_of_panel()
         energy_production = self.calculate_energy_production()
-        if (
-            energy_consuming < num_of_inverters * self.inverter["Power_Rating"]
-            and self.oversize
-        ):
-            num_of_inverters = self.additional_inverter(
-                num_of_panel * self.panel["Pmax"] * 0.9, num_of_inverters
-            )
-
         if initial_num_panel != num_of_panel:
             energy_consuming, num_of_inverters = self.adjust_panels_and_inverters(
                 initial_num_panel, num_of_panel, energy_consuming, num_of_inverters
@@ -172,6 +164,7 @@ class PVCalculation:
             )
 
             energy_production = self.dc * energy_consuming
+
         if (
             self.oversize
             and energy_consuming < num_of_inverters * self.inverter["Power_Rating"]
@@ -252,7 +245,7 @@ class PVCalculation:
         clean_energy=None,
     ):
         if type(num_of_inverters) is int:
-            num_of_inverters = {"Name": self.inverter_name, "count": num_of_inverters}
+            num_of_inverters = {self.inverter_name: num_of_inverters}
         if battery_capacity is not None:
             battery_capacity = {
                 "Name": "Sonnen Eco GEN3 ECO15",

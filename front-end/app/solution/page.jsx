@@ -13,38 +13,15 @@ import { saveAs } from "file-saver";
 export default function Solution() {
   let data = localStorage.getItem("result");
   data = JSON.parse(data);
-  console.log(convertToCart(data));
+  console.log();
   const generatePdfDocument = async (cartItem) => {
     const blob = await pdf(<Invoice cartItems={cartItem} />).toBlob();
     saveAs(blob, "invoice");
   };
 
   const [domLoaded, setDomLoaded] = useState(false);
-  const cartItems = [
-    {
-      id: 1,
-      type: "Solar Inverter",
-      name: "SolarMax 5000",
-      quantity: 2,
-      price: 170,
-    },
-    {
-      id: 2,
-      type: "PV",
-      name: "SunPower 320W",
-      quantity: 10,
-      price: 250,
-    },
-    {
-      type: "Solar Inverter",
-      name: "SolarEdge SE3800H",
-      quantity: 10,
-      price: 1500,
-    },
-    { type: "PV", name: "Canadian Solar CS3W-415MS", quantity: 20, price: 200 },
-    { type: "WIND", name: "Vestas V117-4.2MW", quantity: 5, price: 5000 },
-  ];
-
+  const cartItems = convertToCart(data);
+  console.log(data);
   useEffect(() => {
     setDomLoaded(true);
   }, []);
@@ -59,7 +36,7 @@ export default function Solution() {
         </div>
         {domLoaded && (
           <div className="bg-green-200 rounded-lg	shadow-lg mb-10">
-            <StatsCards />
+            <StatsCards data={data} totalCost={cartItems.totalCost} />
             <div className="flex justify-center  w-full mx-4 ">
               <div className="bg-white mr-14  shadow-lg w-3/5">
                 <CostChart
@@ -74,7 +51,7 @@ export default function Solution() {
               <h1 className="text-center font-serif	text-xl	">
                 Solution's Components
               </h1>
-              <CartTable cartItems={cartItems} />
+              <CartTable cartItems={cartItems.cartItems} />
             </div>
             <div className="flex flex-row-reverse	">
               <button

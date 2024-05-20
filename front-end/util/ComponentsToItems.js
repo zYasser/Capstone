@@ -7,53 +7,74 @@ export default function convertToCart(originalObject) {
       "Trina Solar Vertex TSM-DE20-600": 250,
     },
     Inverters: {
-      "Hoymiles HM-600 NT": 230,
-      "Growatt SPH 6000": 1500,
+      "HM-600NT": 230,
+      "GrowattSPH6000": 1500,
     },
     "Battery Capacity": {
       "Sonnen Eco GEN3 ECO15": 14,
     },
+    "Heat Pump": {
+      "DAİKİN RXB12AXVJU": 1,
+    },
   };
 
   const cartItems = [];
-  console.log(originalObject.Solutions);
+  let totalCost = 0;
+
   // Extract Panels if available
   if (originalObject.Solutions.Panels) {
     const panels = originalObject.Solutions.Panels;
-    console.log()
-    for (const [panelName, panelCount] of Object.entries(panels)) {
-      const price = prices.Panels[panelName];
-      if (price) {
-        cartItems.push({
-          type: "PV",
-          name: panelName,
-          quantity: panelCount,
-          price: price,
-        });
-      }
+    const panelName = panels.name;
+
+    const price = prices.Panels[panelName];
+    if (price) {
+      cartItems.push({
+        type: "PV",
+        name: panelName,
+        quantity: panels.count,
+        price: price,
+      });
+      totalCost += panels.count * price;
     }
   }
 
   // Extract Inverters if available
-  if (originalObject.Solutions.Inverters) {
-    const inverterName = originalObject.Solutions.Inverters.Name;
-    const inverterCount = originalObject.Solutions.Inverters.count;
-    const price = prices.Inverters[inverterName];
+  for (const key in originalObject.Solutions.Inverters) {
+    if (originalObject.Solutions.Inverters.hasOwnProperty(key)) {
+      const value = originalObject.Solutions.Inverters[key];
+      const price = prices.Inverters[key];
+      if (price) {
+        cartItems.push({
+          type: "Solar Inverter",
+          name: key,
+          quantity: value,
+          price: price,
+        });
+        totalCost += value * price;
+      }
+    }
+  }
+
+  // Extract Heat Pump if available
+  if (originalObject.Solutions["Heat Pump"]) {
+    const pump = originalObject.Solutions["Heat Pump"];
+    const price = prices["Heat Pump"][pump];
     if (price) {
       cartItems.push({
-        type: "Solar Inverter",
-        name: inverterName,
-        quantity: inverterCount,
+        type: "Heat Pump",
+        name: pump,
+        quantity: 1,
         price: price,
       });
+      totalCost += price;
     }
   }
 
   // Extract Battery Capacity if available
   if (originalObject.Solutions["Battery Capacity"]) {
-    const batteryName = originalObject.Solutions["Battery Capacity"].Name;
-    const batteryCount =
-      originalObject.Solutions["Battery Capacity"]["Battery Count"];
+    const battery = originalObject.Solutions["Battery Capacity"];
+    const batteryName = battery.name;
+    const batteryCount = battery.count;
     const price = prices["Battery Capacity"][batteryName];
     if (price) {
       cartItems.push({
@@ -62,8 +83,9 @@ export default function convertToCart(originalObject) {
         quantity: batteryCount,
         price: price,
       });
+      totalCost += batteryCount * price;
     }
   }
 
-  return cartItems;
+  return { cartItems, totalCost };
 }

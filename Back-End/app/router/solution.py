@@ -68,7 +68,7 @@ async def solutinServicePV(req: solutin.SolutionRequest, db):
     # Get the day of the year
     day_of_year = current_date.timetuple().tm_yday
     total_consumption = req.average_consumption
-    if req.selectedDeviceLists is not None or len(req.selectedDeviceLists) != 0:
+    if len(req.selectedDeviceLists) != 0:
         ids = [device.device for device in req.selectedDeviceLists]
         usage = {
             device.device: device.consumption for device in req.selectedDeviceLists
@@ -92,30 +92,31 @@ async def solutinServicePV(req: solutin.SolutionRequest, db):
     solutions = []
     for panel in PANELS:
         for inverter in INVERTERS:
-            calculation = PVCalculation(
-                region=req.region,
-                roof_size=area,
-                panel_name=panel,
-                energy_consuming=total_consumption,
-                tracking_system=tracking_system,
-                inverter_name=inverter,
-                off_grid=req.off_grid,
-                oversize=req.oversize,
-                average_gas_consumption=req.averageGasBill,
-            )
-            solution = calculation.calculate()
-            if solution is not None:
-                solutions.append(solution)
+            for off_grid in [True, False]:
+                for oversize in [True, False]:
+                    calculation = PVCalculation(
+                        region=req.region,
+                        roof_size=area,
+                        panel_name=panel,
+                        energy_consuming=total_consumption,
+                        tracking_system=tracking_system,
+                        inverter_name=inverter,
+                        off_grid=off_grid,
+                        oversize=oversize,
+                        average_gas_consumption=req.averageGasBill,
+                    )
+                    solution = calculation.calculate()
+                    if solution is not None:
+                        solutions.append(solution)
     solutions = sorted(solutions, key=lambda x: x["Energy Production"], reverse=True)
-    solution=solutions[0]
+    solution = solutions[0]
 
-        
     return {
         "total_consumption": total_consumption,
         **result.get_results(),
         "direction": direction,
         "tracking_system": tracking_system,
-        "Solutions": solutions[0],
+        "Solutions": solutions[1],
     }
 
 
