@@ -38,12 +38,10 @@ const SolutionForm = () => {
   const [useDefaultSettings, setUseDefaultSettings] = useState(true);
   const [showGasBillInput, setShowGasBillInput] = useState(false);
 
-  var SunCalc = require("suncalc");
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalContent, setModalContent] = useState("");
 
-  const router = useRouter();
 
   const handleInfoClick = (type) => {
     const infoDetails = {
@@ -328,6 +326,7 @@ const SolutionForm = () => {
       longitude: longitude,
       windSpeed: windSpeed,
     };
+    
     const result = await generateSolution(output);
     localStorage.setItem("result", JSON.stringify(result));
 
@@ -925,11 +924,11 @@ const SolutionForm = () => {
                   <div className="flex items-center mx-8">
                     <input
                       type="checkbox"
-                      id="type1"
+                      id="Canadian Solar CS6P-200PM"
                       name="panel_type"
-                      value="type1"
+                      value="Canadian Solar CS6P-200PM"
                       disabled={useDefaultSettings}
-                      checked={formData.panel_type === "type1"}
+                      checked={formData.panel_type === "Canadian Solar CS6P-200PM"}
                       onChange={handleCheckboxChange}
                     />
                     <label className="ml-2">Canadian Solar CS6P-200PM</label>
@@ -945,11 +944,11 @@ const SolutionForm = () => {
                   <div className="flex items-center mx-8">
                     <input
                       type="checkbox"
-                      id="type2"
+                      id="Canadian Solar HiDM CS1U-MS"
                       name="panel_type"
-                      value="type2"
+                      value="Canadian Solar HiDM CS1U-MS"
                       disabled={useDefaultSettings}
-                      checked={formData.panel_type === "type2"}
+                      checked={formData.panel_type === "Canadian Solar HiDM CS1U-MS"}
                       onChange={handleCheckboxChange}
                     />
                     <label className="ml-2">Canadian Solar HiDM CS1U-MS</label>
@@ -964,11 +963,11 @@ const SolutionForm = () => {
                   <div className="flex items-center mx-8">
                     <input
                       type="checkbox"
-                      id="type3"
+                      id="Trina Solar Vertex TSM-DE20-600"
                       name="panel_type"
-                      value="type3"
+                      value="Trina Solar Vertex TSM-DE20-600"
                       disabled={useDefaultSettings}
-                      checked={formData.panel_type === "type3"}
+                      checked={formData.panel_type === "Trina Solar Vertex TSM-DE20-600"}
                       onChange={handleCheckboxChange}
                     />
                     <label className="ml-2">
@@ -1168,11 +1167,11 @@ const SolutionForm = () => {
                   <div className="flex items-center mx-8">
                     <input
                       type="checkbox"
-                      id="type1"
+                      id="HM-600NT"
                       name="inverter_type"
-                      value="type1"
+                      value="HM-600NT"
                       disabled={useDefaultSettings}
-                      checked={formData.inverter_type === "type1"}
+                      checked={formData.inverter_type === "HM-600NT"}
                       onChange={handleCheckboxChange}
                     />
                     <label className="ml-2">Hoymiles HM-600NT </label>
@@ -1188,11 +1187,11 @@ const SolutionForm = () => {
                   <div className="flex items-center mx-8">
                     <input
                       type="checkbox"
-                      id="type2"
+                      id="GrowattSPH6000"
                       name="inverter_type"
-                      value="type2"
+                      value="GrowattSPH6000"
                       disabled={useDefaultSettings}
-                      checked={formData.inverter_type === "type2"}
+                      checked={formData.inverter_type === "GrowattSPH6000"}
                       onChange={handleCheckboxChange}
                     />
                     <label className="ml-2">Growatt SPH 6000</label>
@@ -1235,14 +1234,14 @@ const SolutionForm = () => {
                   <div className="flex items-center mx-8">
                     <input
                       type="checkbox"
-                      id="type4"
+                      id="PVI-6000w Power-One Aurora"
                       name="inverter_type"
-                      value="type4"
+                      value="PVI-6000w Power-One Aurora"
                       disabled={useDefaultSettings}
-                      checked={formData.inverter_type === "type4"}
+                      checked={formData.inverter_type === "PVI-6000w Power-One Aurora"}
                       onChange={handleCheckboxChange}
                     />
-                    <label className="ml-2">PVI-6000w Power-One Aurora0</label>
+                    <label className="ml-2">PVI-6000w Power-One Aurora</label>
                     <div
                       className="flex h-6 w-6 items-center justify-center text-xs bg-gray-200 rounded-full ml-2 cursor-pointer"
                       onClick={() => handleInfoClick("inverter4")}
@@ -1255,11 +1254,11 @@ const SolutionForm = () => {
                   <div className="flex items-center mx-8">
                     <input
                       type="checkbox"
-                      id="type5"
+                      id="Marsrock 1000W 1KW MPPT Wind Grid Tie"
                       name="inverter_type"
-                      value="type5"
+                      value="Marsrock 1000W 1KW MPPT Wind Grid Tie"
                       disabled={useDefaultSettings}
-                      checked={formData.inverter_type === "type5"}
+                      checked={formData.inverter_type === "Marsrock 1000W 1KW MPPT Wind Grid Tie"}
                       onChange={handleCheckboxChange}
                     />
                     <label className="ml-2">
