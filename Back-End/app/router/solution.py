@@ -7,6 +7,7 @@ from sqlalchemy.orm import Session
 from app.entity.models import Devices
 from app.utils.energyCalculation import totalConsumption
 from app.utils.calcs import SolarCalculator
+from app.utils import windCalculation
 from app.utils.panel import PVCalculation
 
 
@@ -16,6 +17,7 @@ PANELS = [
     "Trina Solar Vertex TSM-DE20-600",
 ]
 INVERTERS = ["HM-600NT", "GrowattSPH6000"]
+TURBINE = ["Air Breeze", "Skystream 3.7", "SD6 6 kW Wind Turbine", "Bergey Excel 1kW"]
 
 
 router = APIRouter(prefix="/solution", tags=["solution"])
@@ -57,8 +59,87 @@ def get_direction(degrees):
 async def generate_solution(
     req: solutin.SolutionRequest, db: Session = Depends(get_db)
 ):
-    result = await solutinServicePV(req, db)
-    return result
+    if req.solution_type == "":
+        result = await solutinServicePV(req, db)
+        wind = windCalculation.findAllCombination(
+            daily_electricity_usage=req.average_consumption, wind_speed=req.windSpeed
+        )
+        wind = sorted(wind, key=lambda x: x["Energy Production"], reverse=True)[0]
+        result = result["Solutions"]
+        if wind["Energy Production"] > result["Energy Production"]:
+            return wind
+
+        return result
+    if req.solution_type == "solar":
+        return await findSpecificSolutin(req,db)
+
+
+def findConsumption(req, db):
+    ids = [device.device for device in req.selectedDeviceLists]
+    usage = {device.device: device.consumption for device in req.selectedDeviceLists}
+    consumption = db.query(Devices).filter(Devices.name.in_((ids))).all()
+    total_consumption = totalConsumption(usage=usage, consumption=consumption)
+    return total_consumption
+
+
+def process_solar_calculation(req, day_of_year):
+    # Current time in HH:MM format
+    current_time = dt.now().strftime("%H:%M")
+
+    # Calculate the effective area
+    area = calculate_area(req.roof_size) * 0.85
+
+    # Create a SolarCalculator instance
+    result = SolarCalculator(
+        day_of_year,
+        req.latitude,
+        req.longitude,
+        standard_time_to_minutes(current_time),
+        current_time,
+    )
+
+    # Perform all necessary calculations
+    result.calculate_all()
+
+    # Determine the direction and the corresponding tracking system
+    direction = get_direction(result.solar_azimuth)
+    tracking_system = direction_tracking_system[direction]
+
+    return area, result, direction, tracking_system
+
+
+async def findSpecificSolutin(req: solutin.SolutionRequest, db):
+    # Get the current date
+    current_date = datetime.date.today()
+
+    # Get the day of the year
+    day_of_year = current_date.timetuple().tm_yday
+    total_consumption = req.average_consumption
+    if len(req.selectedDeviceLists) != 0:
+        total_consumption = findConsumption(req, db)
+    area, result, direction, tracking_system = process_solar_calculation(
+        req, day_of_year
+    )
+    calculation = PVCalculation(
+        region=req.region,
+        roof_size=area,
+        panel_name=req.panel_type,
+        energy_consuming=total_consumption,
+        tracking_system=tracking_system,
+        inverter_name=req.inverter_type,
+        off_grid=req.grid_type == "off_grid",
+        oversize=req.sizing == "oversizing",
+        average_gas_consumption=req.averageGasBill,
+    )
+    solution = calculation.calculate()
+
+    return {
+        "total_consumption": total_consumption,
+        **result.get_results(),
+        "direction": direction,
+        "tracking_system": tracking_system,
+        "Solutions": solution,
+    }
 
 
 async def solutinServicePV(req: solutin.SolutionRequest, db):
@@ -69,26 +150,11 @@ async def solutinServicePV(req: solutin.SolutionRequest, db):
     day_of_year = current_date.timetuple().tm_yday
     total_consumption = req.average_consumption
     if len(req.selectedDeviceLists) != 0:
-        ids = [device.device for device in req.selectedDeviceLists]
-        usage = {
-            device.device: device.consumption for device in req.selectedDeviceLists
-        }
-        consumption = db.query(Devices).filter(Devices.name.in_((ids))).all()
-        print(consumption)
-        total_consumption = totalConsumption(usage=usage, consumption=consumption)
-    current_time = dt.now().strftime("%H:%M")
-    area = calculate_area(req.roof_size) * 0.85
-    result = SolarCalculator(
-        day_of_year,
-        req.latitude,
-        req.longitude,
-        standard_time_to_minutes(current_time),
-        current_time,
+        total_consumption = findConsumption(req, db)
+    area, result, direction, tracking_system = process_solar_calculation(
+        req, day_of_year
     )
-    print(req)
-    result.calculate_all()
-    direction = get_direction(result.solar_azimuth)
-    tracking_system = direction_tracking_system[direction]
+
     solutions = []
     for panel in PANELS:
         for inverter in INVERTERS:
