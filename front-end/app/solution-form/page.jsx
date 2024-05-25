@@ -38,10 +38,8 @@ const SolutionForm = () => {
   const [useDefaultSettings, setUseDefaultSettings] = useState(true);
   const [showGasBillInput, setShowGasBillInput] = useState(false);
 
-
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalContent, setModalContent] = useState("");
-
 
   const handleInfoClick = (type) => {
     const infoDetails = {
@@ -326,7 +324,7 @@ const SolutionForm = () => {
       longitude: longitude,
       windSpeed: windSpeed,
     };
-    
+
     const result = await generateSolution(output);
     localStorage.setItem("result", JSON.stringify(result));
 
@@ -834,17 +832,18 @@ const SolutionForm = () => {
               {formData.solution_type === "wind" && (
                 <div className="flex-col mb-4 pt-2 pr-12">
                   <p className="font-semibold">Air turbines :</p>
+
                   <div className="flex items-center mx-8">
                     <input
                       type="checkbox"
-                      id="AIR Breeze"
+                      id="AirBreeze"
                       name="wind_type"
-                      value="AIR Breeze"
+                      value="Air Breeze"
                       disabled={useDefaultSettings}
-                      checked={formData.wind_type === "AIR Breeze"}
+                      checked={formData.wind_type === "Air Breeze"}
                       onChange={handleCheckboxChange}
                     />
-                    <label className="ml-2">AIR Breeze</label>
+                    <label className="ml-2">Air Breeze</label>
                     <div
                       className="flex h-6 w-6 items-center justify-center text-xs bg-gray-200 rounded-full ml-2 cursor-pointer"
                       onClick={() => handleInfoClick("AirBreeze")}
@@ -857,36 +856,57 @@ const SolutionForm = () => {
                   <div className="flex items-center mx-8">
                     <input
                       type="checkbox"
-                      id="BERGEYexcel6"
+                      id="Skystream37"
                       name="wind_type"
-                      value="BERGEYexcel6"
+                      value="Skystream 3.7"
                       disabled={useDefaultSettings}
-                      checked={formData.wind_type === "BERGEYexcel6"}
+                      checked={formData.wind_type === "Skystream 3.7"}
                       onChange={handleCheckboxChange}
                     />
-                    <label className="ml-2">BERGEY excel 6</label>
+                    <label className="ml-2">Skystream 3.7</label>
                     <div
                       className="flex h-6 w-6 items-center justify-center text-xs bg-gray-200 rounded-full ml-2 cursor-pointer"
-                      onClick={() => handleInfoClick("BERGEYexcel6")}
+                      onClick={() => handleInfoClick("Skystream37")}
                       title="Click for more info on panel type"
                     >
                       ?
                     </div>
                   </div>
+
                   <div className="flex items-center mx-8">
                     <input
                       type="checkbox"
-                      id="Whisper-100"
+                      id="SD66kW"
                       name="wind_type"
-                      value="Whisper-100"
+                      value="SD6 6 kW Wind Turbine"
                       disabled={useDefaultSettings}
-                      checked={formData.wind_type === "Whisper-100"}
+                      checked={formData.wind_type === "SD6 6 kW Wind Turbine"}
                       onChange={handleCheckboxChange}
                     />
-                    <label className="ml-2">Whisper 100</label>
+                    <label className="ml-2">SD6 6 kW Wind Turbine</label>
                     <div
                       className="flex h-6 w-6 items-center justify-center text-xs bg-gray-200 rounded-full ml-2 cursor-pointer"
-                      onClick={() => handleInfoClick("Whisper100")}
+                      onClick={() => handleInfoClick("SD66kW")}
+                      title="Click for more info on panel type"
+                    >
+                      ?
+                    </div>
+                  </div>
+
+                  <div className="flex items-center mx-8">
+                    <input
+                      type="checkbox"
+                      id="BergeyExcel1kW"
+                      name="wind_type"
+                      value="Bergey Excel 1kW"
+                      disabled={useDefaultSettings}
+                      checked={formData.wind_type === "Bergey Excel 1kW"}
+                      onChange={handleCheckboxChange}
+                    />
+                    <label className="ml-2">Bergey Excel 1kW</label>
+                    <div
+                      className="flex h-6 w-6 items-center justify-center text-xs bg-gray-200 rounded-full ml-2 cursor-pointer"
+                      onClick={() => handleInfoClick("BergeyExcel1kW")}
                       title="Click for more info on panel type"
                     >
                       ?
@@ -928,7 +948,9 @@ const SolutionForm = () => {
                       name="panel_type"
                       value="Canadian Solar CS6P-200PM"
                       disabled={useDefaultSettings}
-                      checked={formData.panel_type === "Canadian Solar CS6P-200PM"}
+                      checked={
+                        formData.panel_type === "Canadian Solar CS6P-200PM"
+                      }
                       onChange={handleCheckboxChange}
                     />
                     <label className="ml-2">Canadian Solar CS6P-200PM</label>
@@ -948,7 +970,9 @@ const SolutionForm = () => {
                       name="panel_type"
                       value="Canadian Solar HiDM CS1U-MS"
                       disabled={useDefaultSettings}
-                      checked={formData.panel_type === "Canadian Solar HiDM CS1U-MS"}
+                      checked={
+                        formData.panel_type === "Canadian Solar HiDM CS1U-MS"
+                      }
                       onChange={handleCheckboxChange}
                     />
                     <label className="ml-2">Canadian Solar HiDM CS1U-MS</label>
@@ -967,7 +991,10 @@ const SolutionForm = () => {
                       name="panel_type"
                       value="Trina Solar Vertex TSM-DE20-600"
                       disabled={useDefaultSettings}
-                      checked={formData.panel_type === "Trina Solar Vertex TSM-DE20-600"}
+                      checked={
+                        formData.panel_type ===
+                        "Trina Solar Vertex TSM-DE20-600"
+                      }
                       onChange={handleCheckboxChange}
                     />
                     <label className="ml-2">
@@ -1238,7 +1265,9 @@ const SolutionForm = () => {
                       name="inverter_type"
                       value="PVI-6000w Power-One Aurora"
                       disabled={useDefaultSettings}
-                      checked={formData.inverter_type === "PVI-6000w Power-One Aurora"}
+                      checked={
+                        formData.inverter_type === "PVI-6000w Power-One Aurora"
+                      }
                       onChange={handleCheckboxChange}
                     />
                     <label className="ml-2">PVI-6000w Power-One Aurora</label>
@@ -1258,7 +1287,10 @@ const SolutionForm = () => {
                       name="inverter_type"
                       value="Marsrock 1000W 1KW MPPT Wind Grid Tie"
                       disabled={useDefaultSettings}
-                      checked={formData.inverter_type === "Marsrock 1000W 1KW MPPT Wind Grid Tie"}
+                      checked={
+                        formData.inverter_type ===
+                        "Marsrock 1000W 1KW MPPT Wind Grid Tie"
+                      }
                       onChange={handleCheckboxChange}
                     />
                     <label className="ml-2">
@@ -1275,7 +1307,6 @@ const SolutionForm = () => {
                 </div>
               )}
 
-
               {formData.inverter_type != "" && (
                 <div className="flex mb-4 pt-2 pr-20 pl-2">
                   <div className="flex items-center mx-8">
@@ -1288,9 +1319,7 @@ const SolutionForm = () => {
                       checked={formData.sizing === "oversizing"}
                       onChange={handleCheckboxChange}
                     />
-                    <label className="ml-2">
-                      Oversizing{" "}
-                    </label>
+                    <label className="ml-2">Oversizing </label>
                   </div>
 
                   <div className="flex items-center mx-8">
@@ -1303,14 +1332,10 @@ const SolutionForm = () => {
                       checked={formData.sizing === "undersizing"}
                       onChange={handleCheckboxChange}
                     />
-                    <label className="ml-2">
-                      Undersizing{" "}
-                    </label>
+                    <label className="ml-2">Undersizing </label>
                   </div>
                 </div>
               )}
-
-
             </div>
           )}
 
