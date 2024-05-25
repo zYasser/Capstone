@@ -17,6 +17,7 @@ const SolutionForm = () => {
     roof_type: "",
     grid_type: "",
     inverter_type: "",
+    sizing: "",
     panel_type: "",
     wind_type: "",
     wind_battery: "",
@@ -1090,57 +1091,6 @@ const SolutionForm = () => {
               </div>
 
               {formData.grid_type === "off_grid" &&
-                formData.solution_type === "solar" && (
-                  <div className="flex-col mb-4 pt-2 pl-28 pr-2">
-                    <p className="font-semibold">
-                      How would you like to excess energy ?{" "}
-                    </p>
-                    <div className="flex items-center mx-8">
-                      <input
-                        type="checkbox"
-                        id="type1"
-                        name="excess_energy"
-                        value="type1"
-                        disabled={useDefaultSettings}
-                        checked={formData.excess_energy === "type1"}
-                        onChange={handleCheckboxChange}
-                      />
-                      <label className="ml-2">
-                        Battery (Sonnen Eco GEN3 ECO15)
-                      </label>
-                      <div
-                        className="flex h-6 w-6 items-center justify-center text-xs bg-gray-200 rounded-full ml-2 cursor-pointer"
-                        onClick={() => handleInfoClick("battery")}
-                        title="Click for more info "
-                      >
-                        ?
-                      </div>
-                    </div>
-
-                    <div className="flex items-center mx-8">
-                      <input
-                        type="checkbox"
-                        id="type2"
-                        name="excess_energy"
-                        value="type2"
-                        checked={formData.excess_energy === "type2"}
-                        onChange={handleCheckboxChange}
-                      />
-                      <label className="ml-2">
-                        Heat pump ( DAİKİN RXB12AXVJU ){" "}
-                      </label>
-                      <div
-                        className="flex h-6 w-6 items-center justify-center text-xs bg-gray-200 rounded-full ml-2 cursor-pointer"
-                        onClick={() => handleInfoClick("HeatPump")}
-                        title="Click for more info "
-                      >
-                        ?
-                      </div>
-                    </div>
-                  </div>
-                )}
-
-              {formData.grid_type === "off_grid" &&
                 formData.solution_type === "wind" && (
                   <div className="flex-col mb-4 pt-2 pl-96">
                     <p className="font-semibold">Battery :</p>
@@ -1325,6 +1275,43 @@ const SolutionForm = () => {
                   </div>
                 </div>
               )}
+
+
+              {formData.inverter_type != "" && (
+                <div className="flex mb-4 pt-2 pr-20 pl-2">
+                  <div className="flex items-center mx-8">
+                    <input
+                      type="checkbox"
+                      id="oversizing"
+                      name="sizing"
+                      value="oversizing"
+                      disabled={useDefaultSettings}
+                      checked={formData.sizing === "oversizing"}
+                      onChange={handleCheckboxChange}
+                    />
+                    <label className="ml-2">
+                      Oversizing{" "}
+                    </label>
+                  </div>
+
+                  <div className="flex items-center mx-8">
+                    <input
+                      type="checkbox"
+                      id="undersizing"
+                      name="sizing"
+                      value="undersizing"
+                      disabled={useDefaultSettings}
+                      checked={formData.sizing === "undersizing"}
+                      onChange={handleCheckboxChange}
+                    />
+                    <label className="ml-2">
+                      Undersizing{" "}
+                    </label>
+                  </div>
+                </div>
+              )}
+
+
             </div>
           )}
 
