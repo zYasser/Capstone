@@ -13,13 +13,19 @@ class SolutionRequest(BaseModel):
     latitude: float
     longitude: float
     region: str
-    oversize: Optional[bool] = False
+    sizing: Optional[str] = False
     off_grid: Optional[bool] = False
     averageGasBill: Optional[int] = None
     solution_type: Optional[str] = None
     grid_type: Optional[str] = None
+    inverter_type: Optional[str] = None
+
+    wind_type: Optional[str] = None
+    panel_type: Optional[str] = None
     purpose: Optional[str] = None
     average_consumption: Optional[int] = None
+    windSpeed: Optional[float] = None
+    
 
 
 class SolutionRequestWind(BaseModel):
