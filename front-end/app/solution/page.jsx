@@ -11,7 +11,7 @@ import Invoice from "@/components/Invoice";
 import { saveAs } from "file-saver";
 
 export default function Solution() {
-  let data = localStorage.getItem("output");
+  let data = localStorage.getItem("result");
   data = JSON.parse(data);
   console.log();
   const generatePdfDocument = async (cartItem) => {
