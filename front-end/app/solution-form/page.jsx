@@ -37,6 +37,7 @@ const SolutionForm = () => {
   const [windSpeed, setWindSpeed] = useState(null);
   const [useDefaultSettings, setUseDefaultSettings] = useState(true);
   const [showGasBillInput, setShowGasBillInput] = useState(false);
+  const router = useRouter();
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalContent, setModalContent] = useState("");
@@ -327,8 +328,8 @@ const SolutionForm = () => {
 
     const result = await generateSolution(output);
     localStorage.setItem("result", JSON.stringify(result));
-
-    // router.push("solution");
+    router;
+    router.push("solution");
     console.log(result);
     if (error) {
       console.log("Form contains errors.");
@@ -1123,16 +1124,16 @@ const SolutionForm = () => {
                     <div className="flex items-center mx-8">
                       <input
                         type="checkbox"
-                        id="surretteBattery"
+                        id="BYD B-Box HV 12.8 kWh"
                         name="wind_battery"
-                        value="surretteBattery"
+                        value="BYD B-Box HV 12.8 kWh"
                         disabled={useDefaultSettings}
-                        checked={formData.wind_battery === "surretteBattery"}
+                        checked={
+                          formData.wind_battery === "BYD B-Box HV 12.8 kWh"
+                        }
                         onChange={handleCheckboxChange}
                       />
-                      <label className="ml-2">
-                        Surrette Rolls S6 L16-HC (S-550) 445Ah 6V Deep Cycle{" "}
-                      </label>
+                      <label className="ml-2">BYD B-Box HV 12.8 kWh </label>
                       <div
                         className="flex h-6 w-6 items-center justify-center text-xs bg-gray-200 rounded-full ml-2 cursor-pointer"
                         onClick={() => handleInfoClick("surretteBattery")}
@@ -1145,41 +1146,26 @@ const SolutionForm = () => {
                     <div className="flex items-center mx-8">
                       <input
                         type="checkbox"
-                        id="trojanBattery"
+                        id="Trojan T-105 Plus 6V Deep-Cycle Flooded Lead-Acid Battery"
                         name="wind_battery"
-                        value="trojanBattery"
+                        value="Trojan T-105 Plus 6V Deep-Cycle Flooded Lead-Acid Battery"
                         disabled={useDefaultSettings}
-                        checked={formData.wind_battery === "trojanBattery"}
+                        checked={
+                          formData.wind_battery ===
+                          "Trojan T-105 Plus 6V Deep-Cycle Flooded Lead-Acid Battery"
+                        }
                         onChange={handleCheckboxChange}
                       />
                       <label className="ml-2">
-                        Trojan Battery Trojan T-125 6V 240Ah Deep Cycle{" "}
+                        Trojan Battery Trojan T-125 6V 240Ah Deep Cycle
                       </label>
                       <div
                         className="flex h-6 w-6 items-center justify-center text-xs bg-gray-200 rounded-full ml-2 cursor-pointer"
-                        onClick={() => handleInfoClick("trojanBattery")}
-                        title="Click for more info on battery type"
-                      >
-                        ?
-                      </div>
-                    </div>
-                    <div className="flex items-center mx-8">
-                      <input
-                        type="checkbox"
-                        id="BattleBornBattery"
-                        name="wind_battery"
-                        value="BattleBornBattery"
-                        disabled={useDefaultSettings}
-                        checked={formData.wind_battery === "BattleBornBattery"}
-                        onChange={handleCheckboxChange}
-                      />
-                      <label className="ml-2">
-                        Battle Born Battery BB250-12V 100Ah Lithium Iron
-                        Phosphate (LiFePO4){" "}
-                      </label>
-                      <div
-                        className="flex h-6 w-6 items-center justify-center text-xs bg-gray-200 rounded-full ml-2 cursor-pointer"
-                        onClick={() => handleInfoClick("BattleBornBattery")}
+                        onClick={() =>
+                          handleInfoClick(
+                            "Trojan T-105 Plus 6V Deep-Cycle Flooded Lead-Acid Battery"
+                          )
+                        }
                         title="Click for more info on battery type"
                       >
                         ?
@@ -1239,16 +1225,14 @@ const SolutionForm = () => {
                   <div className="flex items-center mx-8">
                     <input
                       type="checkbox"
-                      id="type3"
+                      id="MultiPlus 5kVA 48V"
                       name="inverter_type"
-                      value="type3"
+                      value="MultiPlus 5kVA 48V"
                       disabled={useDefaultSettings}
-                      checked={formData.inverter_type === "type3"}
+                      checked={formData.inverter_type === "MultiPlus 5kVA 48V"}
                       onChange={handleCheckboxChange}
                     />
-                    <label className="ml-2">
-                      Schneider Electric Conext SW+ 5000W{" "}
-                    </label>
+                    <label className="ml-2">MultiPlus 5kVA 48V </label>
                     <div
                       className="flex h-6 w-6 items-center justify-center text-xs bg-gray-200 rounded-full ml-2 cursor-pointer"
                       onClick={() => handleInfoClick("inverter3")}
@@ -1261,16 +1245,14 @@ const SolutionForm = () => {
                   <div className="flex items-center mx-8">
                     <input
                       type="checkbox"
-                      id="PVI-6000w Power-One Aurora"
+                      id="AALGO 2400w"
                       name="inverter_type"
-                      value="PVI-6000w Power-One Aurora"
+                      value="AALGO 2400w"
                       disabled={useDefaultSettings}
-                      checked={
-                        formData.inverter_type === "PVI-6000w Power-One Aurora"
-                      }
+                      checked={formData.inverter_type === "AALGO 2400w"}
                       onChange={handleCheckboxChange}
                     />
-                    <label className="ml-2">PVI-6000w Power-One Aurora</label>
+                    <label className="ml-2">AALGO 2400w</label>
                     <div
                       className="flex h-6 w-6 items-center justify-center text-xs bg-gray-200 rounded-full ml-2 cursor-pointer"
                       onClick={() => handleInfoClick("inverter4")}
@@ -1283,18 +1265,37 @@ const SolutionForm = () => {
                   <div className="flex items-center mx-8">
                     <input
                       type="checkbox"
-                      id="Marsrock 1000W 1KW MPPT Wind Grid Tie"
+                      id="AIMS Power Inverter"
                       name="inverter_type"
-                      value="Marsrock 1000W 1KW MPPT Wind Grid Tie"
+                      value="AIMS Power Inverter"
+                      disabled={useDefaultSettings}
+                      checked={formData.inverter_type === "AIMS Power Inverter"}
+                      onChange={handleCheckboxChange}
+                    />
+                    <label className="ml-2">AIMS Power Inverter </label>
+                    <div
+                      className="flex h-6 w-6 items-center justify-center text-xs bg-gray-200 rounded-full ml-2 cursor-pointer"
+                      onClick={() => handleInfoClick("inverter5")}
+                      title="Click for more info on inverter types"
+                    >
+                      ?
+                    </div>
+                  </div>
+                  <div className="flex items-center mx-8">
+                    <input
+                      type="checkbox"
+                      id="KRXNY 1000W Pure Sine Wave Power Inverter"
+                      name="inverter_type"
+                      value="KRXNY 1000W Pure Sine Wave Power Inverter"
                       disabled={useDefaultSettings}
                       checked={
                         formData.inverter_type ===
-                        "Marsrock 1000W 1KW MPPT Wind Grid Tie"
+                        "KRXNY 1000W Pure Sine Wave Power Inverter"
                       }
                       onChange={handleCheckboxChange}
                     />
                     <label className="ml-2">
-                      Marsrock 1000W 1KW MPPT Wind Grid Tie
+                      KRXNY 1000W Pure Sine Wave Power Inverter{" "}
                     </label>
                     <div
                       className="flex h-6 w-6 items-center justify-center text-xs bg-gray-200 rounded-full ml-2 cursor-pointer"

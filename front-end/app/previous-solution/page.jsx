@@ -3,12 +3,14 @@
 import DynamicAlert from "@/components/DynamicAlert";
 import SideBar from "@/components/SideBar";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 
 const ComparisonTable = ({ data }) => {
   const [selectedIds, setSelectedIds] = useState([]);
   const [isComparing, setIsComparing] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
+  const router = useRouter();
 
   const handleSelect = (id) => {
     if (selectedIds.includes(id)) {
@@ -26,6 +28,7 @@ const ComparisonTable = ({ data }) => {
       setErrorMessage("You need to select 2 solutions");
       return;
     }
+    router.push("/solution-comparison");
     console.log(selectedIds);
   };
 
