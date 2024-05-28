@@ -63,6 +63,8 @@ class WindTurbineSystem:
         daily_electricity_usage,
         price_per_turbine,
         turbine_name,
+        inverter_name,
+        battery_name=None,
         inverter_price=0,
         battery_price=0,
     ):
@@ -77,6 +79,8 @@ class WindTurbineSystem:
         self.price_per_turbine = price_per_turbine
         self.inverter_price = inverter_price
         self.battery_price = battery_price
+        self.battery_name = battery_name
+        self.inverter_name = inverter_name
         self.turbine_name = turbine_name
 
     def power_available(self):
@@ -121,15 +125,20 @@ class WindTurbineSystem:
 
     def run_system_analysis(self):
         results = {}
-        results["power_available"] = self.power_available()
-        results["Theoretical Energy"] = self.energy_output()
-        results["capacity_factor"] = self.capacity_factor()
-        results["Energy Production"] = self.daily_energy_production()
+        results["solution"] = "wind"
+        results["Total Consumption"] = round(self.daily_electricity_usage, 2)
+        results["power_available"] = round(self.power_available(), 2)
+        results["Theoretical Energy"] = round(self.energy_output(), 2)
+        results["capacity_factor"] = round(self.capacity_factor(), 2)
+        results["Energy Production"] = round(self.daily_energy_production(), 2)
         results["Turbine"] = {self.turbine_name: self.num_turbines_needed()}
+        results["Inverter"] = self.inverter_name
+        results["Battery"] = self.battery_name
         results["system_loss_factor"] = self.system_loss_factor()
         results["self_sufficiency_ratio"] = self.self_sufficiency_ratio()
-        results["Carbon Footprint"] = 5 * self.daily_energy_production() * 365 * 25
-        results["Total Price"] = self.total_price()
+        results["Carbon Footprint"] = round(
+            5 * self.daily_energy_production() * 365 * 25, 2
+        )
         return results
 
 
@@ -175,10 +184,13 @@ price_dict = {
     "Bergey Excel 1kW": 10796,
     "KRXNY 1000W Pure Sine Wave Power Inverter": 137,
     "Trojan T-105 Plus 6V Deep-Cycle Flooded Lead-Acid Battery": 416,  # 4 batteries in series
+    "": 0,
 }
 
 
-def find_solution(wind_speed, daily_electricity_usage, inverter_name, turbine, battery):
+def find_solution(
+    wind_speed, daily_electricity_usage, inverter_name, turbine, battery=""
+):
     turbine_spec = turbine_specs[turbine]
 
     wind_turbine = WindTurbineSystem(
@@ -189,9 +201,11 @@ def find_solution(wind_speed, daily_electricity_usage, inverter_name, turbine, b
         rated_power=turbine_spec["Rated Power"],
         daily_electricity_usage=daily_electricity_usage,  # Example daily usage, can be modified
         price_per_turbine=turbine_spec["Price"],
+        inverter_name=inverter_name,
         inverter_price=price_dict[inverter_name],
         battery_price=price_dict[battery],
         turbine_name=turbine,
+        battery_name=battery,
     )
 
     results = wind_turbine.run_system_analysis()
@@ -213,6 +227,7 @@ def findAllCombination(wind_speed, daily_electricity_usage):
             price_per_turbine=turbine_spec["Price"],
             inverter_price=config["Inverter Price"],
             battery_price=config["Battery Price"],
+            inverter_name=config["Inverter"],
         )
 
         result = wind_turbine.run_system_analysis()
@@ -222,4 +237,4 @@ def findAllCombination(wind_speed, daily_electricity_usage):
     return results
 
 
-findAllCombination(12,300)
+findAllCombination(12, 300)

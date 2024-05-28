@@ -65,13 +65,28 @@ async def generate_solution(
             daily_electricity_usage=req.average_consumption, wind_speed=req.windSpeed
         )
         wind = sorted(wind, key=lambda x: x["Energy Production"], reverse=True)[0]
-        result = result["Solutions"]
-        if wind["Energy Production"] > result["Energy Production"]:
+        solar = result["Solutions"]
+        if wind["Energy Production"] > solar["Energy Production"]:
             return wind
 
         return result
     if req.solution_type == "solar":
-        return await findSpecificSolutin(req,db)
+        return await findSpecificSolutinSolar(req, db)
+    if req.solution_type == "wind":
+        return findSpecificSolutinWind(req, db)
+
+
+def findSpecificSolutinWind(req: solutin.SolutionRequest, db):
+    total_consumption = req.average_consumption
+    if len(req.selectedDeviceLists) != 0:
+        total_consumption = findConsumption(req, db)
+    result = windCalculation.find_solution(
+        wind_speed=req.windSpeed,
+        daily_electricity_usage=total_consumption,
+        inverter_name=req.inverter_type,
+        turbine=req.wind_type,
+    )
+    return result
 
 
 def findConsumption(req, db):
@@ -108,7 +123,7 @@ def process_solar_calculation(req, day_of_year):
     return area, result, direction, tracking_system
 
 
-async def findSpecificSolutin(req: solutin.SolutionRequest, db):
+async def findSpecificSolutinSolar(req: solutin.SolutionRequest, db):
     # Get the current date
     current_date = datetime.date.today()
 

@@ -19,13 +19,12 @@ class SolutionRequest(BaseModel):
     solution_type: Optional[str] = None
     grid_type: Optional[str] = None
     inverter_type: Optional[str] = None
-
     wind_type: Optional[str] = None
     panel_type: Optional[str] = None
     purpose: Optional[str] = None
     average_consumption: Optional[int] = None
     windSpeed: Optional[float] = None
-    
+    wind_battery: Optional[str] = None
 
 
 class SolutionRequestWind(BaseModel):
