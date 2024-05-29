@@ -166,9 +166,9 @@ const SolutionForm = () => {
           <img src="./inverter1.png" />
         </div>
       ),
-      AirBreeze: (
+      BergeyExcel1kW: (
         <div className="flex flex-col items-center justify-center">
-          <img src="./AirBreeze.png" />
+          <img src="./bergey.png" />
         </div>
       ),
       BERGEYexcel6: (
@@ -191,9 +191,22 @@ const SolutionForm = () => {
           <img src="./trojanBattery.png" />
         </div>
       ),
-      Whisper100: (
+
+      AirBreeze: (
         <div className="flex flex-col items-center justify-center">
-          <img src="./whisper-100.png" />
+          <img src="./AirBreeze.png" />
+        </div>
+      ),
+
+      SD66kW: (
+        <div className="flex flex-col items-center justify-center">
+          <img src="./sd6.png" />
+        </div>
+      ),
+
+      Skystream37: (
+        <div className="flex flex-col items-center justify-center">
+          <img src="./skystream.png" />
         </div>
       ),
 
@@ -786,6 +799,65 @@ const SolutionForm = () => {
                 </div>
               )}
 
+<div className="flex mb-4 pt-4 pl-2 pr-44">
+                <p className="font-semibold">Roof Type:</p>
+                <div className="flex items-center mx-8">
+                  <input
+                    type="checkbox"
+                    id="straight"
+                    name="roof_type"
+                    checked={formData.roof_type === "Slope"}
+                    onChange={handleCheckboxChange}
+                  />
+                  <label className="ml-2">Slope</label>
+                  <div
+                    className="flex h-6 w-6 items-center justify-center text-xs bg-gray-200 rounded-full ml-2 cursor-pointer"
+                    onClick={() => handleInfoClick("Slope")}
+                    title="Click for more info on Slope Type"
+                  >
+                    ?
+                  </div>
+                </div>
+
+                <div className="flex items-center mx-8">
+                  <input
+                    type="checkbox"
+                    id="straight"
+                    name="roof_type"
+                    value="Flat"
+                    checked={formData.roof_type === "Flat"}
+                    onChange={handleCheckboxChange}
+                  />
+                  <label className="ml-2">Flat</label>
+                  <div
+                    className="flex h-6 w-6 items-center justify-center text-xs bg-gray-200 rounded-full ml-2 cursor-pointer"
+                    onClick={() => handleInfoClick("Flat")}
+                    title="Click for more info on Flat Type"
+                  >
+                    ?
+                  </div>
+                </div>
+
+                <div className="flex items-center mx-8">
+                  <input
+                    type="checkbox"
+                    id="curved"
+                    name="roof_type"
+                    value="Composite"
+                    checked={formData.roof_type === "Composite"}
+                    onChange={handleCheckboxChange}
+                  />
+                  <label className="ml-2">Composite</label>
+                  <div
+                    className="flex h-6 w-6 items-center justify-center text-xs bg-gray-200 rounded-full ml-2 cursor-pointer"
+                    onClick={() => handleInfoClick("Composite")}
+                    title="Click for more info on Composite Type"
+                  >
+                    ?
+                  </div>
+                </div>
+              </div>
+
               <div className="flex items-center mb-4 mr-3">
                 <p className="font-semibold">Solution Type:</p>
                 <div className="flex">
@@ -1011,68 +1083,7 @@ const SolutionForm = () => {
                   </div>
                 </div>
               )}
-              <div className="flex mb-4 pt-4 pl-40 pr-2">
-                <p className="font-semibold">Roof Type:</p>
-                <div className="flex items-center mx-8">
-                  <input
-                    type="checkbox"
-                    id="straight"
-                    name="roof_type"
-                    value="Slope"
-                    disabled={useDefaultSettings}
-                    checked={formData.roof_type === "Slope"}
-                    onChange={handleCheckboxChange}
-                  />
-                  <label className="ml-2">Slope</label>
-                  <div
-                    className="flex h-6 w-6 items-center justify-center text-xs bg-gray-200 rounded-full ml-2 cursor-pointer"
-                    onClick={() => handleInfoClick("Slope")}
-                    title="Click for more info on Slope Type"
-                  >
-                    ?
-                  </div>
-                </div>
-
-                <div className="flex items-center mx-8">
-                  <input
-                    type="checkbox"
-                    id="straight"
-                    name="roof_type"
-                    value="Flat"
-                    disabled={useDefaultSettings}
-                    checked={formData.roof_type === "Flat"}
-                    onChange={handleCheckboxChange}
-                  />
-                  <label className="ml-2">Flat</label>
-                  <div
-                    className="flex h-6 w-6 items-center justify-center text-xs bg-gray-200 rounded-full ml-2 cursor-pointer"
-                    onClick={() => handleInfoClick("Flat")}
-                    title="Click for more info on Flat Type"
-                  >
-                    ?
-                  </div>
-                </div>
-
-                <div className="flex items-center mx-8">
-                  <input
-                    type="checkbox"
-                    id="curved"
-                    name="roof_type"
-                    value="Composite"
-                    disabled={useDefaultSettings}
-                    checked={formData.roof_type === "Composite"}
-                    onChange={handleCheckboxChange}
-                  />
-                  <label className="ml-2">Composite</label>
-                  <div
-                    className="flex h-6 w-6 items-center justify-center text-xs bg-gray-200 rounded-full ml-2 cursor-pointer"
-                    onClick={() => handleInfoClick("Composite")}
-                    title="Click for more info on Composite Type"
-                  >
-                    ?
-                  </div>
-                </div>
-              </div>
+              
 
               <div className="flex mb-4 pt-4">
                 <p className="font-semibold">Grid Type:</p>
